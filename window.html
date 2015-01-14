@@ -1,0 +1,172 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <link rel="chrome-webstore-item" href="https://chrome.google.com/webstore/detail/vk-inviz/ffniakoflaobbkjjcnlnmepodehaflkd">
+
+  <link rel="stylesheet" href="css/style.css" type="text/css"></link>
+  <link rel="stylesheet" href="css/alertify.core.css" />
+  <link rel="stylesheet" href="css/alertify.default.css" id="toggleCSS" />
+  <link rel="stylesheet" href="css/lightbox.css" type="text/css" />
+  <link rel="stylesheet" href="css/dialog.css" type="text/css" />
+  <link rel="stylesheet" href="css/notification.css" type="text/css" />
+  
+  <script src="script/jquery-1.11.0.min.js"></script>
+  <script src="script/aja.min.js"></script>
+  <script src="script/auth.js"></script>
+  <script src="script/script.js"></script>
+  <script src="script/cache_file.js"></script>
+  <script src="script/alertify.js"></script>
+  <script src="script/blob.js"></script>
+  <script src="script/longpong.js"></script>
+  <script src="script/notification.js"></script>
+   <script src="script/google-analytics-bundle.js"></script>
+</head>
+
+<body>
+<div id="panel"></div>
+<div id="header">
+<div class="header_logo"><img src=""></div>
+<div class="header_menu header_audio" title="Аудиозаписи"></div>
+<div class="header_menu header_exit" title="Закрыть приложение"></div>
+<div class="header_menu header_setting" title="Настройки"></div>
+<div class="header_menu header_help"></div>
+</div>
+<div id="menu">
+ <div class="punkt user my_wall" title="Ваша стена"></div>
+ <div class="punkt friend my_friend" title="Список друзей"></div>
+ <div class="new_friend" style="display:none;"></div>
+ <!--<div class="punkt photo_album"></div>-->
+ <div class="punkt video_album button_video" title="Видеозаписи"></div>
+ <div class="punkt button_group" title="Группы"></div>
+ <!--<div class="punkt audio_album button_audio"></div>-->
+ <div class="punkt notification button_notification" title="Ответы(недоработано)"></div>
+ <div class="punkt news button_news" title="Новости"></div>
+</div>
+<div id="contente">
+  <div id="search_video">
+    <div class="search_video">
+      <div id="search_video_control">
+        <input type="text" class="search_input_video" placeholder="Введите поисковое слово...(Enter)">
+        <div class="search_button_video">
+          <img width="40px" src="images/search-button.png">
+        </div>
+      </div>
+      <div id="search_video_cheked">
+        <input class="video_filters" type="checkbox" />Длинные видеозаписи</div>
+    </div>
+    <div class="search_video_list"></div>
+  </div>
+
+  <div id="content">
+    <div id="messages_form"></div>
+    <div id="messages">
+      <div id="table"></div>
+      <div class="riso"><div class="riso2">Пользователь пишет сообщение <img src="images/typing.gif"></div></div>
+    </div>
+    <div id="send_messages">
+      <div id="text_messages" placeholder="Введите текст и нажмите enter для отправки сообщения..." contenteditable="true"></div>
+      <div id="open_smile"></div>
+      <div id="send_photo"></div>
+      <div id="smiles_fon"></div>
+      <div id="smile"><div class="smiles"></div><div class="smile_tools"><div class="smiless tools_smile"></div><div class="smiless tools_sticker"></div></div><div class="sprite"></div></div>
+    </div>
+  </div>
+  <input type="hidden" id="uid_user" value="">
+  <input type="hidden" id="uid_wall" value="">
+  <input type="hidden" id="next_from" value="">
+  <input type="hidden" id="post_id" value="">
+  <input type="hidden" id="comment_wall_on" value="">
+  <input type="hidden" id="histori" value="">
+  <input type="hidden" id="attachments" value="">
+  <input type="hidden" id="longpong" value="">
+
+  <div id="search_group">
+  	      <div id="search_group_control">
+        <div id="search_group_pole"><input type="text" class="search_input_group" placeholder="Введите поисковое слово...(Enter)"></div>
+        <div class="search_button_group">
+          <img width="40px" src="images/search-button.png">
+        </div>
+      </div>
+      <div class="group_list"></div>
+  </div>
+
+  <div id="wall"></div>
+  <div id="news"></div>
+
+
+
+</div>
+</div>
+</div>
+
+<!-- Аудиозаписи -->
+  <div id="dialog" class="audio">
+      <div class="dialog_sprite left"></div>
+    <div class="dialog_header">
+      <!-- Элементы плеера -->
+  <div id="slider"></div>
+    <div id="button_player">
+      <div class="track_n"></div>
+      <div class="track_plays"></div>
+      <div class="track_w"></div>
+      <div class="repeat"></div>
+    </div>
+     <div id="find_music"><input type="text" class="search_input_music" placeholder="ПОИСК МУЗЫКИ"></div>
+       <span class="name_music"></span>
+       <span class="time_music"></span>
+     <div id="scroka_time_music">
+       <div class="scroka_buffer_music"></div>
+       <div class="scroka_time_music"></div>
+    </div>
+      <!-- Элементы плеера -->
+    </div>
+    <div class="dialog_content"></div>
+  </div>
+
+ <audio id="beep">
+            <source src="beep.ogg" type="audio/ogg" />
+            Your browser does not support HTML5 audio.
+        </audio>
+
+ <audio id="player_player" style="display:none;" src="" /></audio>
+ <script src="script/jquery-ui.min.js"></script>
+ <script type="text/javascript" src="script/lightbox.js"></script>
+   <div id="auth_form">
+    <webview style="width: 100%;height: 100%;" id="auth_id" src="https://oauth.vk.com/authorize?client_id=3915697&scope=friends,messages,offline,photos,audio,video,docs,wall,groups,notifications&redirect_uri=http://oauth.vk.com/blank.html&display=popup&response_type=token"></webview>
+    <button id="activate" style="display:none"></button>
+    <button id="update_messages" style="display:none"></button>
+    <button id="get_mess" style="display:none"></button>
+    
+  </div>
+  <div id="dialog_video"></div>
+
+<!-- Настройки -->
+  <div id="dialog" class="setting">
+      <div class="dialog_sprite right"></div>
+    <div class="dialog_header">Настройки</div>
+    <div class="dialog_content">
+       <div id="resize">Свернуть окно</div>
+      <!-- -->
+       <div id="setup_key" style="font-size: 11px;">
+        Отправка клавишей:<br>
+        <input type="radio" name="keys" value="1" checked="checked"/> Enter<br>
+        <input type="radio" name="keys" value="2" /> Ctrl+Enter
+        </div>
+        <div><input type="checkbox" id="cache"/> Кеширование</div>
+        <div id="new_user">Сменить пользователя</div>
+    </div>
+  </div>
+<!-- Список друзей -->
+  <div id="dialog" class="friend">
+    <div class="dialog_sprite right_bottom"></div>
+    <div class="dialog_header">
+        <div class="fri" id="button_all_friend"></div>
+        <div class="fri" id="button_all_friend_onlline"></div>
+        <!--<div style="position: absolute;left: 86px;" class="fri" id="button_friend_remove"></div>-->
+        <div id="friend_search_pole"><input type="text" placeholder="Имя или фамилия друга"></div>
+    </div>
+    <div class="dialog_content"></div>
+  </div>
+  <div id="display"></div>
+</body>
+</html>
