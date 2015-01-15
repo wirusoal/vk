@@ -394,13 +394,8 @@ var messages_attr = function(data){
         for (var i = 0; i < data.length; i++) {
           if (data[i]['body'] != null) {
             messages += "<tr>";
-            if (data[i]['id'] == '67221342') {
-              messages = messages + '<td class="im_log_author"><div class="im_log_author_chat_thumb"><img src="vk-128.png" class="im_log_author_chat_thumb" width="32" height="32"></div></td>';
-              messages = messages + '<td class="im_log_body"><div class="wrapped"><div class="im_log_author_chat_name">Техподдержка</div>';
-            } else {
-              messages = messages + '<td class="im_log_author"><div class="im_log_author_chat_thumb"><img id="id_' + data[i]['user_id'] + '" src="images/image_loader.gif" class="im_log_author_chat_thumb" width="32" height="32"></div></td>';
-              messages = messages + '<td class="im_log_body"><div class="wrapped"><div class="im_log_author_chat_name" uid="' + data[i]['user_id'] + '"></div>';
-            }
+            messages = messages + '<td class="im_log_author"><div class="im_log_author_chat_thumb"><img id="id_' + data[i]['user_id'] + '" src="images/image_loader.gif" class="im_log_author_chat_thumb" width="32" height="32"></div></td>';
+            messages = messages + '<td class="im_log_body"><div class="wrapped"><div class="im_log_author_chat_name" uid="' + data[i]['user_id'] + '"></div>';
 
             var reg = /(?:^|[\s]+)((http(s)?:\/\/)|(www\.))([^\.]+)\.(?:[^\s,]+)/ig;
             var mess = data[i]['body'].replace(reg, function(s) {
@@ -536,6 +531,7 @@ var messages_attr = function(data){
 
             mess = mess.replace(/\n/ig, '<br>');
             messages = messages + '<div class="im_msg_text">' + emoji(mess, true);
+                        messages = messages + '<div class="im_log_date" style="'+((data['response']['items'][i]['out'] == 0)? 'right: 32px;':'')+'" uptime="'+data['response']['items'][i]['date']+'">' + formatDate(new Date(data['response']['items'][i]['date'] * 1000)) + '</div>';
             messages += "<div class='lala'>";
             //Проверяем есть ли прикрепления
             if (data['response']['items'][i]['attachments'] != null) {
@@ -588,13 +584,8 @@ var messages_attr = function(data){
             messages += "</div>";
             messages = messages + "</div></div></div>";
             if(data['response']['items'][i]['out'] == 0){
-              if (data['response']['items'][i]['id'] == '67221342') {
-                messages = messages + '<div class="im_log_author" style="float: right;margin-right: 3px;right:0px;position:absolute;"><div class="im_log_author_chat_thumb"><img src="vk-128.png" class="im_log_author_chat_thumb" width="32" height="32"></div></div>';
-              } else {
-                messages = messages + '<div class="im_log_author" style="float: right;margin-right: 3px;right:0px;position:absolute;"><div class="im_log_author_chat_thumb"><img id="id_' + data['response']['items'][i]['from_id'] + '" src="images/image_loader.gif" class="im_log_author_chat_thumb" width="32" height="32"></div></div>';
-              }
+            messages = messages + '<div class="im_log_author" style="float: right;margin-right: 3px;right:0px;position:absolute;"><div class="im_log_author_chat_thumb"><img id="id_' + data['response']['items'][i]['from_id'] + '" src="images/image_loader.gif" class="im_log_author_chat_thumb" width="32" height="32"></div></div>';
             }
-            //messages = messages + '<td class="im_log_date" uptime="'+data['response']['items'][i]['date']+'">' + formatDate(new Date(data['response']['items'][i]['date'] * 1000)) + '</td>';
             $("#messages > #table").append(messages);
             $("#messages > #table").append(news);
             $("#messages").scrollTop($("#messages").prop('scrollHeight'));
@@ -702,15 +693,15 @@ var messages_attr = function(data){
       //console.info(data);
       for (var i = 0; i < data['response']['items'].length; i++) {
         var text = '';
-        var title = (data['response']['items'][i]['title'].length > 20) ? data['response']['items'][i]['title'].slice(0, 0).toLowerCase() : data['response']['items'][i]['title'].toLowerCase();
-        var artist = (data['response']['items'][i]['artist'].length > 40) ? data['response']['items'][i]['artist'].slice(0, 40).toLowerCase() : data['response']['items'][i]['artist'].toLowerCase();
+        var title = (data['response']['items'][i]['title'].length > 20) ? data['response']['items'][i]['title'].slice(0, 20) : data['response']['items'][i]['title'];
+        var artist = (data['response']['items'][i]['artist'].length > 40) ? data['response']['items'][i]['artist'].slice(0, 20) : data['response']['items'][i]['artist'];
         text += '<div id="track" mus="player" duration="' + data['response']['items'][i]['duration'] + '" uid="' + data['response']['items'][i]['id'] + '" url="' + data['response']['items'][i]['url'] + '"><div class="track_play"></div><div class="track_title">' + artist + ' - ' + title + '</div>'
         if ($('.search_input_music').val().length < 2) {
           text += '<div id="' + data['response']['items'][i]['id'] + '" owner_id="' + data['response']['items'][i]['owner_id'] + '" class="track_delete">удалить</div>';
           text += '<div class="track_download"><a href="' + data['response']['items'][i]['url'] + '" download>скачать\/</a></div>';
         } else if ($('.search_input_music').val().length > 2) {
-          //text += '<div id="' + data['response']['items'][i]['id'] + '" owner_id="' + data['response']['items'][i]['owner_id'] + '" class="track_add" style="cursor: copy;right: 2px;">добавить</div>';
-          //text += '<div class="track_download"><a href="' + data['response']['items'][i]['url'] + '" download>скачать\/</a></div>';
+          text += '<div id="' + data['response']['items'][i]['id'] + '" owner_id="' + data['response']['items'][i]['owner_id'] + '" class="track_add" style="cursor: copy;right: 2px;">добавить</div>';
+          text += '<div class="track_download"><a href="' + data['response']['items'][i]['url'] + '" download>скачать\/</a></div>';
         }
         text += '</div>';
         $(".audio .dialog_content").append(text);

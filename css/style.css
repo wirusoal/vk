@@ -299,6 +299,7 @@ line-height: 150%;
 background: #f7f8fa;
 padding: 8px;
 border-radius: 10px;
+min-width: 63px;
 }
 .im_log_author_chat_name {
 padding-bottom: 2px;
@@ -306,11 +307,11 @@ color: #777;
 }
 
 .im_log_date {
-padding-left: 8px !important;
 color: #999;
 width: 92px;
-right: 0px;
 position: absolute;
+margin-top: -28px;
+font-size: 10px;
 }
 
 #send_messages {
