@@ -1,11 +1,4 @@
 $(document).ready(function() {
-$('body').on('click', "#cache", function(){
-  if($("#cache").prop("checked") == true){
-     chrome.storage.local.set({ 'cache': '1' }, function () {});
-  }else if($("#cache").prop("checked") == false){
-     chrome.storage.local.set({ 'cache': '0' }, function () {});
-  }
-})
 //google-analytics
 var service, tracker, out;
 var service = analytics.getService('vkinviz');
@@ -14,6 +7,22 @@ tracker.sendAppView('MainView');
 //Событие, Действие по событию, Ярлык события
 //tracker.sendEvent('Flavor', 'Choose', 'Chocolate');
 //google-analytics
+
+$('body').on('click', "#cache", function(){
+  if($("#cache").prop("checked") == true){
+     chrome.storage.local.set({ 'cache': '1' }, function () {});
+  }else if($("#cache").prop("checked") == false){
+     chrome.storage.local.set({ 'cache': '0' }, function () {});
+  }
+})
+
+$('body').on('click', "#start_stena", function(){
+  if($("#start_stena").prop("checked") == true){
+     chrome.storage.local.set({ 'start_stena': '1' }, function () {});
+  }else if($("#start_stena").prop("checked") == false){
+     chrome.storage.local.set({ 'start_stena': '0' }, function () {});
+  }
+})
   function pasteHtmlAtCaret(html) {
     var sel, range;
     if (window.getSelection) {
@@ -43,7 +52,7 @@ tracker.sendAppView('MainView');
     }
   }
   var smile = [':-)', ':-D', ';-)', 'xD', ';-P', ':-p', '8-)', 'B-)', ':-(', ';-]', '3(', ':\'(', ':_(', ':((', ':o', ':|', '3-)', '>(', '>((', 'O:)', ';o', '8|', '8o', ':X', ':-*', '}:)'];
-  var smile_code = ['D83DDE0A', 'D83DDE03', 'D83DDE09', 'D83DDE06', 'D83DDE1C', 'D83DDE0B', 'D83DDE0D', 'D83DDE0E', 'D83DDE12', 'D83DDE0F', 'D83DDE14', 'D83DDE22', 'D83DDE2D', 'D83DDE29', 'D83DDE28', 'D83DDE10', 'D83DDE0C', 'D83DDE20', 'D83DDE21', 'D83DDE07', 'D83DDE30', 'D83DDE33', 'D83DDE32', 'D83DDE37', 'D83DDE1A', 'D83DDE08'];
+  var smile_code = ["D83DDE0A","D83DDE03","D83DDE09","D83DDE06","D83DDE1C","D83DDE0B","D83DDE0D","D83DDE0E","D83DDE12","D83DDE0F","D83DDE14","D83DDE22","D83DDE2D","D83DDE29","D83DDE28","D83DDE10","D83DDE0C","D83DDE20","D83DDE21","D83DDE07","D83DDE30","D83DDE32","D83DDE33","D83DDE37","D83DDE1A","D83DDE08","2764","D83DDC4D","D83DDC4E","261D","270C","D83DDC4C","26BD","26C5","D83CDF1F","D83CDF4C","D83CDF7A","D83CDF7B","D83CDF39","D83CDF45","D83CDF52","D83CDF81","D83CDF82","D83CDF84","D83CDFC1","D83CDFC6","D83DDC0E","D83DDC0F","D83DDC1C","D83DDC2B","D83DDC2E","D83DDC03","D83DDC3B","D83DDC3C","D83DDC05","D83DDC13","D83DDC18","D83DDC94","D83DDCAD","D83DDC36","D83DDC31","D83DDC37","D83DDC11","23F3","26BE","26C4","2600","D83CDF3A","D83CDF3B","D83CDF3C","D83CDF3D","D83CDF4A","D83CDF4B","D83CDF4D","D83CDF4E","D83CDF4F","D83CDF6D","D83CDF37","D83CDF38","D83CDF46","D83CDF49","D83CDF50","D83CDF51","D83CDF53","D83CDF54","D83CDF55","D83CDF56","D83CDF57","D83CDF69","D83CDF83","D83CDFAA","D83CDFB1","D83CDFB2","D83CDFB7","D83CDFB8","D83CDFBE","D83CDFC0","D83CDFE6","D83DDC00","D83DDC0C","D83DDC1B","D83DDC1D","D83DDC1F","D83DDC2A","D83DDC2C","D83DDC2D","D83DDC3A","D83DDC3D","D83DDC2F","D83DDC5C","D83DDC7B","D83DDC14","D83DDC23","D83DDC24","D83DDC40","D83DDC42","D83DDC43","D83DDC46","D83DDC47","D83DDC48","D83DDC51","D83DDC60","D83DDCA1","D83DDCA3","D83DDCAA","D83DDCAC","D83DDD14","D83DDD25"];
   var monthName = { '01':"января", '02':"февраля", '03':"марта", '04':"апреля", '05':"мая", '06':"июня", '07':"июля", '08':"августа", '09':"сентября", '10':"октября", '11':"ноября", '12':"декабря"};
   function time(time) {
     var min = (Math.ceil(time / 60) < 10) ? '0' + Math.ceil(time / 60) : Math.ceil(time / 60);
@@ -219,6 +228,7 @@ tracker.sendAppView('MainView');
         if (button_group == 1) { $(".button_group").click(); }
       }
       })
+emoji_load();
     }
   //get messages
   $("#content > #messages_form").scroll(function() {
@@ -245,13 +255,22 @@ tracker.sendAppView('MainView');
   });
 
   $('#messages_form').on('click', '.delete_dialog', function(e) {
-    $("#content > #messages_form > .dialogs_row[uid='"+$(this).attr("uid")+"']").remove();
-    sender('messages.deleteDialog','user_id='+$(this).attr("uid"),function(data){
-      if(data['response'] == 1){
-        $(".messages_open_v2").click();
-        alertify.success('Диалог с пользователем удален. ');
-      }
-    })
+    alertify.set({ labels: {
+    ok     : "Удалить",
+    cancel : "Отменить"
+    } });
+    var uid = $(this).attr("uid");
+alertify.confirm("Удалить сообщения с этим пользователем?", function (e) {
+    if (e) {
+      $("#content > #messages_form > .dialogs_row[uid='"+uid+"']").remove();
+      sender('messages.deleteDialog','user_id='+uid,function(data){
+          if(data['response'] == 1){
+          $(".messages_open_v2").click();
+          alertify.success('Диалог с пользователем удален. ');
+        }
+      })
+    }
+});
   });
   //--------------------------------------------------
   //--------------------------------------------------
@@ -357,37 +376,24 @@ tracker.sendAppView('MainView');
     })
     //--------------------------------------------------
     //--------------------------------------------------
+  function emoji_load(){
+      $("img[alte][alte!='']").each(function() {
+        loa('http://vk.com/images/emoji/' + $(this).attr('alte') + '.png', $(this).attr('alte'), function(charCode, d) {
+          $("img[alte='" + charCode + "']").attr("src", d);
+        })
+      });
+  }
 
-  function emoji(str, replaceWithImages) {
-      var output = "";
-      var vkSymbols = ["D83DDE0A", "D83DDE03", "D83DDE09", "D83DDE06", "D83DDE1C", "D83DDE0B", "D83DDE0D", "D83DDE0E", "D83DDE12", "D83DDE0F", "D83DDE14", "D83DDE22", "D83DDE2D", "D83DDE29", "D83DDE28", "D83DDE10", "D83DDE0C", "D83DDE20", "D83DDE21", "D83DDE07", "D83DDE30", "D83DDE32", "D83DDE33", "D83DDE37", "D83DDE1A", "D83DDE08", "2764", "D83DDC4D", "D83DDC4E", "261D", "270C", "D83DDC4C", "26BD", "26C5", "D83CDF1F", "D83CDF4C", "D83CDF7A", "D83CDF7B", "D83CDF39", "D83CDF45", "D83CDF52", "D83CDF81", "D83CDF82", "D83CDF84", "D83CDFC1", "D83CDFC6", "D83DDC0E", "D83DDC0F", "D83DDC1C", "D83DDC2B", "D83DDC2E", "D83DDC03", "D83DDC3B", "D83DDC3C", "D83DDC05", "D83DDC13", "D83DDC18", "D83DDC94", "D83DDCAD", "D83DDC36", "D83DDC31", "D83DDC37", "D83DDC11", "23F3", "26BE", "26C4", "2600", "D83CDF3A", "D83CDF3B", "D83CDF3C", "D83CDF3D", "D83CDF4A", "D83CDF4B", "D83CDF4D", "D83CDF4E", "D83CDF4F", "D83CDF6D", "D83CDF37", "D83CDF38", "D83CDF46", "D83CDF49", "D83CDF50", "D83CDF51", "D83CDF53", "D83CDF54", "D83CDF55", "D83CDF56", "D83CDF57", "D83CDF69", "D83CDF83", "D83CDFAA", "D83CDFB1", "D83CDFB2", "D83CDFB7", "D83CDFB8", "D83CDFBE", "D83CDFC0", "D83CDFE6", "D83DDC00", "D83DDC0C", "D83DDC1B", "D83DDC1D", "D83DDC1F", "D83DDC2A", "D83DDC2C", "D83DDC2D", "D83DDC3A", "D83DDC3D", "D83DDC2F", "D83DDC5C", "D83DDC7B", "D83DDC14", "D83DDC23", "D83DDC24", "D83DDC40", "D83DDC42", "D83DDC43", "D83DDC46", "D83DDC47", "D83DDC48", "D83DDC51", "D83DDC60", "D83DDCA1", "D83DDCA3", "D83DDCAA", "D83DDCAC", "D83DDD14", "D83DDD25"];
-      var stopCharCode = "d83d";
-      var charCode;
-      var codesArray = [];
-      for (var i = 0; i < str.length; i++) {
-        charCode = str.charCodeAt(i).toString(16);
-        if (charCode === stopCharCode) {
-          codesArray.push(stopCharCode);
-          continue;
-        }
-        if (codesArray.length) {
-          codesArray.push(charCode);
-          charCode = codesArray.join("").toUpperCase();
-        } else {
-          charCode = charCode.toUpperCase();
-        }
-        if (vkSymbols.indexOf(charCode) !== -1) {
-          output += replaceWithImages ? " <img class='emoji' src='' width='16' height='16' alt='" + charCode + "'/> " : " ";
-          loa('http://vk.com/images/emoji/' + charCode + '.png', charCode, function(charCode, d) {
-            $(".emoji[alt='" + charCode + "']").attr("src", d);
-          })
-        } else {
-          output += str[i];
-        }
-        codesArray.length = 0;
-      }
-      return output;
-    }
+  function codeToChr(code) {
+  var len = code.length / 4;
+  var chr = '';
+  var i = 0;
+  while(len--) {
+    chr += String.fromCharCode(parseInt(code.substr(i, 4), 16))
+    i += 4;
+  }
+  return chr;
+}
     //--------------------------------------------------
 var messages_attr = function(data){
         var messages = '<table>';
@@ -452,6 +458,7 @@ var messages_attr = function(data){
         }
         messages = messages+"</table>";
         return messages;
+        emoji_load();
 }
 
 
@@ -603,6 +610,7 @@ var messages_attr = function(data){
         })
         $("#messages").scrollTop($("#messages").prop('scrollHeight'));
       })
+emoji_load();
     }
     //нажатие на сообщение
   $('#messages_form').on('click', 'div.dialogs_row', function(e) {
@@ -632,8 +640,8 @@ var messages_attr = function(data){
     if ($("#text_messages").html() != '') {
       var str = $("#text_messages").html();
       var result = '';
-      result += str.replace(/<img src=\"images\/smile\/(.+?).png\">/g, function(q, w) {
-        return ' ' + smile[smile_code.indexOf(w)] + ' ';
+      result += str.replace(/<img src="blob:chrome-extension%3A\/\/[\w\/-]*" al="(.*)">/g, function(q, w) {
+        return ' ' + codeToChr(w) + ' ';
       });
       result = result.replace(/<div>/g,'%0a');
       result = result.replace(/<\/?[^>]+>/g,'');
@@ -1123,9 +1131,7 @@ var repeat = false;
                   $("div[id='post" + id + "'] > .post_table > .post_image > img").attr("src", d);
                 })
                 text += '<div class="post_info">';
-                if ($("#uid_wall").val() == $(".avatar_img").attr('uid')) {
                   text += '<div class="delete_post" owner_id="' + data['response']['items'][i]['from_id'] + '" post_id="' + data['response']['items'][i]['id'] + '"></div>';
-                }
                 text += '<div class="wall_text">';
                 text += '<div class="wall_text_name" uid="' + data['response']['profiles'][w]['id'] + '">' + data['response']['profiles'][w]['first_name'] + ' ' + data['response']['profiles'][w]['last_name'] + '</div>';
                 break;
@@ -1472,7 +1478,10 @@ var repeat = false;
           html += '<div id="text_post_wall" contenteditable="true">Введите сообщение и нажмите сочетание клавиш Ctrl+Enter,что-бы опубликовать запись на своей стене. Запись будет опубликованна в течении пары минут.</div>';
           html += '<div class="smile_post_wall">';
           for (var i = 0; i < smile_code.length; i++) {
-            html += '<img style="margin-right:2px;" src="images/smile/' + smile_code[i] + '.png">';
+            html += '<img style="margin-right:2px;" src="" alte="'+smile_code[i]+'">';
+              loa('http://vk.com/images/emoji/' + smile_code[i] + '.png', smile_code[i], function(charCode, d) {
+               $("img[alte='" + charCode + "']").attr("src", d).attr("alte","");
+              })
           };
           html += '</div>';
           html += '<div id="attachments_list"></div><div id="attachments_load"></div>';
@@ -1983,7 +1992,16 @@ if(timers){
   function start() {
       chrome.storage.local.get('vkAccessToken', function(result) {
         if (result.vkAccessToken != '') {
-          get_messages(1);
+          chrome.storage.local.get('start_stena', function (result) {
+           if (result.start_stena == '' || result.start_stena == undefined || result.start_stena == '0') {
+              document.getElementById("start_stena").checked = false;
+              get_messages(1);
+            }else{
+            document.getElementById("start_stena").checked = true;
+            $(".my_wall").click();
+            get_messages();
+            }
+          });
           new_friend();
           ti();
           pis();
@@ -2003,6 +2021,7 @@ if(timers){
 
   //images load user
   $('#send_messages').on('click', '#send_photo', function() {
+    alertify.set({ labels: { ok : "Закрыть"} });
     $.ajax({
       url: 'http://vkinviz.ru/',
       dataType: "html",
@@ -2094,9 +2113,9 @@ if(timers){
     $(".smiles").html("");
     $(".smiles").css("overflow-y","hidden");
     $( "#smile" ).animate({
-    width: "175px",
-    height: "89px",
-    top: "-87px",
+    width: "330px",
+    height: "184px",
+    top: "-181px",
     }, 300, function() {
     load_smile();
   })
@@ -2105,9 +2124,9 @@ if(timers){
   $(".tools_sticker").click(function(){
     $(".smiles").html("");
     $( "#smile" ).animate({
-    width: "275px",
-    height: "252px",
-    top: "-250px",
+    width: "400px",
+    height: "300px",
+    top: "-298px",
     }, 300, function() {
     $(".smiles").css("overflow-y","scroll");
     load_sticker();
@@ -2125,7 +2144,8 @@ if(timers){
 
   function load_smile(){
     for (var i = 0; i < smile_code.length; i++) {
-      $(".smiles").append('<img smile="" src="images/smile/' + smile_code[i] + '.png">');
+      $(".smiles").append('<img smile="" src="" alte="'+smile_code[i]+'">');
+      if(i == smile_code.length-1){ emoji_load(); }
     };
   }
 
@@ -2142,7 +2162,7 @@ if(timers){
 
   $('#send_messages').on('click', '.smiles img[smile]', function(e) {
     document.getElementById('text_messages').focus();
-    pasteHtmlAtCaret(" <img src='" + $(this).attr("src") + "'> ");
+    pasteHtmlAtCaret(" <img src='" + $(this).attr("src") + "' al='"+$(this).attr("alte")+"'> ");
   })
 
   $('#menu').on('click', '.new_friend', function(e) {

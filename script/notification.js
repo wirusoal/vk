@@ -103,9 +103,13 @@ function like_comment_photo(i,data,profiles,groups){
 }
 function notification(){
 	sender('notifications.get','v=5.25', function(data){
+    console.info(data);
 		for(var i = 0;i<data['response']['items'].length;i++){
 			switch (data['response']['items'][i]['type']) {
                case 'like_comment':
+                 like_comment(i,data['response']['items'][i],data['response']['profiles'],data['response']['groups']);
+               break
+               case 'like_comment_topic':
                  like_comment(i,data['response']['items'][i],data['response']['profiles'],data['response']['groups']);
                break
                case 'like_comment_photo':

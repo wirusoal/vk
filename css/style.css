@@ -295,7 +295,6 @@ text-align: right;
 }
 
 .im_log_body {
-line-height: 150%;
 background: #f7f8fa;
 padding: 8px;
 border-radius: 10px;
@@ -309,8 +308,7 @@ color: #777;
 .im_log_date {
 color: #999;
 width: 92px;
-position: absolute;
-margin-top: -28px;
+position: inherit;
 font-size: 10px;
 }
 
@@ -1383,9 +1381,9 @@ outline: none;
 #smile {
     position: absolute;
     right: 6px;
-    width: 175px;
-    height: 89px;
-    top: -87px;
+    width: 330px;
+    height: 184px;
+    top: -181px;
     background-color: #fff;
     display: none;
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.32);
@@ -1756,7 +1754,7 @@ border-right: 1px solid #f1f1f1;
     #dialog.setting {
         top: 50px;
         right: 55px;
-        height: 155px;
+        height: 174px;
     }
 
     #dialog.setting .dialog_header {
@@ -1806,4 +1804,9 @@ border-right: 1px solid #f1f1f1;
         bottom: 0px;
         display: none;
         z-index: 99;
+    }
+
+    .emoji {
+      top: 5px;
+      position: relative;
     }

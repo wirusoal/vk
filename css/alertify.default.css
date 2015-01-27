@@ -20,7 +20,7 @@
 	}
 	.alertify-button {
 padding: 5px 16px 5px 16px;
-margin: 0;
+margin: 5px;
 font-size: 11px;
 cursor: pointer;
 vertical-align: top;
@@ -30,6 +30,7 @@ color: #FFF;
 border-radius: 2px;
 text-align: center;
 margin-bottom: 4px;
+font-weight: bold;
 	}
 .alertify-log {
 	background: #1F1F1F;
@@ -47,3 +48,8 @@ margin-bottom: 4px;
 		background: #5CB811;
 		background: rgba(92,184,17,.9);
 	}
+
+
+.alertify-button-cancel {
+	background-color: #C04848;
+}

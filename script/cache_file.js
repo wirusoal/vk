@@ -49,12 +49,21 @@ window.requestFileSystem(window.TEMPORARY, 35*1024*1024, function(fs){
 
 var loa = function(url,id,callback) {
 chrome.storage.local.get('cache', function (result) {
-    if (result.cache == '' || result.cache == undefined || result.cache == '1') {
+    if (result.cache == '' || result.cache == undefined || result.cache == '0') {
+document.getElementById("cache").checked = false;
+        $.ajax({
+        url: url,
+        async: true,
+        dataType: "blob",
+        success: function(data, textStatus) {
+          callback(id,window.webkitURL.createObjectURL(data)); 
+        }
+      })
+    } else {
 document.getElementById("cache").checked = true;
-
 is_file(id.toString()+'.txt',function(){//Если такой файл есть то получаем ссылку
 read(id.toString()+'.txt',function(e){
-	callback(id,e);
+  callback(id,e);
 })
 },function(){//если такого файла нет,то загружаем и сохраняем и выводим ссылку
         $.ajax({
@@ -66,18 +75,6 @@ read(id.toString()+'.txt',function(e){
         }
       })
 })
-
-    } else {
-document.getElementById("cache").checked = false;
-        $.ajax({
-        url: url,
-        async: true,
-        dataType: "blob",
-        success: function(data, textStatus) {
-          callback(id,window.webkitURL.createObjectURL(data)); 
-        }
-      })
-
     }
 })
 }

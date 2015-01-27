@@ -1,3 +1,34 @@
+  var emoji = function(str, replaceWithImages) {
+      var output = "";
+      var vkSymbols = ["D83DDE0A", "D83DDE03", "D83DDE09", "D83DDE06", "D83DDE1C", "D83DDE0B", "D83DDE0D", "D83DDE0E", "D83DDE12", "D83DDE0F", "D83DDE14", "D83DDE22", "D83DDE2D", "D83DDE29", "D83DDE28", "D83DDE10", "D83DDE0C", "D83DDE20", "D83DDE21", "D83DDE07", "D83DDE30", "D83DDE32", "D83DDE33", "D83DDE37", "D83DDE1A", "D83DDE08", "2764", "D83DDC4D", "D83DDC4E", "261D", "270C", "D83DDC4C", "26BD", "26C5", "D83CDF1F", "D83CDF4C", "D83CDF7A", "D83CDF7B", "D83CDF39", "D83CDF45", "D83CDF52", "D83CDF81", "D83CDF82", "D83CDF84", "D83CDFC1", "D83CDFC6", "D83DDC0E", "D83DDC0F", "D83DDC1C", "D83DDC2B", "D83DDC2E", "D83DDC03", "D83DDC3B", "D83DDC3C", "D83DDC05", "D83DDC13", "D83DDC18", "D83DDC94", "D83DDCAD", "D83DDC36", "D83DDC31", "D83DDC37", "D83DDC11", "23F3", "26BE", "26C4", "2600", "D83CDF3A", "D83CDF3B", "D83CDF3C", "D83CDF3D", "D83CDF4A", "D83CDF4B", "D83CDF4D", "D83CDF4E", "D83CDF4F", "D83CDF6D", "D83CDF37", "D83CDF38", "D83CDF46", "D83CDF49", "D83CDF50", "D83CDF51", "D83CDF53", "D83CDF54", "D83CDF55", "D83CDF56", "D83CDF57", "D83CDF69", "D83CDF83", "D83CDFAA", "D83CDFB1", "D83CDFB2", "D83CDFB7", "D83CDFB8", "D83CDFBE", "D83CDFC0", "D83CDFE6", "D83DDC00", "D83DDC0C", "D83DDC1B", "D83DDC1D", "D83DDC1F", "D83DDC2A", "D83DDC2C", "D83DDC2D", "D83DDC3A", "D83DDC3D", "D83DDC2F", "D83DDC5C", "D83DDC7B", "D83DDC14", "D83DDC23", "D83DDC24", "D83DDC40", "D83DDC42", "D83DDC43", "D83DDC46", "D83DDC47", "D83DDC48", "D83DDC51", "D83DDC60", "D83DDCA1", "D83DDCA3", "D83DDCAA", "D83DDCAC", "D83DDD14", "D83DDD25"];
+      var stopCharCode = "d83d";
+      var charCode;
+      var codesArray = [];
+      for (var i = 0; i < str.length; i++) {
+        charCode = str.charCodeAt(i).toString(16);
+        if (charCode === stopCharCode) {
+          codesArray.push(stopCharCode);
+          continue;
+        }
+        if (codesArray.length) {
+          codesArray.push(charCode);
+          charCode = codesArray.join("").toUpperCase();
+        } else {
+          charCode = charCode.toUpperCase();
+        }
+        if (vkSymbols.indexOf(charCode) !== -1) {
+          output += replaceWithImages ? " <img class='emoji' src='' width='16' height='16' alte='" + charCode + "'/> " : " ";
+          loa('http://vk.com/images/emoji/' + charCode + '.png', charCode, function(charCode, d) {
+          $("img[alte='" + charCode + "']").attr("src", d).attr("alte","");
+        })
+        } else {
+          output += str[i];
+        }
+        codesArray.length = 0;
+      }
+      return output;
+    }
+    
 function obj(obj){var s="";for(prop in obj){if(typeof obj[prop]!="function"){s+="obj["+prop+"] = "+obj[prop]+"; "}}return s}
 var sender=function(d,e,f){chrome.storage.local.get('vkAccessToken',function(c){$.ajax({url:'https://api.vk.com/method/'+d+'?'+e+'&access_token='+c.vkAccessToken,dataType:"json",success:function(a,b){f(a)}})})}
 var loadImage=function(c,d){$.ajax({url:c,async:true,dataType:"blob",success:function(a,b){d(window.webkitURL.createObjectURL(a))}})}
@@ -10,7 +41,7 @@ function formatDate(date,p){var diff=new Date()-date;var d=date;d=['0'+d.getDate
 function formatDates(date){var diff=new Date()-date;var d=date;d=['0'+d.getDate(),'0'+(d.getMonth()+1),''+d.getFullYear(),'0'+d.getHours(),'0'+d.getMinutes()];for(var i=0;i<d.length;i++){d[i]=d[i].slice(-2)}var new_date=new Date();if(new_date.getDate()==date.getDate()){return d.slice(3).join(':')}else if(new_date.getDate()-1==date.getDate()){return'вчера'}else{return d[0]+' '+monthName[d[1]]}}
 //-------------------//
 var mess_new = function(id,time,messages){
-var text = '<div class="dialogs_msg_body old dialogs_msg_body_new_on"><div class="im_msg_text">'+((messages.length > 35) ? messages.substr(0, 35)+'...':messages)+'<img id="nabor" src="images/typing.gif"></div></div>';
+var text = '<div class="dialogs_msg_body old dialogs_msg_body_new_on"><div class="im_msg_text">'+((messages.length > 35) ? emoji(messages.substr(0, 35),true)+'...':emoji(messages,true))+'<img id="nabor" src="images/typing.gif"></div></div>';
 $(".dialogs_row[uid='"+id+"'] .dialogs_row_t").find(".dialogs_msg_body").html(text);
 $(".dialogs_row[uid='"+id+"'] .dialogs_row_t").find(".dialogs_date").html('<img src="images/time-check.png"> '+formatDates(new Date(time * 1000)));
 }
