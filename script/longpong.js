@@ -43,7 +43,7 @@ function formatDates(date){var diff=new Date()-date;var d=date;d=['0'+d.getDate(
 var mess_new = function(id,time,messages){
 var text = '<div class="dialogs_msg_body old dialogs_msg_body_new_on"><div class="im_msg_text">'+((messages.length > 35) ? emoji(messages.substr(0, 35),true)+'...':emoji(messages,true))+'<img id="nabor" src="images/typing.gif"></div></div>';
 $(".dialogs_row[uid='"+id+"'] .dialogs_row_t").find(".dialogs_msg_body").html(text);
-$(".dialogs_row[uid='"+id+"'] .dialogs_row_t").find(".dialogs_date").html('<img src="images/time-check.png"> '+formatDates(new Date(time * 1000)));
+$(".dialogs_row[uid='"+id+"'] .dialogs_row_t").find(".dialogs_date").html('⌚ '+formatDates(new Date(time * 1000)));
 }
 //------------------//
 function forLongPong(data){

@@ -1,7 +1,7 @@
 {
   "name": "VK inviz",
   "description": "Приложение которое позволит Вам пользоваться сайтом vk.com находясь оффлайн.",
-  "version": "0.19",
+  "version": "0.20",
   "app": {
     "background": {
       "scripts": ["script/background.js"]

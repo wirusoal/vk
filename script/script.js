@@ -181,7 +181,7 @@ $('body').on('click', "#start_stena", function(){
                   messages = messages + '</td>';
                   messages = messages + '<td class="dialogs_info">';
                   messages = messages + '<div class="dialogs_user wrapped" uid="' + data['response'][i]['id'] + '">' + data['response'][i]['name'] + '</div>';
-                  messages = messages + '<div class="dialogs_date"><img src="images/time-check.png"> ' + formatDate(new Date(data['response'][i]['date'] * 1000),1) + '</div>';
+                  messages = messages + '<div class="dialogs_date">⌚ ' + formatDate(new Date(data['response'][i]['date'] * 1000),1) + '</div>';
                 }
               } else {
                 messages = messages + '<td class="dialogs_photo">';
@@ -2083,8 +2083,8 @@ if(timers){
 
   $('#wall').on('keydown', '#comment > div.send_comment > textarea', function(e) {
     if (e.ctrlKey && e.keyCode == 13) {
-        var from_group = 1;
-        //var from_group = 0;
+        //var from_group = 1;
+        var from_group = 0;
       sender('wall.addComment', 'v=5.21&from_group=' + from_group + '&owner_id=' + $("#uid_wall").val() + "&post_id=" + $(this).parent().attr("post_id") + "&text=" + $(this).val(), function(data) {
         if (data['response']['comment_id'] > 0) {
           alertify.success('Комментарий добавлен.Обновите страничку.');
@@ -2471,6 +2471,7 @@ for (var i = 0; i < data.length; i++) {
           }
         }
 }
+
  $('#friend_search_pole input').keyup(function(e) {
   if (e.keyCode == 13) {
     sender('friends.get', 'v=5.25&order=hints&fields=online,last_seen,photo_50,sex,has_mobile', function(data) {
@@ -2570,6 +2571,24 @@ s = function(){/*
   <div>
     <p>
     В данном приложении функций которые могут засветить Вашу страничку в онлайн отсутствуют. Любые действия в этом приложении к онлайн не приводят. Если такое произошло, то возможно из-за мобильного приложения на Вашем телефоне или установленных дополнительных расширений,приложений для работы с ВКонтакте.
+    </p>
+  </div>
+  <h3>Как установить ярлык на рабочий стол?</h3>
+  <div>
+    <p>
+    Переходим сюда <span style="-webkit-user-select: text;">chrome://apps/</span> наводим мышкой на иконку приложения,жмем правой кнопкой и выбираем "Создать ярлык..."
+    </p>
+  </div>
+  <h3>Как удалить приложение?</h3>
+  <div>
+    <p>
+    Переходим сюда <span style="-webkit-user-select: text;">chrome://apps/</span> наводим мышкой на иконку приложения,жмем правой кнопкой и выбираем "Удалить"
+    </p>
+  </div>
+  <h3>Не грузятся картинки.</h3>
+  <div>
+    <p>
+     Попробуйте отключить или включить кеширование.
     </p>
   </div>
   <h3>Не полный функционал.</h3>
