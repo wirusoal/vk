@@ -65,6 +65,19 @@ $('body').on('click', "#start_stena", function(){
     return titles[(number % 100 > 4 && number % 100 < 20) ? 2 : cases[(number % 10 < 5) ? number % 10 : 5]];
   }
 
+  function escapeHtml(text) {
+    var map = {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#039;'
+    };
+  
+    var d =  text.replace(/[&<>"']/g, function(m) { return map[m]; });
+    return d.replace(/&lt;br&gt;/g,'<br>');
+  }
+
   function formatDate(date,p) {
     var diff = new Date() - date;
     var d = date;
@@ -202,9 +215,9 @@ $('body').on('click', "#start_stena", function(){
                 var c_body = data['response'][i]['body'];
               }
               if (data['response'][i]['emoji'] == 1) {
-                messages = messages + '<div class="im_msg_text">' + emoji(c_body, true) + '<img id="nabor" src="images/typing.gif">';
+                messages = messages + '<div class="im_msg_text">' + emoji(escapeHtml(c_body), true) + '<img id="nabor" src="images/typing.gif">';
               } else if (data['response'][i]['emoji'] == 0) {
-                messages = messages + '<div class="im_msg_text">' + c_body + '<img id="nabor" src="images/typing.gif">';
+                messages = messages + '<div class="im_msg_text">' + escapeHtml(c_body) + '<img id="nabor" src="images/typing.gif">';
               }
               messages = messages + '</div>';
               messages = messages + '</div>';
@@ -415,7 +428,7 @@ var messages_attr = function(data){
             });
 
             mess = mess.replace(/\n/ig, '<br>');
-            messages = messages + '<div class="im_msg_text">' + emoji(mess, true);
+            messages = messages + '<div class="im_msg_text">' + emoji(escapeHtml(mess), true);
             messages += "<div class='lala'>";
             //Проверяем есть ли прикрепления
             if (data[i]['attachments'] != null) {
@@ -537,7 +550,7 @@ var messages_attr = function(data){
             });
 
             mess = mess.replace(/\n/ig, '<br>');
-            messages = messages + '<div class="im_msg_text">' + emoji(mess, true);
+            messages = messages + '<div class="im_msg_text">' + emoji(escapeHtml(mess), true);
                         messages = messages + '<div class="im_log_date" style="'+((data['response']['items'][i]['out'] == 0)? 'right: 32px;':'')+'" uptime="'+data['response']['items'][i]['date']+'">' + formatDate(new Date(data['response']['items'][i]['date'] * 1000)) + '</div>';
             messages += "<div class='lala'>";
             //Проверяем есть ли прикрепления
@@ -1255,6 +1268,7 @@ var repeat = false;
         }
       }
       $("#wall").append(text);
+      if ($('#uid_wall').val() == '') { $("body").find("div[class='wall_post_over'][id^=post]:eq(0)").css("margin-top","75px"); }
       if(c == 1){ $("#wall").find('div[id^=post]').css("margin-left","135px"); }else if(c == 0){ $("#wall").find('div[id^=post]').css("margin-left","0px"); }
     })
   }
@@ -1425,7 +1439,7 @@ var repeat = false;
     if(id == undefined){
       id = 0;
     }
-    sender('users.get', 'user_ids=' + id + '&fields=photo_200_orig,relation,sity,bdate,status,online,home_town,last_seen,sex,can_post,can_write_private_message,wall_comments', function(data) {
+    sender('users.get', 'user_ids=' + id + '&fields=photo_200_orig,relation,sity,bdate,status,online,home_town,last_seen,sex,can_post,can_write_private_message,wall_comments,connections,universities,site,counters', function(data) {
       if (!data['error']) {
         $("#comment_wall_on").val(data['response'][0]['wall_comments']);
         var html = '<div id="user_info">';
@@ -1466,18 +1480,22 @@ var repeat = false;
           }
           html += '<br>';
         }
+        if (data['response'][0]['site'] != '' && data['response'][0]['site'] != undefined) {
+          html +='Сайт:';
+          for(var i=0;i<data['response'][0]['site'].split(' ').length;i++){ if(data['response'][0]['site'].split(' ')[i] !=''){ html +='<a target="_blank" href="'+data['response'][0]['site'].split(' ')[i]+'">'+data['response'][0]['site'].split(' ')[i]+'</a><br>'}}
+        }
         html += '</div>';
         html += '<div id="menus"><div class="users clicks">Стена</div><div class="users">Видео</div><div class="users">Фото</div>';
         if (data['response'][0]['can_write_private_message'] == 1 && data['response'][0]['uid'] != $('.avatar_img').attr("uid")) {
           $(".module_header:eq(0)").before("<div id='sending_messages'>Написать</div>");
         }
         html += '</div>';
-        if (data['response'][0]['uid'] == $('.avatar_img').attr("uid")) {
+        if ($('#uid_wall').val() == '') {
           html += '<div id="post_wall">';
           html += '<div id="post_wall_loader"><img src="images/720.gif"><br><font color="#fff">Подождите...Выполняется размещение записи...Это может занять некоторое время...</font></div>';
           html += '<div id="text_post_wall" contenteditable="true">Введите сообщение и нажмите сочетание клавиш Ctrl+Enter,что-бы опубликовать запись на своей стене. Запись будет опубликованна в течении пары минут.</div>';
           html += '<div class="smile_post_wall">';
-          for (var i = 0; i < smile_code.length; i++) {
+          for (var i = 0; i < 11; i++) {
             html += '<img style="margin-right:2px;" src="" alte="'+smile_code[i]+'">';
               loa('http://vk.com/images/emoji/' + smile_code[i] + '.png', smile_code[i], function(charCode, d) {
                $("img[alte='" + charCode + "']").attr("src", d).attr("alte","");
