@@ -1,4 +1,4 @@
-function formatDate(date){var diff=new Date()-date;if(diff<1000){return'только что'}var sec=Math.floor(diff/1000);if(sec<60){return sec+' сек. назад'}var min=Math.floor(diff/60000);if(min<60){return min+' мин. назад'}var d=date;d=['0'+d.getDate(),'0'+(d.getMonth()+1),''+d.getFullYear(),'0'+d.getHours(),'0'+d.getMinutes()];for(var i=0;i<d.length;i++){d[i]=d[i].slice(-2)}var new_date=new Date();if(new_date.getDate()==date.getDate()){return'сегодня в '+d.slice(3).join(':')}else if(new_date.getDate()-1==date.getDate()){return'вчера в '+d.slice(3).join(':')}else{return d.slice(0,3).join('.')+' '+d.slice(3).join(':')}}
+function formatDatew(date){var diff=new Date()-date;if(diff<1000){return'только что'}var sec=Math.floor(diff/1000);if(sec<60){return sec+' сек. назад'}var min=Math.floor(diff/60000);if(min<60){return min+' мин. назад'}var d=date;d=['0'+d.getDate(),'0'+(d.getMonth()+1),''+d.getFullYear(),'0'+d.getHours(),'0'+d.getMinutes()];for(var i=0;i<d.length;i++){d[i]=d[i].slice(-2)}var new_date=new Date();if(new_date.getDate()==date.getDate()){return'сегодня в '+d.slice(3).join(':')}else if(new_date.getDate()-1==date.getDate()){return'вчера в '+d.slice(3).join(':')}else{return d.slice(0,3).join('.')+' '+d.slice(3).join(':')}}
 function obj(obj){var s="";for(prop in obj){if(typeof obj[prop]!="function"){s+="obj["+prop+"] = "+obj[prop]+"; "}}return s}
 var sender=function(d,e,f){chrome.storage.local.get('vkAccessToken',function(c){$.ajax({url:'https://api.vk.com/method/'+d+'?'+e+'&access_token='+c.vkAccessToken,dataType:"json",success:function(a,b){f(a)}})})}
   var loadImagemes = function(uri, id, callback) {
@@ -40,7 +40,7 @@ function like_comment(i,data,profiles,groups){
         '<td class="feedback_row_content">'+
           '<div class="feedback_row_group_names" uid="'+data['feedback']['items'][0]['from_id']+'"></div>'+
           '<div class="feedback_row_group_photos clear_fix">'+mess+'</div>'+
-          '<div class="feedback_row_date"><span class="rel_date">'+formatDate(new Date(data['date'] * 1000))+'</span></div>'+
+          '<div class="feedback_row_date"><span class="rel_date">'+formatDatew(new Date(data['date'] * 1000))+'</span></div>'+
         '</td>'+
       '</tr>'+
     '</tbody></table>';
@@ -74,7 +74,7 @@ function like_comment_photo(i,data,profiles,groups){
         '<td class="feedback_row_content">'+
           '<div class="feedback_row_group_names" uid="'+data['feedback']['items'][0]['from_id']+'"></div>'+
           '<div class="feedback_row_group_photos clear_fix">'+mess+'</div>'+
-          '<div class="feedback_row_date"><span class="rel_date">'+formatDate(new Date(data['date'] * 1000))+'</span></div>'+
+          '<div class="feedback_row_date"><span class="rel_date">'+formatDatew(new Date(data['date'] * 1000))+'</span></div>'+
         '</td>'+
         '<td>'+
         '<div class="feedback_photo_view" id_photo="m_'+data['parent']['photo']['id']+'" data-lightbox="photo_messages" href=""><img class="feedback_photo_view_mini" id_photo="'+data['parent']['photo']['id']+'" src=""></div>'+

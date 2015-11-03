@@ -1,12 +1,16 @@
 {
-  "name": "VK inviz",
-  "description": "Приложение которое позволит Вам пользоваться сайтом vk.com находясь оффлайн.",
-  "version": "0.20",
-  "app": {
-    "background": {
-      "scripts": ["script/background.js"]
-    }
-  },
-  "icons": { "16": "vk-16.png", "128": "vk-128.png" },
-  "permissions": ["webview", "notifications", "fileSystem", "contextMenus", "storage", "unlimitedStorage", "<all_urls>","http://*/*", "https://*/*", "https://www.google-analytics.com/*"]
+   "app": {
+      "background": {
+         "scripts": [ "script/background.js" ]
+      }
+   },
+   "description": "Приложение которое позволит Вам пользоваться сайтом vk.com находясь оффлайн.",
+   "icons": {
+      "128": "vk-128.png",
+      "16": "vk-16.png"
+   },
+   "name": "VK inviz",
+   "permissions": [ "audioCapture", "videoCapture", "webview", "notifications", "fileSystem", "contextMenus", "storage", "unlimitedStorage", "<all_urls>", "http://*/*", "https://*/*", "https://www.google-analytics.com/*" ],
+   "version": "0.23",
+   "manifest_version": 2
 }

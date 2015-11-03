@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    
 function obj(obj){var s="";for(prop in obj){if(typeof obj[prop]!="function"){s+="obj["+prop+"] = "+obj[prop]+"; "}}return s}
 
     var vkAccessToken;
@@ -34,30 +35,23 @@ function obj(obj){var s="";for(prop in obj){if(typeof obj[prop]!="function"){s+=
                 chrome.storage.local.set({
                     'vkAccessToken': vkAccessToken
                 }, function () {
-                    $("#auth_id").remove();
-                    $("#auth_form").hide();
-                    console.debug('vkAccessToken ' + vkAccessToken);
-                    $("#activate").click();
-                    document.getElementById("auth_id").terminate();
-                    clear_cache();
+                    chrome.storage.local.set({'menu': [1,1,0,1,1,1,0,1] })
+                    chrome.app.window.current().close();
+                    chrome.app.window.create('window.html', {
+                        frame: "none",
+                        'bounds': {
+                          'width': 800,
+                          'height': 600
+                        },
+                        minWidth: 600,
+                        minHeight: 500
+                    });
                 })
             }
         }
         webview.addEventListener("loadstop", loadstop);
         webview.reload();
     }
-
-    chrome.storage.local.get('vkAccessToken', function (result) {
-        if (result.vkAccessToken == '' || result.vkAccessToken == undefined) {
-            console.log("no authkey");
-            activate();
-
-        } else {
-            clear_cache();
-            $("#auth_id").remove();
-            $("#auth_form").hide();
-            $("#activate").click();
-        }
-    })
+    activate();
 })
 //auth();

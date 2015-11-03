@@ -1,5 +1,5 @@
 $(document).ready(function() {
-//google-analytics
+//google-analytics from_group 
 var service, tracker, out;
 var service = analytics.getService('vkinviz');
 var tracker = service.getTracker('UA-27455921-6');
@@ -65,20 +65,8 @@ $('body').on('click', "#start_stena", function(){
     return titles[(number % 100 > 4 && number % 100 < 20) ? 2 : cases[(number % 10 < 5) ? number % 10 : 5]];
   }
 
-  function escapeHtml(text) {
-    var map = {
-      '&': '&amp;',
-      '<': '&lt;',
-      '>': '&gt;',
-      '"': '&quot;',
-      "'": '&#039;'
-    };
-  
-    var d =  text.replace(/[&<>"']/g, function(m) { return map[m]; });
-    return d.replace(/&lt;br&gt;/g,'<br>');
-  }
-
   function formatDate(date,p) {
+    var date = new Date(date * 1000);
     var diff = new Date() - date;
     var d = date;
     d = ['0' + d.getDate(), '0' + (d.getMonth() + 1), '' + d.getFullYear(), '0' + d.getHours(), '0' + d.getMinutes()];
@@ -153,82 +141,6 @@ $('body').on('click', "#start_stena", function(){
   var offsett = 0;
 
   var get_messages = function(w) {
-      //count_messages = count_messages+10;
-      sender('execute.messages_get', 'offset=' + offsett, function(data) {
-        if (data['response']) {
-          for (var i = 0; i < data['response'].length; i++) {
-            if (data['response'][i]['body'] != null) {
-              var dialogs_row = (data['response'][i]['read_state'] == 0 && data['response'][i]['out'] == 0) ? 'dialogs_row dialogs_new_msgs' : 'dialogs_row';
-              if (data['response'][i]['chat_id'] == 0) {
-                var messages = '<div class="' + dialogs_row + '" uid="' + data['response'][i]['id'] + '">';
-              } else {
-                var messages = '<div class="' + dialogs_row + '"  uid="chat_' + data['response'][i]['chat_id'] + '">';
-              }
-              //messages = messages + '<div class="open_dialog_window" uid="' + data['response'][i]['id'] + '"><img title="Открыть диалог в новом окне" src="images/open_new_window.png"></div>';
-               messages = messages + '<div class="delete_dialog" uid="' + data['response'][i]['id'] + '"><img title="Удалить диалог с пользователем" src="images/delete.png"></div>';
-              messages = messages + '<table cellpadding="0" cellspacing="0" class="dialogs_row_t">';
-              messages = messages + '<tbody><tr>';
-              if (data['response'][i]['chat_id'] == 0) {
-                messages = messages + '<td class="dialogs_photo" uid="' + data['response'][i]['id'] + '">';
-                  if (data['response'][i]['online'] == 1) {
-                    if (data['response'][i]['online_mobile'] == 1) {
-                      messages = messages + '<div class="dialogs_online" style="background-color:#cc0043">';
-                    }else{ 
-                      messages = messages + '<div class="dialogs_online" style="background-color:#00cc35">';
-                    }
-                  } else {
-                      messages = messages + '<div class="dialogs_online" style="background-color:#aeaeae">';
-                  }
-                  messages = messages + '</div>';
-
-                if (data['response'][i]['id'] == '67221342') {
-                  messages = messages + ' <img src="vk-128.png" width="50" height="50">';
-                  messages = messages + '</td>';
-                  messages = messages + '<td class="dialogs_info">';
-                  messages = messages + '<div class="dialogs_user wrapped" uid="0">Техподдержка</div>';
-                } else {
-                  messages = messages + ' <img id="id_' + data['response'][i]['id'] + '" src="images/image_loader.gif" width="50" height="50">';
-                  loa(data['response'][i]['photo'], data['response'][i]['id'], function(id, d) {
-                    $("#id_" + id).attr("src", d);
-                  })
-                  messages = messages + '</td>';
-                  messages = messages + '<td class="dialogs_info">';
-                  messages = messages + '<div class="dialogs_user wrapped" uid="' + data['response'][i]['id'] + '">' + data['response'][i]['name'] + '</div>';
-                  messages = messages + '<div class="dialogs_date">⌚ ' + formatDate(new Date(data['response'][i]['date'] * 1000),1) + '</div>';
-                }
-              } else {
-                messages = messages + '<td class="dialogs_photo">';
-                messages = messages + ' <img src="images/chat.png" width="50" height="50">';
-                messages = messages + '</td>';
-                messages = messages + '<td class="dialogs_info">';
-                if (data['response'][i]['title'].length > 14) {
-                  var c_title = data['response'][i]['title'].substr(0, 14) + "...";
-                } else {
-                  var c_title = data['response'][i]['title'];
-                }
-                messages = messages + '<div class="dialogs_user wrapped">' + c_title + '</div>';
-              }
-              messages = messages + '<div class="dialogs_msg_body">';
-              if (data['response'][i]['body'].length > 35) {
-                var c_body = data['response'][i]['body'].substr(0, 35) + "...";
-              } else {
-                var c_body = data['response'][i]['body'];
-              }
-              if (data['response'][i]['emoji'] == 1) {
-                messages = messages + '<div class="im_msg_text">' + emoji(escapeHtml(c_body), true) + '<img id="nabor" src="images/typing.gif">';
-              } else if (data['response'][i]['emoji'] == 0) {
-                messages = messages + '<div class="im_msg_text">' + escapeHtml(c_body) + '<img id="nabor" src="images/typing.gif">';
-              }
-              messages = messages + '</div>';
-              messages = messages + '</div>';
-              messages = messages + '</td>';
-              messages = messages + '</tr>';
-              messages = messages + '</tbody></table>';
-              messages = messages + '</div>';
-              $("#content > #messages_form").append(messages);
-            }
-          }
-        }
        if(w == 1){ 
         messages_open(data['response'][0]['id'].toString());
         $("#uid_user").val(data['response'][0]['id'].toString());
@@ -240,20 +152,9 @@ $('body').on('click', "#start_stena", function(){
         if (open_video == 1) { $(".button_video").click(); }
         if (button_group == 1) { $(".button_group").click(); }
       }
-      })
 emoji_load();
     }
-  //get messages
-  $("#content > #messages_form").scroll(function() {
-      var scrolltop = $("#content > #messages_form").prop('scrollTop');
-      var scrollheight = $("#content > #messages_form").prop('scrollHeight');
-      var windowheight = $("#content > #messages_form").prop('clientHeight');
-      var scrolloffset = 20;
-      if (scrolltop >= (scrollheight - (windowheight + scrolloffset))) {
-        offsett = offsett + 15;
-        get_messages();
-      }
-    })
+
   //наведение на сообщение
   $('#messages_form').on('mouseover', 'div.dialogs_row', function(e) {
     $(this).addClass("dialogs_row_over");
@@ -309,6 +210,9 @@ alertify.confirm("Удалить сообщения с этим пользова
             if (data['response'][i]['deactivated'] == 'deleted') {
               var sex = (data['response'][i]['sex'] == 2) ? 'Удален' : 'Удалена';
               var time = sex;
+            } else if (data['response'][i]['deactivated'] == 'banned') {
+              var sex = (data['response'][i]['sex'] == 2) ? 'Забанен' : 'Забанена';
+              var time = sex;
             } else {
               var sex = (data['response'][i]['sex'] == 2) ? 'Был' : 'Была';
               if (data['response'][i]['online'] == 1) {
@@ -318,7 +222,7 @@ alertify.confirm("Удалить сообщения с этим пользова
                   var time = 'Онлайн';
                 }
               } else if (data['response'][i]['online'] == 0) {
-                var time = sex + ' ' + formatDate(new Date(data['response'][i]['last_seen']['time'] * 1000));
+                var time = sex + ' ' + formatDate(data['response'][i]['last_seen']['time']);
               }
             }
             friend = friend + "<div id='user_block' uid='" + user_id + "'>";
@@ -407,117 +311,36 @@ alertify.confirm("Удалить сообщения с этим пользова
   }
   return chr;
 }
-    //--------------------------------------------------
-var messages_attr = function(data){
-        var messages = '<table>';
-        for (var i = 0; i < data.length; i++) {
-          if (data[i]['body'] != null) {
-            messages += "<tr>";
-            messages = messages + '<td class="im_log_author"><div class="im_log_author_chat_thumb"><img id="id_' + data[i]['user_id'] + '" src="images/image_loader.gif" class="im_log_author_chat_thumb" width="32" height="32"></div></td>';
-            messages = messages + '<td class="im_log_body"><div class="wrapped"><div class="im_log_author_chat_name" uid="' + data[i]['user_id'] + '"></div>';
-
-            var reg = /(?:^|[\s]+)((http(s)?:\/\/)|(www\.))([^\.]+)\.(?:[^\s,]+)/ig;
-            var mess = data[i]['body'].replace(reg, function(s) {
-              var str = (/:\/\//.exec(s) === null ? "http://" + s : s);
-              return "<a target=\"_blank\" href=\"" + str + "\">" + str /*s*/ + "</a>";
-            });
-
-            var reg = /\[([^\.]+)\|([^\.]+)\]/;
-            mess = mess.replace(reg, function(s, d, n) {
-              return n;
-            });
-
-            mess = mess.replace(/\n/ig, '<br>');
-            messages = messages + '<div class="im_msg_text">' + emoji(escapeHtml(mess), true);
-            messages += "<div class='lala'>";
-            //Проверяем есть ли прикрепления
-            if (data[i]['attachments'] != null) {
-              for (var q = 0; q < data[i]['attachments'].length; q++) {
-                if (data[i]['attachments'][q]['type'] == 'photo') {
-                  messages = messages + "<div style='height:75px;padding-left: 2px;' id='mes_photo_href' data-lightbox='photo_messages' t='a_" + data[i]['attachments'][q]['photo']['id'] + "' href=''><img height='75px' src='images/image_loader.gif' id='mes_photo_img' t='i_" + data[i]['attachments'][q]['photo']['id'] + "'></div>";
-                  loa(data[i]['attachments'][q]['photo']['photo_604'], 't_'+data[i]['attachments'][q]['photo']['id'], function(id, d) {
-                    $("#mes_photo_href[t='" + id + "']").attr("href", d);
-                  })
-                  loa(data[i]['attachments'][q]['photo']['photo_75'], data[i]['attachments'][q]['photo']['id'], function(id, d) {
-                    $("#mes_photo_img[t='i_" + id + "']").attr("src", d);
-                  })
-                } else if (data[i]['attachments'][q]['type'] == 'audio') {
-                  //console.log(obj(data[i]['attachments'][q]['audio']));
-                  // messages += '<div id="track" class="audio_messages" duration="'+data[i]['attachments'][q]['audio']['duration']+'" uid="'+data[i]['attachments'][q]['audio']['aid']+'" url="'+data[i]['attachments'][q]['audio']['url']+'"><div class="track_play"></div><div class="track_title">'+data[i]['attachments'][q]['audio']['artist']+' - '+data[i]['attachments'][q]['audio']['title']+'</div></div>';
-                  messages += '<div id="track" mus="messages" class="audio_messages" duration="' + data[i]['attachments'][q]['audio']['duration'] + '" uid="' + data[i]['attachments'][q]['audio']['aid'] + '" url="' + data[i]['attachments'][q]['audio']['url'] + '"><div class="track_play"></div><div class="track_title">' + data[i]['attachments'][q]['audio']['artist'] + ' - ' + data[i]['attachments'][q]['audio']['title'] + '</div></div>';
-
-                } else if (data[i]['attachments'][q]['type'] == 'video') {
-                  console.log(obj(data[i]['attachments'][0]['video'])); 
-                  messages = messages + '<webview t="' + data[i]['attachments'][q]['video']['id'] + '" style="width: 100%;" src=""></webview>';
-                  sender('video.get', 'videos=' + data[i]['attachments'][q]['video']['owner_id'] + '_' + data[i]['attachments'][q]['video']['id'] + '_' + data[i]['attachments'][q]['video']['access_key'], function(data) {
-                    $("webview[t='" + data['response'][1]['vid'] + "']").attr("src", data['response'][1]['player']);
-                  })
-                } else if (data[i]['attachments'][q]['type'] == 'sticker') {
-                  messages = messages + "<img height='75px' src='' id='sticker' t='" + data[i]['attachments'][q]['sticker']['id'] + "'>";
-                  loa(data[i]['attachments'][q]['sticker']['photo_64'], data[i]['attachments'][q]['sticker']['id'], function(id, d) {
-                    $("#sticker[t='" + id + "']").attr("src", d);
-                  })
-                } else if (data[i]['attachments'][q]['type'] == 'doc') {
-                  messages = messages + "<a target='_blank' href='" + data[i]['attachments'][q]['doc']['url'] + "'>Документ " + data[i]['attachments'][q]['doc']['title'] + "</a>";
-                }
-              }
-            }
-            messages += "</div>";
-            messages = messages + "</div></div></td>";
-            messages = messages + '<td class="im_log_date" uptime="'+data[i]['date']+'">' + formatDate(new Date(data[i]['date'] * 1000)) + '</td>';
-            messages = messages + "</tr>";
-         
-          }
-        }
-        messages = messages+"</table>";
-        return messages;
-        emoji_load();
+//-------------------------------------------------//
+function smile_history_load(){
+  $("#history_smile").html("");
+  //chrome.storage.local.set({'smile_history': null})
+  chrome.storage.local.get('smile_history', function (result) {
+    if(result['smile_history'] == null){
+      var smile_code = ["D83DDE0A","D83DDE03","D83DDE09"];
+       for (var i = 0; i <= 2; i++) {
+            $("#history_smile").append('<img style="margin-right:2px;" src="" alte="'+smile_code[i]+'">');
+              loa('http://vk.com/images/emoji/' + smile_code[i] + '.png', smile_code[i], function(charCode, d) {
+               $("img[alte='" + charCode + "']").attr("src", d)
+              })
+          };
+    var smile = {0:"D83DDE0A",1:"D83DDE03",2:"D83DDE09"};
+    chrome.storage.local.set({'smile_history': smile})
+    }else{
+  chrome.storage.local.get('smile_history', function (result) {
+      for (var i = 0; i <= 2; i++) {
+       $("#history_smile").append('<img style="margin-right:2px;" src="" alte="'+result['smile_history'][i]+'">');
+         loa('http://vk.com/images/emoji/' + result['smile_history'][i] + '.png', result['smile_history'][i], function(charCode, d) {
+          $("img[alte='" + charCode + "']").attr("src", d)
+         })
+      };
+  })
+    }
+  })
 }
 
-
-  function repost_wall_mess(data) {
-    var text = '';
-    var reg = /(?:^|[\s]+)((http(s)?:\/\/)|(www\.))([^\.]+)\.(?:[^\s,]+)/ig;
-    var mess = data['text'].replace(reg, function(s) {
-      var str = (/:\/\//.exec(s) === null ? "http://" + s : s);
-      return "<a target=\"_blank\" href=\"" + str + "\">" + str /*s*/ + "</a>";
-    });
-    text += '<div class="wall_post_text">' + mess + '</div>';
-    text += '<div class="wall_attachments">';
-    if (data['attachments'] != null) {
-      for (var q = 0; q < data['attachments'].length; q++) {
-        if (data['attachments'][q]['type'] == 'photo') {
-          text += "<div style='height:75px;padding-left: 3px;float: left;' data-lightbox='photo_news' id='mes_photo_href' t='o" + data['attachments'][q]['photo']['id'] + "' href=''><img height='75px' src='images/image_loader.gif' id='mes_photo_img' t='" + data['attachments'][q]['photo']['id'] + "'></div>";
-          loa(data['attachments'][q]['photo']['photo_604'], "o"+data['attachments'][q]['photo']['id'], function(id, d) {
-            $("#mes_photo_href[t='" + id + "']").attr("href", d);
-          })
-          loa(data['attachments'][q]['photo']['photo_75'], data['attachments'][q]['photo']['id'], function(id, d) {
-            $("#mes_photo_img[t='" + id + "']").attr("src", d);
-          })
-        } else if (data['attachments'][q]['type'] == 'link') {
-          if (data['attachments'][q]['link']['url'].indexOf('://vk.com/') > -1) {
-            text += '<div class="media_desc"><a target="_blank" class="lnk" href="' + data['attachments'][q]['link']['url'] + '"><b class="fl_l "></b><span class="a">Ссылка может нарушить вашу невидимость -> ' + data['attachments'][q]['link']['title'] + '</span></a></div>';
-          } else {
-            text += '<div class="media_desc"><a target="_blank" class="lnk" href="' + data['attachments'][q]['link']['url'] + '"><b class="fl_l "></b><span class="a">' + data['attachments'][q]['link']['title'] + '</span></a></div>';
-          }
-        } else if (data['attachments'][q]['type'] == 'video') {
-          text += '<webview t="' + data['attachments'][q]['video']['id'] + '" style="width: 100%;" src=""></webview>';
-          sender('video.get', 'videos=' + data['attachments'][q]['video']['owner_id'] + '_' + data['attachments'][q]['video']['id'] + '_' + data['attachments'][q]['video']['access_key'], function(data) {
-            // console.log(obj(data['response'][1])); 
-            $("webview[t='" + data['response'][1]['vid'] + "']").attr("src", data['response'][1]['player']);
-          })
-        } else if (data['attachments'][q]['type'] == 'audio') {
-          text += '<div id="track" mus="repost_wall" class="audio_messages" duration="' + data['attachments'][q]['audio']['duration'] + '" uid="' + data['attachments'][q]['audio']['aid'] + '" url="' + data['attachments'][q]['audio']['url'] + '"><div class="track_play"></div><div class="track_title">' + data['attachments'][q]['audio']['artist'] + ' - ' + data['attachments'][q]['audio']['title'] + '</div></div>';
-        } else if (data['attachments'][q]['type'] == 'doc') {
-          text += "<a target='_blank' href='" + data['attachments'][q]['doc']['url'] + "'>" + data['attachments'][q]['doc']['title'] + "</a> ";
-        }
-      }
-    }
-    text += '</div>';
-    return text;
-  }
-
- var messages_open = function(id) {
+ var messages_open = function(id,offs) {
+  smile_history_load();
       if (id.substr(0, 5) == 'chat_') {
         var u_id = 0;
         var c_id = id.substring(5);
@@ -525,108 +348,63 @@ var messages_attr = function(data){
         var u_id = id;
         var c_id = 0;
       }
-      var offs = 0;
+      if(offs == null){
+        var offs = 0;
+      }
   sender('messages.getHistory', 'v=5.25&rev=0&offset=' + offs + '&user_id=' + u_id + '&chat_id=' + c_id, function(data) {
         var uid_user = [];
-        for (var i = 0; i < data['response']['items'].length; i++) {
-          if (data['response']['items'][i]['body'] != null) {
+         for (var i = 0; i < data['response']['items'].length; i++) {
             if(uid_user.indexOf(data['response']['items'][i]['from_id']) == -1){ uid_user.push(data['response']['items'][i]['from_id']); }
-            var news = $("#messages > #table").html();
-            $("#messages > #table").html('');
-            var messages = "<div id='id_messagesss' id_messages='" + data['response']['items'][i]['id'] + "' style='"+((data['response']['items'][i]['read_state'] == 0)? 'background: rgba(238, 238, 238, 1);':'')+"'>";
-           if(data['response']['items'][i]['out'] == 1){
-              messages = messages + '<div class="im_log_author" style="float: left;margin-right: 16px;"><div class="im_log_author_chat_thumb"><img id="id_' + data['response']['items'][i]['from_id'] + '" src="images/image_loader.gif" class="im_log_author_chat_thumb" width="32" height="32"></div></div>';
-            } 
-              messages = messages + '<div class="im_log_body" style="'+((data['response']['items'][i]['out'] == 0)? 'float: right;margin-right: 55px;':'float:left;')+'"><div class="wrapped">';
-            var reg = /(?:^|[\s]+)((http(s)?:\/\/)|(www\.))([^\.]+)\.(?:[^\s,]+)/ig;
-            var mess = data['response']['items'][i]['body'].replace(reg, function(s) {
-              var str = (/:\/\//.exec(s) === null ? "http://" + s : s);
-              return "<a target=\"_blank\" href=\"" + str + "\">" + str /*s*/ + "</a>";
-            });
-
-            var reg = /\[([^\.]+)\|([^\.]+)\]/;
-            mess = mess.replace(reg, function(s, d, n) {
-              return n;
-            });
-
-            mess = mess.replace(/\n/ig, '<br>');
-            messages = messages + '<div class="im_msg_text">' + emoji(escapeHtml(mess), true);
-                        messages = messages + '<div class="im_log_date" style="'+((data['response']['items'][i]['out'] == 0)? 'right: 32px;':'')+'" uptime="'+data['response']['items'][i]['date']+'">' + formatDate(new Date(data['response']['items'][i]['date'] * 1000)) + '</div>';
-            messages += "<div class='lala'>";
-            //Проверяем есть ли прикрепления
-            if (data['response']['items'][i]['attachments'] != null) {
-              for (var q = 0; q < data['response']['items'][i]['attachments'].length; q++) {
-               // console.log(obj(data['response']['items'][i]['attachments'][q]));
-                if (data['response']['items'][i]['attachments'][q]['type'] == 'photo') {
-                 //console.log(obj(data['response']['items'][i]['attachments'][q]['photo']));
-                  messages = messages + "<div style='height:75px;padding-left: 2px;' id='mes_photo_href' data-lightbox='photo_messages' kl='p" + data['response']['items'][i]['attachments'][q]['photo']['id'] + "' href=''><img height='75px' src='images/image_loader.gif' id='mes_photo_img' t='" + data['response']['items'][i]['attachments'][q]['photo']['id'] + "'></div>";
-                  loa(data['response']['items'][i]['attachments'][q]['photo']['photo_604'], "p"+data['response']['items'][i]['attachments'][q]['photo']['id'], function(id, d) {
-                    $("#mes_photo_href[kl='" + id + "']").attr("href", d);
-                  })
-                  loa(data['response']['items'][i]['attachments'][q]['photo']['photo_130'], data['response']['items'][i]['attachments'][q]['photo']['id'], function(id, d) {
-                    $("#mes_photo_img[t='" + id + "']").attr("src", d);
-                  })
-                } else if (data['response']['items'][i]['attachments'][q]['type'] == 'audio') {
-                  //console.log(obj(data['response']['items'][i]['attachments'][q]['audio']));
-                  // messages += '<div id="track" class="audio_messages" duration="'+data['response']['items'][i]['attachments'][q]['audio']['duration']+'" uid="'+data['response']['items'][i]['attachments'][q]['audio']['aid']+'" url="'+data['response']['items'][i]['attachments'][q]['audio']['url']+'"><div class="track_play"></div><div class="track_title">'+data['response']['items'][i]['attachments'][q]['audio']['artist']+' - '+data['response']['items'][i]['attachments'][q]['audio']['title']+'</div></div>';
-                  messages += '<div id="track" mus="messages" class="audio_messages" duration="' + data['response']['items'][i]['attachments'][q]['audio']['duration'] + '" uid="' + data['response']['items'][i]['attachments'][q]['audio']['aid'] + '" url="' + data['response']['items'][i]['attachments'][q]['audio']['url'] + '"><div class="track_play"></div><div class="track_title">' + data['response']['items'][i]['attachments'][q]['audio']['artist'] + ' - ' + data['response']['items'][i]['attachments'][q]['audio']['title'] + '</div></div>';
-
-                } else if (data['response']['items'][i]['attachments'][q]['type'] == 'video') {
-                  //console.log(obj(data['response']['items'][i]['attachments'][0]['video'])); 
-                  messages = messages + '<webview t="' + data['response']['items'][i]['attachments'][q]['video']['id'] + '" style="width: 100%;" src=""></webview>';
-                  sender('video.get', 'videos=' + data['response']['items'][i]['attachments'][q]['video']['owner_id'] + '_' + data['response']['items'][i]['attachments'][q]['video']['id'] + '_' + data['response']['items'][i]['attachments'][q]['video']['access_key'], function(data) {
-                    $("webview[t='" + data['response'][1]['vid'] + "']").attr("src", data['response'][1]['player']);
-                  })
-                } else if (data['response']['items'][i]['attachments'][q]['type'] == 'sticker') {
-                  messages = messages + "<img height='64px' src='' id='sticker' t='" + data['response']['items'][i]['attachments'][q]['sticker']['id'] + "'>";
-                  loa(data['response']['items'][i]['attachments'][q]['sticker']['photo_64'], data['response']['items'][i]['attachments'][q]['sticker']['id'], function(id, d) {
-                    $("#sticker[t='" + id + "']").attr("src", d);
-                  })
-                } else if (data['response']['items'][i]['attachments'][q]['type'] == 'doc') {
-                  messages = messages + "<a target='_blank' href='" + data['response']['items'][i]['attachments'][q]['doc']['url'] + "'>Документ " + data['response']['items'][i]['attachments'][q]['doc']['title'] + "</a>";
-                } else if (data['response']['items'][i]['attachments'][q]['type'] == 'wall') {
-                  messages += '<span style="color: #174CAA;font-size: 11px;">Прикреплена запись:</span>';                  
-                  messages += '<div id="repost_wall_mess">';
-                  messages += repost_wall_mess(data['response']['items'][i]['attachments'][q]['wall']);
-                  messages += '</div>';
-                }
-              }
-            }
-                  if(data['response']['items'][i]['fwd_messages'] != undefined){
-                    for(var r = 0;r<data['response']['items'][i]['fwd_messages'].length;r++){
-                      if(uid_user.indexOf(data['response']['items'][i]['fwd_messages'][r]['user_id']) == -1){ uid_user.push(data['response']['items'][i]['fwd_messages'][r]['user_id']); }
-                    }
-                  messages = messages + '<span style="color: rgb(97, 97, 231);font-size: 10px;">Пересланные сообщения</span><br>';
-                  messages = messages + '<div id="messages_attr">';
-                  messages = messages + messages_attr(data['response']['items'][i]['fwd_messages']);
-                  messages = messages + '</div>';
-                  }
-            messages += "</div>";
-            messages = messages + "</div></div></div>";
-            if(data['response']['items'][i]['out'] == 0){
-            messages = messages + '<div class="im_log_author" style="float: right;margin-right: 3px;right:0px;position:absolute;"><div class="im_log_author_chat_thumb"><img id="id_' + data['response']['items'][i]['from_id'] + '" src="images/image_loader.gif" class="im_log_author_chat_thumb" width="32" height="32"></div></div>';
-            }
-            $("#messages > #table").append(messages);
-            $("#messages > #table").append(news);
-            $("#messages").scrollTop($("#messages").prop('scrollHeight'));
-          }
-        }
+         }
+        //---
+dd_messages(data,1,offs);
+        //---
         sender('users.get', 'v=5.25&fields=photo_50&user_ids='+uid_user.join(","), function(data) {
          for(var s=0;s<data['response'].length;s++){
-          var photo_url = (data['response'][s]['photo_50'] == '/images/camera_c.gif') ? 'http://vk.com/images/camera_c.gif' : data['response'][s]['photo_50'];
-          loa(photo_url, data['response'][s]['id'], function(id, d) {
-            $(".im_log_author_chat_thumb > #id_" + id).attr("src", d);
-          })
+          if($("#messages").find('.im_log_author_chat_thumb > #id_'+data['response'][s]['id']+'[id!=""][src^="blob:"]').length>0){
+               $(".im_log_author_chat_thumb > #id_" + data['response'][s]['id']).attr("src", $("#messages").find('.im_log_author_chat_thumb > #id_'+data['response'][s]['id']+'[id!=""][src^="blob:"]').attr("src"));
+          }else{
+             var photo_url = (data['response'][s]['photo_50'] == '/images/camera_c.gif') ? 'http://vk.com/images/camera_c.gif' : data['response'][s]['photo_50'];
+             loa(photo_url, data['response'][s]['id'], function(id, d) {
+               $(".im_log_author_chat_thumb > #id_" + id).attr("src", d);
+             })
+          }
           $(".im_log_author_chat_name[uid='"+data['response'][s]['id']+"']").html(data['response'][s]['first_name']);
-          $("#messages").scrollTop($("#messages").prop('scrollHeight'));
+          //$("#messages").scrollTop($("#messages").prop('scrollHeight'));
          }
         })
+        if(offs == 0){
         $("#messages").scrollTop($("#messages").prop('scrollHeight'));
+        }
       })
 emoji_load();
     }
+
+    $("#content > #messages").scroll(function() {
+      if($("#content > #messages").prop('scrollHeight')-$("#content > #messages").prop('clientHeight') > $("#content > #messages").prop('scrollTop')+300){
+        $("#arrow").show();
+      }else if($("#content > #messages").prop('scrollHeight')-$("#content > #messages").prop('clientHeight') == $("#content > #messages").prop('scrollTop')){
+        $("#arrow").hide();
+      }
+      var scrolltop = $("#content > #messages").prop('scrollTop');
+        if(scrolltop == 0 && $("#table").find("div[id^='id']").length > 0){
+          messages_open($("#uid_user").val(), $("#table").find("div[id^='id']").length);
+          $("#messages").scrollTop(50);
+        }
+    })
+
+    $("#arrow").click(function(){
+      var curPos=$("#content > #messages").prop('scrollTop')
+      var height=$("#content > #messages").prop('scrollHeight');
+      var scrollTime=(height-curPos)/3;
+      $("#messages").animate({"scrollTop":height},scrollTime);
+    })
     //нажатие на сообщение
   $('#messages_form').on('click', 'div.dialogs_row', function(e) {
+   iddd($(this).attr('uid'));
+  });
+
+  function iddd(id){
     $("#news").hide();
     $("#wall").hide();
     if (open_video == 1) { $(".button_video").click(); }
@@ -634,9 +412,9 @@ emoji_load();
     $("#messages > #table").html('');
     $('#messages').show();
     $('#send_messages').show();
-    messages_open($(this).attr('uid'));
-    $("#uid_user").val($(this).attr('uid'));
-  });
+    messages_open(id);
+    $("#uid_user").val(id);
+  }
   //Отправка сообщений
   function send_messages(uid, messages) {
     if (uid.substr(0, 5) == 'chat_') {
@@ -658,6 +436,7 @@ emoji_load();
       });
       result = result.replace(/<div>/g,'%0a');
       result = result.replace(/<\/?[^>]+>/g,'');
+      result = result.replace(/&nbsp;/g,'');
       send_messages($("#uid_user").val(), result);
     }
   }
@@ -698,7 +477,7 @@ emoji_load();
     get_messages(1);
   })
   $('#send_messages').on('click', '#text_messages', function() {
-      sender('messages.markAsRead', 'user_id=' + $("#uid_user").val() + '&message_ids=' + $("#messages > #table > div").last().attr('id_messages'), function(data) {})
+      sender('messages.markAsRead', 'peer_id=' + $("#uid_user").val() + '&message_ids=' + $("#messages > #table > div").last().attr('id_messages'), function(data) {})
     })
     //Плеер...................................
     //........................................
@@ -731,7 +510,7 @@ emoji_load();
   }
 
   var open_video = 0;
-  $('#header').on('click', '.header_audio', function() {
+  $('#menu').on('click', '.button_audio', function() {
       $(".audio").toggle();
       if($(".audio > .dialog_content > #track").index() == -1){
         player_load(0);
@@ -869,9 +648,9 @@ var repeat = false;
     $(".scroka_time_music").width(polosa + "px");
   });
 
-  $('#player').on('click', '#scroka_time_music', function(e) {
+  $('.audio').on('click', '#scroka_time_music', function(e) {
     var time_track = $(".audio > .dialog_content > #track[play='on']").attr("duration");
-    var s = e.pageX - 144;
+    var s = e.pageX - 170;
     var click = ($("#scroka_time_music").width() / s) * 100;
     var new_time = (time_track / click) * 100;
     $("#player_player")[0].currentTime = Math.ceil(new_time);
@@ -1124,6 +903,7 @@ var repeat = false;
     var post = 'count=20&v=5.21&extended=1&offset=' + offset_wall + '&owner_id=' + $("#uid_wall").val()
     sender(method, post, function(data) {
       var text = '';
+      if(data['response']['count'] == 0){ text +='<center style="position: absolute;width: 100%;top: 150px;font-family: -webkit-body;font-size: 19px;">Пусто тут:(</center>'; }
       for (var i = 0; i < data['response']['items'].length; i++) {
         $("#comment_wall_on").val(data['response']['items'][i]['comments']['can_post']);
         if (data['response']['items'][i]['post_type'] == 'post') {
@@ -1159,14 +939,14 @@ var repeat = false;
                   text += '<table cellpadding="0" cellspacing="0" class="published_by_wrap" uid="' + data['response']['items'][i]['copy_history'][0]['owner_id'] + '">';
                   text += '<tbody><tr>';
                   text += '<td>';
-                  text += '<img ids="' + data['response']['items'][i]['copy_history'][0]['owner_id'] + '" src="images/image_loader.gif" width="30" height="30">';
+                  text += '<img style="padding-right:6px" ids="' + data['response']['items'][i]['copy_history'][0]['owner_id'] + '" src="images/image_loader.gif" width="30" height="30">';
                   loa(data['response']['groups'][w]['photo_50'], data['response']['items'][i]['copy_history'][0]['owner_id'], function(id, d) {
                     $("img[ids='" + id + "']").attr("src", d);
                   })
                   text += '</td>';
                   text += '<td>';
                   text += '<div class="published_by_title">' + data['response']['groups'][w]['name'] + ' </div>';
-                  text += '<div class="published_by_date sm">' + formatDate(new Date(data['response']['items'][i]['copy_history'][0]['date'] * 1000)) + '</div>';
+                  text += '<div class="published_by_date sm">' + formatDate(data['response']['items'][i]['copy_history'][0]['date']) + '</div>';
                   text += '</td>';
                   text += '</tr>';
                   text += '</tbody></table>';
@@ -1180,14 +960,14 @@ var repeat = false;
                   text += '<table cellpadding="0" cellspacing="0" class="published_by_wrap" uid="'+data['response']['items'][i]['copy_history'][0]['owner_id']+'">';
                   text += '<tbody><tr>';
                   text += '<td>';
-                  text += '<img ids="' + data['response']['items'][i]['copy_history'][0]['owner_id'] + '" src="images/image_loader.gif" width="30" height="30">';
+                  text += '<img style="padding-right:6px" ids="' + data['response']['items'][i]['copy_history'][0]['owner_id'] + '" src="images/image_loader.gif" width="30" height="30">';
                   loa(data['response']['profiles'][w]['photo_50'], data['response']['items'][i]['copy_history'][0]['owner_id'], function(id, d) {
                     $("img[ids='" + id + "']").attr("src", d);
                   })
                   text += '</td>';
                   text += '<td>';
                   text += '<div class="published_by_title">' + data['response']['profiles'][w]['first_name'] + ' ' + data['response']['profiles'][w]['last_name'] + ' </div>';
-                  text += '<div class="published_by_date sm">' + formatDate(new Date(data['response']['items'][i]['copy_history'][0]['date'] * 1000)) + '</div>';
+                  text += '<div class="published_by_date sm">' + formatDate(data['response']['items'][i]['copy_history'][0]['date']) + '</div>';
                   text += '</td>';
                   text += '</tr>';
                   text += '</tbody></table>';
@@ -1248,7 +1028,7 @@ var repeat = false;
           }
           text += '</div>';
           text += '</div>';
-          text += '<div class="reply_link_wrap"><div class="likes">' + data['response']['items'][i]['likes']['count'] + ' лайк' + declOfNum(data['response']['items'][i]['likes']['count'], ['', 'а', 'ов']) + '</div><small style="color:#999">' + formatDate(new Date(data['response']['items'][i]['date'] * 1000)) + '</small>';
+          text += '<div class="reply_link_wrap"><div class="likes">' + data['response']['items'][i]['likes']['count'] + ' лайк' + declOfNum(data['response']['items'][i]['likes']['count'], ['', 'а', 'ов']) + '</div><small style="color:#999">' + formatDate(data['response']['items'][i]['date']) + '</small>';
           if ($("#uid_wall").val() != $(".avatar_img").attr('uid')) {
             text += '<span class="divide">|</span><small style="color:#999" id="repost_button" wall_id="wall' + data['response']['items'][i]['from_id'] + '_' + data['response']['items'][i]['id'] + '">Отправить себе на стену</small>';
           }
@@ -1321,14 +1101,14 @@ var repeat = false;
                   text += '<table cellpadding="0" cellspacing="0" class="published_by_wrap" uid="' + data['response']['items'][i]['copy_history'][0]['owner_id'] + '">';
                   text += '<tbody><tr>';
                   text += '<td>';
-                  text += '<img ids="' + data['response']['items'][i]['copy_history'][0]['owner_id'] + '" src="images/image_loader.gif" width="30" height="30">';
+                  text += '<img style="padding-right:6px" ids="' + data['response']['items'][i]['copy_history'][0]['owner_id'] + '" src="images/image_loader.gif" width="30" height="30">';
                   loa(data['response']['groups'][w]['photo_50'], data['response']['items'][i]['copy_history'][0]['owner_id'], function(id, d) {
                     $("img[ids='" + id + "']").attr("src", d);
                   })
                   text += '</td>';
                   text += '<td>';
                   text += '<div class="published_by_title" id="' + data['response']['items'][i]['copy_history'][0]['owner_id'] + '">' + data['response']['groups'][w]['name'] + ' </div>';
-                  text += '<div class="published_by_date sm">' + formatDate(new Date(data['response']['items'][i]['copy_history'][0]['date'] * 1000)) + '</div>';
+                  text += '<div class="published_by_date sm">' + formatDate(data['response']['items'][i]['copy_history'][0]['date']) + '</div>';
                   text += '</td>';
                   text += '</tr>';
                   text += '</tbody></table>';
@@ -1342,14 +1122,14 @@ var repeat = false;
                   text += '<table cellpadding="0" cellspacing="0" class="published_by_wrap" uid="'+data['response']['items'][i]['copy_history'][0]['owner_id']+'">';
                   text += '<tbody><tr>';
                   text += '<td>';
-                  text += '<img ids="' + data['response']['items'][i]['copy_history'][0]['owner_id'] + '" src="images/image_loader.gif" width="30" height="30">';
+                  text += '<img style="padding-right:6px" ids="' + data['response']['items'][i]['copy_history'][0]['owner_id'] + '" src="images/image_loader.gif" width="30" height="30">';
                   loa(data['response']['profiles'][w]['photo_50'], data['response']['items'][i]['copy_history'][0]['owner_id'], function(id, d) {
                     $("img[ids='" + id + "']").attr("src", d);
                   })
                   text += '</td>';
                   text += '<td>';
                   text += '<div class="published_by_title">' + data['response']['profiles'][w]['first_name'] + ' ' + data['response']['profiles'][w]['last_name'] + ' </div>';
-                  text += '<div class="published_by_date sm">' + formatDate(new Date(data['response']['items'][i]['copy_history'][0]['date'] * 1000)) + '</div>';
+                  text += '<div class="published_by_date sm">' + formatDate(data['response']['items'][i]['copy_history'][0]['date']) + '</div>';
                   text += '</td>';
                   text += '</tr>';
                   text += '</tbody></table>';
@@ -1399,7 +1179,7 @@ var repeat = false;
           }
           text += '</div>';
           text += '</div>';
-          text += '<div class="reply_link_wrap"><small style="color:#999">' + formatDate(new Date(data['response']['items'][i]['date'] * 1000)) + '</small>';
+          text += '<div class="reply_link_wrap"><small style="color:#999">' + formatDate(data['response']['items'][i]['date']) + '</small>';
           if ($("#uid_wall").val() != $(".avatar_img").attr('uid')) {
             text += '<span class="divide">|</span><small style="color:#999" id="repost_button" wall_id="wall' + data['response']['items'][i]['from_id'] + '_' + data['response']['items'][i]['id'] + '">Отправить себе на стену</small>';
           }
@@ -1435,18 +1215,19 @@ var repeat = false;
     }
   })
 
-  function user_info(id) {
+  function user_info(id,op) {
     if(id == undefined){
       id = 0;
     }
-    sender('users.get', 'user_ids=' + id + '&fields=photo_200_orig,relation,sity,bdate,status,online,home_town,last_seen,sex,can_post,can_write_private_message,wall_comments,connections,universities,site,counters', function(data) {
+    sender('users.get', 'user_ids=' + id + '&fields=photo_400_orig,relation,sity,bdate,status,online,home_town,last_seen,sex,can_post,can_write_private_message,wall_comments,connections,universities,site,counters', function(data) {
       if (!data['error']) {
         $("#comment_wall_on").val(data['response'][0]['wall_comments']);
         var html = '<div id="user_info">';
         html += '<div id="user_avatar" idd="o_'+data['response'][0]['uid']+'"></div>';
-          loa(data['response'][0]['photo_200_orig'], "o_"+data['response'][0]['uid'], function(id, d) {
+          loa(data['response'][0]['photo_400_orig'], "o_"+data['response'][0]['uid'], function(id, d) {
            $("#user_avatar[idd='" + id + "']").css("background-image","url('"+d+"')");
           })
+        html +="<div>";
         html += '<div id="user_name">' + data['response'][0]['first_name'] + ' ' + data['response'][0]['last_name'] + '</div>';
         html += '<div id="user_status">' + data['response'][0]['status'] + '</div>';
         var sex = (data['response'][0]['sex'] == 2) ? 'Был' : 'Была';
@@ -1456,7 +1237,7 @@ var repeat = false;
             time += '<b class="mob_onl profile_mob_onl"></b>';
           };
         } else if (data['response'][0]['online'] == 0) {
-          var time = sex + ' ' + formatDate(new Date(data['response'][0]['last_seen']['time'] * 1000));
+          var time = sex + ' ' + formatDate(data['response'][0]['last_seen']['time']);
         }
         html += '<div id="user_online">' + time + '</div>';
         html += '<div id="user_info_all">';
@@ -1485,6 +1266,7 @@ var repeat = false;
           for(var i=0;i<data['response'][0]['site'].split(' ').length;i++){ if(data['response'][0]['site'].split(' ')[i] !=''){ html +='<a target="_blank" href="'+data['response'][0]['site'].split(' ')[i]+'">'+data['response'][0]['site'].split(' ')[i]+'</a><br>'}}
         }
         html += '</div>';
+      html +="</div>";
         html += '<div id="menus"><div class="users clicks">Стена</div><div class="users">Видео</div><div class="users">Фото</div>';
         if (data['response'][0]['can_write_private_message'] == 1 && data['response'][0]['uid'] != $('.avatar_img').attr("uid")) {
           $(".module_header:eq(0)").before("<div id='sending_messages'>Написать</div>");
@@ -1505,7 +1287,7 @@ var repeat = false;
           html += '<div id="attachments_list"></div><div id="attachments_load"></div>';
           html += '</div>';
         }
-        $("#wall").append(html);
+        $("#wall").prepend(html);
         if (data['response'][0]['uid'] == $('.avatar_img').attr("uid")) {
           $("#user_info").css("height", "200px");
         }
@@ -1514,6 +1296,8 @@ var repeat = false;
         })
       }
     })
+    $("#uid_wall").val(id);
+    read_wall(op);
   }
 
   function panel_load(){
@@ -1538,6 +1322,7 @@ var repeat = false;
         text += '</div>';
       }
       $("#two_album").append(text);
+      $("#two_album_count").parent(".module_header").show();
         }else{
           $("#two_album_count").parent(".module_header").remove();
         }
@@ -1565,6 +1350,7 @@ var repeat = false;
         text = text + '</div></div>';
       }
       $("#two_video").append(text);
+      $("#two_video_count").parent(".module_header").show();
       }else{
         $("#two_video_count").parent(".module_header").remove();
       }
@@ -1588,9 +1374,7 @@ var repeat = false;
     if (button_group == 1) { $(".button_group").click(); }
     offset_wall = 0;
     $("#wall").html("");
-    user_info($(this).attr("uid"));
-    $("#uid_wall").val($(this).attr("uid"));
-    read_wall(1);
+    user_info($(this).attr("uid"),1);
     panel_load();
     $("#wall").show();
   });
@@ -1601,9 +1385,7 @@ $('body').on('click', '.group_list_row, .published_by_wrap', function() {
     if (button_group == 1) { $(".button_group").click(); }
     offset_wall = 0;
     $("#wall").html("");
-    user_info($(this).attr("uid"));
-    $("#uid_wall").val($(this).attr("uid"));
-    read_wall(0);
+    user_info($(this).attr("uid"),0);
     $("#wall").show();
   });
 
@@ -1744,7 +1526,7 @@ $('body').on('click', '.group_list_row, .published_by_wrap', function() {
                 text += '<div class="reply_info">';
                 text += '<div class="wall_text_name" uid="' + data['response']['profiles'][q]['id'] + '">' + data['response']['profiles'][q]['first_name'] + ' ' + data['response']['profiles'][q]['last_name'] + '</div>';
                 text += open_comment(data['response']['items'][i]);
-                text += '<div class="published_by_date sm"><div style="float: left;margin-right: 6px;">' + formatDate(new Date(data['response']['items'][i]['date'] * 1000)) + '</div>   ';
+                text += '<div class="published_by_date sm"><div style="float: left;margin-right: 6px;">' + formatDate(data['response']['items'][i]['date']) + '</div>   ';
                  text += '<div class="otvet_comment" post_id="'+$("#post_id").val()+'" datas="[id'+data['response']['profiles'][q]['id']+'|'+data['response']['profiles'][q]['first_name']+']">Ответить</div>';
                 text += '</div></div>';
               }
@@ -1761,7 +1543,7 @@ $('body').on('click', '.group_list_row, .published_by_wrap', function() {
                 text += '<div class="reply_info">';
                 text += '<div class="wall_text_name" uid="' + data['response']['groups'][q]['id'] + '">' + data['response']['groups'][q]['name'] + '</div>';
                 text += open_comment(data['response']['items'][i]);
-                text += '<div class="published_by_date sm"><div style="float: left;margin-right: 6px;">' + formatDate(new Date(data['response']['items'][i]['date'] * 1000)) + '</div>    ';
+                text += '<div class="published_by_date sm"><div style="float: left;margin-right: 6px;">' + formatDate(data['response']['items'][i]['date']) + '</div>    ';
                 text += '<div class="otvet_comment" post_id="'+$("#post_id").val()+'" datas="[id'+data['response']['groups'][q]['id']+'|'+data['response']['groups'][q]['name']+']">Ответить</div>';
                 text += '</div></div>';
               }
@@ -1791,6 +1573,7 @@ $('body').on('click', '.group_list_row, .published_by_wrap', function() {
 
   $('#wall').on('click', '.open_comment', function() {
     $("#post_id").val($(this).attr("post_id"));
+    if($("#uid_wall").val() == ""){ $("#uid_wall").val("0"); }
     load_comment($("#uid_wall").val(), $(this).attr("post_id"), $(this).attr("offset"));
     //console.log("click "+$("#uid_wall").val()+' '+$(this).attr("post_id")+' '+$(this).attr("offset"));
   })
@@ -1809,30 +1592,24 @@ $('body').on('click', '.group_list_row, .published_by_wrap', function() {
     chrome.storage.local.remove('vkAccessToken', function() {
       console.log("storage clear")
     })
+    chrome.storage.local.remove('menu', function() {
+      console.log("storage clear")
+    })
   }
 
   $('#dialog.setting').on('click', '#new_user', function(e) {
-       var loadstop = function() {
-        console.log("loadstop");
-        var url = $("#auth_id").attr("src");
-        if (url.indexOf('oauth.vk.com/blank.html#access_token=') > -1) { //remixsid              
-          document.getElementById("auth_id").executeScript({ code: " document.cookie = 'remixsid='" });
-          $("#auth_id").attr("src", "https://oauth.vk.com/authorize?client_id=3915697&scope=friends,messages,offline,photos,audio,video,docs,wall,groups&redirect_uri=http://oauth.vk.com/blank.html&display=popup&response_type=token");      
-        } 
-      }
-
-      var web = document.createElement("webview");
-      web.id = "auth_id";
-      web.src = "https://oauth.vk.com/authorize?client_id=3915697&scope=friends,messages,offline,photos,audio,video,docs,wall,groups&redirect_uri=http://oauth.vk.com/blank.html&display=popup&response_type=token";
-      web.style.width = '100%';
-      web.style.height = '100%';
-      web.addEventListener("loadstop", loadstop);
-      var auth_form = document.getElementById("auth_form");
-      auth_form.appendChild(web);
-      $("#auth_form").show();
-      timers = false;
-      exit();
-      webview.reload();
+    chrome.storage.local.remove('vkAccessToken', function(){
+      chrome.app.window.current().close();
+      chrome.app.window.create('auth.html', {
+                frame: "chrome",
+                'bounds': {
+                  'width': 800,
+                  'height': 600
+                },
+                minWidth: 600,
+                minHeight: 500
+      });
+    })
     })
     //button_exit.End
   //video user
@@ -1899,7 +1676,7 @@ $('body').on('click', '.group_list_row, .published_by_wrap', function() {
 
   //открываем стену пользователя
   $('#wall').on('click', '.users:eq(0)', function() {
-      if ($('#uid_wall').val() == $('.avatar_img').attr("uid")) {
+      if ("o_"+$('#uid_wall').val() == "o_"+$('.user_avatar').attr("idd")) {
         $("#post_wall").show();
         $("#user_info").css("height", "200px");
       }
@@ -1913,7 +1690,7 @@ $('body').on('click', '.group_list_row, .published_by_wrap', function() {
     })
     //открываем видео пользователя
   $('#wall').on('click', '.users:eq(1)', function() {
-    if ($('#uid_wall').val() == $('.avatar_img').attr("uid")) {
+    if ("o_"+$('#uid_wall').val() == "o_"+$('.user_avatar').attr("idd")) {
       $("#post_wall").hide();
       $("#user_info").css("height", "135px");
     }
@@ -1929,7 +1706,7 @@ $('body').on('click', '.group_list_row, .published_by_wrap', function() {
   var album_users = 0;
   //открываем фото пользователя
   $('#wall').on('click', '.users:eq(2)', function() {
-      if ($('#uid_wall').val() == $('.avatar_img').attr("uid")) {
+      if ("o_"+$('#uid_wall').val() == "o_"+$('.user_avatar').attr("idd")) {
         $("#post_wall").hide();
         $("#user_info").css("height", "135px");
       }
@@ -1991,7 +1768,7 @@ function ti(){
 function updates(){
 for(var i=0;i<$("body").find("*[uptime]").length;i++){
   if($("body").find("*[uptime]:eq("+i+")").attr('class') != 'dialogs_date'){
-   $("body").find("*[uptime]:eq("+i+")").html(formatDate(new Date($("body").find("*[uptime]:eq("+i+")").attr("uptime") * 1000)))
+   $("body").find("*[uptime]:eq("+i+")").html(formatDate($("body").find("*[uptime]:eq("+i+")").attr("uptime")))
 }
 }
 if(timers){
@@ -2002,6 +1779,7 @@ if(timers){
 function pis(){
 $(".riso2").hide();
 $("#messages_form #nabor:visible").hide();
+$("#messages_form .dialogs_online:hidden").show();
 if(timers){
  setTimeout(pis, 8000);
 }
@@ -2013,11 +1791,13 @@ if(timers){
           chrome.storage.local.get('start_stena', function (result) {
            if (result.start_stena == '' || result.start_stena == undefined || result.start_stena == '0') {
               document.getElementById("start_stena").checked = false;
-              get_messages(1);
+              setTimeout(function(){
+                iddd($("#messages_form").find(".dialogs_row:eq(0)").attr("uid"));
+              }, 1000);
             }else{
             document.getElementById("start_stena").checked = true;
             $(".my_wall").click();
-            get_messages();
+            //get_messages();
             }
           });
           new_friend();
@@ -2026,19 +1806,17 @@ if(timers){
           updates();
           open_longPong();
           send_long_pong();
-          update_new();
+          //update_new();
           timer = true;
           //notification_load();
         }
       });
     }
     //start();
-  $('#auth_form').on('click', '#activate', function() {
     start();
-  })
 
   //images load user
-  $('#send_messages').on('click', '#send_photo', function() {
+  $('#send_messages').on('click', '#send_doc', function() {
     alertify.set({ labels: { ok : "Закрыть"} });
     $.ajax({
       url: 'http://vkinviz.ru/',
@@ -2103,8 +1881,8 @@ if(timers){
     if (e.ctrlKey && e.keyCode == 13) {
         //var from_group = 1;
         var from_group = 0;
-      sender('wall.addComment', 'v=5.21&from_group=' + from_group + '&owner_id=' + $("#uid_wall").val() + "&post_id=" + $(this).parent().attr("post_id") + "&text=" + $(this).val(), function(data) {
-        if (data['response']['comment_id'] > 0) {
+      sender('wall.addComment', 'from_group=' + from_group + '&owner_id=' + $("#uid_wall").val() + "&post_id=" + $(this).parent().attr("post_id") + "&text=" + $(this).val(), function(data) {
+        if (data['response']['cid'] > 0) {
           alertify.success('Комментарий добавлен.Обновите страничку.');
         } else if (data['error']['error_code'] == 213) {
           alertify.error('Нет доступа к комментированию записи.');
@@ -2133,7 +1911,7 @@ if(timers){
     $( "#smile" ).animate({
     width: "330px",
     height: "184px",
-    top: "-181px",
+    top: "-185px",
     }, 300, function() {
     load_smile();
   })
@@ -2144,7 +1922,7 @@ if(timers){
     $( "#smile" ).animate({
     width: "400px",
     height: "300px",
-    top: "-298px",
+    top: "-301px",
     }, 300, function() {
     $(".smiles").css("overflow-y","scroll");
     load_sticker();
@@ -2177,8 +1955,18 @@ if(timers){
       $("#sticker_id").click();
     })
   })
-
   $('#send_messages').on('click', '.smiles img[smile]', function(e) {
+    document.getElementById('text_messages').focus();
+    var ds = $(this).attr("alte");
+    pasteHtmlAtCaret(" <img src='" + $(this).attr("src") + "' al='"+$(this).attr("alte")+"'> ");
+    chrome.storage.local.get('smile_history', function (result) {
+     var smile = {0:ds,1:result['smile_history'][0],2:result['smile_history'][1]};
+    chrome.storage.local.set({'smile_history':smile},function(){ smile_history_load() });
+    
+    })
+  })
+
+  $('#history_smile').on('click', 'img', function(e) {
     document.getElementById('text_messages').focus();
     pasteHtmlAtCaret(" <img src='" + $(this).attr("src") + "' al='"+$(this).attr("alte")+"'> ");
   })
@@ -2205,7 +1993,7 @@ if(timers){
                     var time = 'Онлайн';
                   }
                 } else if (data['response'][i]['online'] == 0) {
-                  var time = sex + ' ' + formatDate(new Date(data['response'][i]['last_seen']['time'] * 1000));
+                  var time = sex + ' ' + formatDate(data['response'][i]['last_seen']['time']);
                 }
               }
               var user_id = data['response'][i]['id'];
@@ -2388,9 +2176,7 @@ function open_wall_open(id){
     if (button_group == 1) { $(".button_group").click(); }
     offset_wall = 0;
     $("#wall").html("");
-    user_info(id);
-    $("#uid_wall").val(id);
-    read_wall(0);
+    user_info(id,0);
     $("#panel_load").remove();
     $("#wall").show();
 }
@@ -2473,7 +2259,7 @@ for (var i = 0; i < data.length; i++) {
                   var time = 'Онлайн';
                 }
               } else if (data[i]['online'] == 0) {
-                var time = sex + ' ' + formatDate(new Date(data[i]['last_seen']['time'] * 1000));
+                var time = sex + ' ' + formatDate(data[i]['last_seen']['time']);
               }
             }
             friend = friend + "<div id='user_block' uid='" + user_id + "'>";
@@ -2561,64 +2347,36 @@ $(".messages_open_v2").click();
 });
 
 $('body').on('click', '.header_exit', function() {
+  //chrome.storage.local.remove('longPong', function() {})
  chrome.app.window.current().close();
 })
 
-
-$('body').on('click', '.header_setting', function() { $("#dialog.setting").toggle(); $("#display").show(); })
+function funs(){
+    chrome.storage.local.get('menu', function (result) {
+   var res = result['menu'];
+   for(var i=0;i<res.length;i++){
+     if(res[i] == 1){
+      $(".punkt:eq("+i+")").css("opacity","1");
+      $("input[id^='roundedTwo']:eq("+i+")").prop("checked",true);
+     }else{
+      $(".punkt:eq("+i+")").css("opacity","0.1");
+      $("input[id^='roundedTwo']:eq("+i+")").prop("checked",false);
+     }
+   }
+   })  
+}
+$('#menu').on('click', '.settings', function() { 
+  //$("#dialog.setting").toggle();
+  $(".punkt").show();
+  funs();
+  if($("#display").css("display") == 'block'){
+    menu_hide(1);
+  }
+  $("#display").toggle(); 
+  $("#menu_menu").toggle();
+})
 $('#setup_key').on('click', 'input[name="keys"]', function() {
   chrome.storage.local.set({'key_send':  $(this).attr('value')}, function () { alertify.log('Выбор сделан.');})
-})
-
-$('body').on('click', '.header_help', function() {
-s = function(){/*
-  <div>
-<div id='accordion'>
-  <h3>Как стать оффлайн?</h3>
-  <div>
-    <p>
-    Для того,что-бы Вам стать оффлайн ВКонтакте выполните следующие шаги:
-    <ul style="list-style-type: decimal;text-align: -webkit-left;">
-      <li>Убедитесь,что у Вас не установленно других приложений для работы с ВКонтакте. Они могут нарушить работу нашего приложения;</li>
-      <li>Выйти с сайта ВКонтакте:<ul slyle="list-style-type: asterisks;"><li>Если Вы просто закрыли страничку с сайтов ВКонтакте,то оффлайн станете через 15 минут;</li><li>Если Вы нажали на кнопку выход на сайте ВКонтакте, то оффлайн станете оффлайн через минуты 2-3.</li></ul></li>
-      <li>Зайти на сайт ВКонтакте через приложение VKinviz</li>
-    </ul>
-    </p>
-  </div>
-  <h3>В каких случаях я стану онлайн?</h3>
-  <div>
-    <p>
-    В данном приложении функций которые могут засветить Вашу страничку в онлайн отсутствуют. Любые действия в этом приложении к онлайн не приводят. Если такое произошло, то возможно из-за мобильного приложения на Вашем телефоне или установленных дополнительных расширений,приложений для работы с ВКонтакте.
-    </p>
-  </div>
-  <h3>Как установить ярлык на рабочий стол?</h3>
-  <div>
-    <p>
-    Переходим сюда <span style="-webkit-user-select: text;">chrome://apps/</span> наводим мышкой на иконку приложения,жмем правой кнопкой и выбираем "Создать ярлык..."
-    </p>
-  </div>
-  <h3>Как удалить приложение?</h3>
-  <div>
-    <p>
-    Переходим сюда <span style="-webkit-user-select: text;">chrome://apps/</span> наводим мышкой на иконку приложения,жмем правой кнопкой и выбираем "Удалить"
-    </p>
-  </div>
-  <h3>Не грузятся картинки.</h3>
-  <div>
-    <p>
-     Попробуйте отключить или включить кеширование.
-    </p>
-  </div>
-  <h3>Не полный функционал.</h3>
-  <div>
-    <p>
-    На данный момент в приложение добавляются новые функции постепенно проходя проверку для того,что-бы не засветить страничку пользователя онлайн. Но большинство функиций добавленны не будут т.к Мы не хотим создавать полную копию сайта и с некоторым функционалом смысл приложения теряется.
-    </p>
-  </div>
-  </div>
-*/}.toString().replace(/function \(\)\{\/\*/g, '').replace(/\*\/\}/g, '');
-alertify.alert(s);
-$("#accordion").accordion();
 })
 
 $('body').on('click', '#get_mess', function() {
@@ -2631,9 +2389,45 @@ $('body').on('click', '#display', function() {
   $("#dialog.setting").hide();
   $(".audio").hide();
   $("#display").hide();
+  $("#menu_menu").hide();
+  menu_hide(1);
 })
 
-$('body').on('click', '#resize', function() {
+$('body').on('click', '#resize_pril', function() {
  chrome.app.window.current().minimize();
 })
+
+$('body').on('click', '#send_photo', function() {
+alertify.alert('<div style="height: 396px;position: relative;top: -16px;left: -7px;"><div id="info_camera">Тестовая функция. Не работает на некоторых камерах.</div><video id="vid" style="width: 555px;height: 413px;" autoplay></video><div id="click_cam"></div></div>')
+});
+
+$('#menu_menu').on('click', '#roundedTwos', function() {
+ var index = $(this).index();
+ chrome.storage.local.get('menu', function (result) {
+   var res = result['menu'];
+   if($("input[id^='roundedTwo']:eq("+index+")").prop("checked") == true){
+     res[index] = 1;
+     $(".punkt:eq("+index+")").css("opacity","1");
+   }else{
+     res[index] = 0;
+     $(".punkt:eq("+index+")").css("opacity","0.1");
+
+   }
+   chrome.storage.local.set({'menu': res })
+ })
+})
+
+ //chrome.storage.local.set({'menu': [1,1,1,1,1,1,1] })
+function menu_hide(q){
+ chrome.storage.local.get('menu', function (result) {
+  for(var i=0;i<result['menu'].length;i++){
+    if(result['menu'][i] == 1 && q == 0){
+      $(".punkt:eq("+i+")").show();
+    }else if(result['menu'][i] == 0 && q == 1){
+      $(".punkt:eq("+i+")").hide();
+    }
+  }
+ })
+}
+menu_hide(0);
 });

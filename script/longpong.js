@@ -1,3 +1,17 @@
+  var escapeHtml = function(text) {
+    var map = {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#039;'
+    };
+  
+    var d =  text.replace(/[&<>"']/g, function(m) { return map[m]; });
+    var re = /&lt;a target=&quot;_blank&quot; href=&quot;([\w\W]{1,400})&quot;&gt;([\w\W]{1,400})&lt;\/a&gt;/g; 
+    d = d.replace(re,function(q,w,e){ return '<a target="_blank" href="'+w+'">'+e+'</a>'; });
+    return d.replace(/&lt;br&gt;/g,'<br>');
+  }
   var emoji = function(str, replaceWithImages) {
       var output = "";
       var vkSymbols = ["D83DDE0A", "D83DDE03", "D83DDE09", "D83DDE06", "D83DDE1C", "D83DDE0B", "D83DDE0D", "D83DDE0E", "D83DDE12", "D83DDE0F", "D83DDE14", "D83DDE22", "D83DDE2D", "D83DDE29", "D83DDE28", "D83DDE10", "D83DDE0C", "D83DDE20", "D83DDE21", "D83DDE07", "D83DDE30", "D83DDE32", "D83DDE33", "D83DDE37", "D83DDE1A", "D83DDE08", "2764", "D83DDC4D", "D83DDC4E", "261D", "270C", "D83DDC4C", "26BD", "26C5", "D83CDF1F", "D83CDF4C", "D83CDF7A", "D83CDF7B", "D83CDF39", "D83CDF45", "D83CDF52", "D83CDF81", "D83CDF82", "D83CDF84", "D83CDFC1", "D83CDFC6", "D83DDC0E", "D83DDC0F", "D83DDC1C", "D83DDC2B", "D83DDC2E", "D83DDC03", "D83DDC3B", "D83DDC3C", "D83DDC05", "D83DDC13", "D83DDC18", "D83DDC94", "D83DDCAD", "D83DDC36", "D83DDC31", "D83DDC37", "D83DDC11", "23F3", "26BE", "26C4", "2600", "D83CDF3A", "D83CDF3B", "D83CDF3C", "D83CDF3D", "D83CDF4A", "D83CDF4B", "D83CDF4D", "D83CDF4E", "D83CDF4F", "D83CDF6D", "D83CDF37", "D83CDF38", "D83CDF46", "D83CDF49", "D83CDF50", "D83CDF51", "D83CDF53", "D83CDF54", "D83CDF55", "D83CDF56", "D83CDF57", "D83CDF69", "D83CDF83", "D83CDFAA", "D83CDFB1", "D83CDFB2", "D83CDFB7", "D83CDFB8", "D83CDFBE", "D83CDFC0", "D83CDFE6", "D83DDC00", "D83DDC0C", "D83DDC1B", "D83DDC1D", "D83DDC1F", "D83DDC2A", "D83DDC2C", "D83DDC2D", "D83DDC3A", "D83DDC3D", "D83DDC2F", "D83DDC5C", "D83DDC7B", "D83DDC14", "D83DDC23", "D83DDC24", "D83DDC40", "D83DDC42", "D83DDC43", "D83DDC46", "D83DDC47", "D83DDC48", "D83DDC51", "D83DDC60", "D83DDCA1", "D83DDCA3", "D83DDCAA", "D83DDCAC", "D83DDD14", "D83DDD25"];
@@ -17,7 +31,7 @@
           charCode = charCode.toUpperCase();
         }
         if (vkSymbols.indexOf(charCode) !== -1) {
-          output += replaceWithImages ? " <img class='emoji' src='' width='16' height='16' alte='" + charCode + "'/> " : " ";
+          output += replaceWithImages ? " <img class='emoji' src='' width='11' height='11' alte='" + charCode + "'/> " : " ";
           loa('http://vk.com/images/emoji/' + charCode + '.png', charCode, function(charCode, d) {
           $("img[alte='" + charCode + "']").attr("src", d).attr("alte","");
         })
@@ -41,11 +55,226 @@ function formatDate(date,p){var diff=new Date()-date;var d=date;d=['0'+d.getDate
 function formatDates(date){var diff=new Date()-date;var d=date;d=['0'+d.getDate(),'0'+(d.getMonth()+1),''+d.getFullYear(),'0'+d.getHours(),'0'+d.getMinutes()];for(var i=0;i<d.length;i++){d[i]=d[i].slice(-2)}var new_date=new Date();if(new_date.getDate()==date.getDate()){return d.slice(3).join(':')}else if(new_date.getDate()-1==date.getDate()){return'вчера'}else{return d[0]+' '+monthName[d[1]]}}
 //-------------------//
 var mess_new = function(id,time,messages){
-var text = '<div class="dialogs_msg_body old dialogs_msg_body_new_on"><div class="im_msg_text">'+((messages.length > 35) ? emoji(messages.substr(0, 35),true)+'...':emoji(messages,true))+'<img id="nabor" src="images/typing.gif"></div></div>';
+var text = '<div class="dialogs_msg_body old dialogs_msg_body_new_on"><div class="im_msg_text">'+((messages.length > 35) ? emoji(messages.substr(0, 35),true)+'...':emoji(messages,true))+'</div></div>';
 $(".dialogs_row[uid='"+id+"'] .dialogs_row_t").find(".dialogs_msg_body").html(text);
-$(".dialogs_row[uid='"+id+"'] .dialogs_row_t").find(".dialogs_date").html('⌚ '+formatDates(new Date(time * 1000)));
+$(".dialogs_row[uid='"+id+"'] .dialogs_row_t").find(".dialogs_date").html(formatDates(new Date(time * 1000)));
+}
+
+var repost_wall_mess = function(data) {
+    var text = '';
+    var reg = /(?:^|[\s]+)((http(s)?:\/\/)|(www\.))([^\.]+)\.(?:[^\s,]+)/ig;
+    var mess = data['text'].replace(reg, function(s) {
+      var str = (/:\/\//.exec(s) === null ? "http://" + s : s);
+      return "<a target=\"_blank\" href=\"" + str + "\">" + str /*s*/ + "</a>";
+    });
+    text += '<div class="wall_post_text">' + mess + '</div>';
+    text += '<div class="wall_attachments">';
+    if (data['attachments'] != null) {
+      for (var q = 0; q < data['attachments'].length; q++) {
+        if (data['attachments'][q]['type'] == 'photo') {
+          text += "<div style='height:75px;padding-left: 3px;float: left;' data-lightbox='photo_news' id='mes_photo_href' t='o" + data['attachments'][q]['photo']['id'] + "' href=''><img height='75px' src='images/image_loader.gif' id='mes_photo_img' t='" + data['attachments'][q]['photo']['id'] + "'></div>";
+          loa(data['attachments'][q]['photo']['photo_604'], "o"+data['attachments'][q]['photo']['id'], function(id, d) {
+            $("#mes_photo_href[t='" + id + "']").attr("href", d);
+          })
+          loa(data['attachments'][q]['photo']['photo_75'], data['attachments'][q]['photo']['id'], function(id, d) {
+            $("#mes_photo_img[t='" + id + "']").attr("src", d);
+          })
+        } else if (data['attachments'][q]['type'] == 'link') {
+          if (data['attachments'][q]['link']['url'].indexOf('://vk.com/') > -1) {
+            text += '<div class="media_desc"><a target="_blank" class="lnk" href="' + data['attachments'][q]['link']['url'] + '"><b class="fl_l "></b><span class="a">Ссылка может нарушить вашу невидимость -> ' + data['attachments'][q]['link']['title'] + '</span></a></div>';
+          } else {
+            text += '<div class="media_desc"><a target="_blank" class="lnk" href="' + data['attachments'][q]['link']['url'] + '"><b class="fl_l "></b><span class="a">' + data['attachments'][q]['link']['title'] + '</span></a></div>';
+          }
+        } else if (data['attachments'][q]['type'] == 'video') {
+          text += '<webview t="' + data['attachments'][q]['video']['id'] + '" style="width: 100%;" src=""></webview>';
+          sender('video.get', 'videos=' + data['attachments'][q]['video']['owner_id'] + '_' + data['attachments'][q]['video']['id'] + '_' + data['attachments'][q]['video']['access_key'], function(data) {
+            // console.log(obj(data['response'][1])); 
+            $("webview[t='" + data['response'][1]['vid'] + "']").attr("src", data['response'][1]['player']);
+          })
+        } else if (data['attachments'][q]['type'] == 'audio') {
+          text += '<div id="track" mus="repost_wall" class="audio_messages" duration="' + data['attachments'][q]['audio']['duration'] + '" uid="' + data['attachments'][q]['audio']['aid'] + '" url="' + data['attachments'][q]['audio']['url'] + '"><div class="track_play"></div><div class="track_title">' + data['attachments'][q]['audio']['artist'] + ' - ' + data['attachments'][q]['audio']['title'] + '</div></div>';
+        } else if (data['attachments'][q]['type'] == 'doc') {
+          text += "<a target='_blank' href='" + data['attachments'][q]['doc']['url'] + "'>" + data['attachments'][q]['doc']['title'] + "</a> ";
+        }
+      }
+    }
+    text += '</div>';
+    return text;
+  }
+
+var messages_attr = function(data){
+        var messages = '<table>';
+        for (var i = 0; i < data.length; i++) {
+          if (data[i]['body'] != null) {
+            messages += "<tr>";
+            messages = messages + '<td class="im_log_author"><div class="im_log_author_chat_thumb"><img id="id_' + data[i]['user_id'] + '" src="images/image_loader.gif" class="im_log_author_chat_thumb" width="32" height="32"></div></td>';
+            messages = messages + '<td class="im_log_body"><div class="wrapped"><div class="im_log_author_chat_name" uid="' + data[i]['user_id'] + '"></div>';
+
+            var reg = /(?:^|[\s]+)((http(s)?:\/\/)|(www\.))([^\.]+)\.(?:[^\s,]+)/ig;
+            var mess = data[i]['body'].replace(reg, function(s) {
+              var str = (/:\/\//.exec(s) === null ? "http://" + s : s);
+              return "<a target=\"_blank\" href=\"" + str + "\">" + str /*s*/ + "</a>";
+            });
+
+            var reg = /\[([^\.]+)\|([^\.]+)\]/;
+            mess = mess.replace(reg, function(s, d, n) {
+              return n;
+            });
+
+            mess = mess.replace(/\n/ig, '<br>');
+            messages = messages + '<div class="im_msg_text">' + emoji(escapeHtml(mess), true);
+            messages += "<div class='lala'>";
+            //Проверяем есть ли прикрепления
+            if (data[i]['attachments'] != null) {
+              for (var q = 0; q < data[i]['attachments'].length; q++) {
+                if (data[i]['attachments'][q]['type'] == 'photo') {
+                  messages = messages + "<div style='height:75px;padding-left: 2px;' id='mes_photo_href' data-lightbox='photo_messages' t='a_" + data[i]['attachments'][q]['photo']['id'] + "' href=''><img height='75px' src='images/image_loader.gif' id='mes_photo_img' t='i_" + data[i]['attachments'][q]['photo']['id'] + "'></div>";
+                  console.info(data[i]['attachments'][q]['photo']);
+                  loa(data[i]['attachments'][q]['photo']['photo_604'], data[i]['attachments'][q]['photo']['id'], function(id, d) {
+                    $("#mes_photo_href[t='a_" + id + "']").attr("href", d);
+                  })
+                  loa(data[i]['attachments'][q]['photo']['photo_75'], data[i]['attachments'][q]['photo']['id'], function(id, d) {
+                    $("#mes_photo_img[t='i_" + id + "']").attr("src", d);
+                  })
+                } else if (data[i]['attachments'][q]['type'] == 'audio') {
+                  //console.log(obj(data[i]['attachments'][q]['audio']));
+                  // messages += '<div id="track" class="audio_messages" duration="'+data[i]['attachments'][q]['audio']['duration']+'" uid="'+data[i]['attachments'][q]['audio']['aid']+'" url="'+data[i]['attachments'][q]['audio']['url']+'"><div class="track_play"></div><div class="track_title">'+data[i]['attachments'][q]['audio']['artist']+' - '+data[i]['attachments'][q]['audio']['title']+'</div></div>';
+                  messages += '<div id="track" mus="messages" class="audio_messages" duration="' + data[i]['attachments'][q]['audio']['duration'] + '" uid="' + data[i]['attachments'][q]['audio']['aid'] + '" url="' + data[i]['attachments'][q]['audio']['url'] + '"><div class="track_play"></div><div class="track_title">' + data[i]['attachments'][q]['audio']['artist'] + ' - ' + data[i]['attachments'][q]['audio']['title'] + '</div></div>';
+
+                } else if (data[i]['attachments'][q]['type'] == 'video') {
+                  console.log(obj(data[i]['attachments'][0]['video'])); 
+                  messages = messages + '<webview t="' + data[i]['attachments'][q]['video']['id'] + '" style="width: 100%;" src=""></webview>';
+                  sender('video.get', 'videos=' + data[i]['attachments'][q]['video']['owner_id'] + '_' + data[i]['attachments'][q]['video']['id'] + '_' + data[i]['attachments'][q]['video']['access_key'], function(data) {
+                    $("webview[t='" + data['response'][1]['vid'] + "']").attr("src", data['response'][1]['player']);
+                  })
+                } else if (data[i]['attachments'][q]['type'] == 'sticker') {
+                  messages = messages + "<img height='75px' src='' id='sticker' t='" + data[i]['attachments'][q]['sticker']['id'] + "'>";
+                  loa(data[i]['attachments'][q]['sticker']['photo_64'], data[i]['attachments'][q]['sticker']['id'], function(id, d) {
+                    $("#sticker[t='" + id + "']").attr("src", d);
+                  })
+                } else if (data[i]['attachments'][q]['type'] == 'doc') {
+                  messages = messages + "<a target='_blank' href='" + data[i]['attachments'][q]['doc']['url'] + "'>Документ " + data[i]['attachments'][q]['doc']['title'] + "</a>";
+                }
+              }
+            }
+            messages += "</div>";
+            messages = messages + "</div></div></td>";
+            messages = messages + '<td class="im_log_date" uptime="'+data[i]['date']+'">' + formatDate(new Date(data[i]['date'] * 1000)) + '</td>';
+            messages = messages + "</tr>";
+         
+          }
+        }
+        messages = messages+"</table>";
+        return messages;
+        emoji_load();
+}
+
+
+var dd_messages = function(data, s, offs){
+  for (var i = 0; i < data['response']['items'].length; i++) {
+          if (data['response']['items'][i]['body'] != null) {
+          	if(s != 0){
+              var news = $("#messages > #table").html();
+              $("#messages > #table").html('');
+            }
+            var messages = "<div id='id_messagesss' id_messages='" + data['response']['items'][i]['id'] + "' style='"+((data['response']['items'][i]['read_state'] == 0)? 'background: rgba(235, 235, 235, 1);':'')+"'>";
+            messages +='<table style="'+((data['response']['items'][i]['out'] == 0)? 'float:right':'')+'"><tr>';
+           if(data['response']['items'][i]['out'] == 1){
+           	if(data['response']['items'][i]['from_id'] != undefined){ $("#my_id").val(data['response']['items'][i]['from_id']); }
+              messages = messages + '<th rowspan="2"><div class="im_log_author" style="float: left;margin-right: 3px;"><div class="im_log_author_chat_thumb"><img id="id_' + ((data['response']['items'][i]['from_id'] == undefined)? data['response']['items'][i]['user_id']:data['response']['items'][i]['from_id'] )+ '" src="'+((s == 0)? $("#messages").find("img[id='id_"+$("#my_id").val()+"']").attr('src'):"images/image_loader.gif")+'" class="im_log_author_chat_thumb myid" width="32" height="32"></div></div></th>';
+            } 
+
+              //messages = messages + '<div class="im_log_body" style="'+((data['response']['items'][i]['out'] == 0)? 'float: right;margin-right: 38px;':'float:left;')+'"><div class="wrapped">';
+            var reg = /(?:^|[\s]+)((http(s)?:\/\/)|(www\.))([^\.]+)\.(?:[^\s,]+)/ig;
+            var mess = data['response']['items'][i]['body'].replace(reg, function(s) {
+              var str = (/:\/\//.exec(s) === null ? "http://" + s : s);
+              return "<a target=\"_blank\" href=\"" + str + "\">" + str /*s*/ + "</a>";
+            });
+
+            var reg = /\[([^\.]+)\|([^\.]+)\]/;
+            mess = mess.replace(reg, function(s, d, n) {
+              return n;
+            });
+
+            mess = mess.replace(/\n/ig, '<br>');
+            messages = messages + '<th><div class="im_log_date" style="'+((data['response']['items'][i]['out'] == 0)? 'float:right':'float:left;')+'" uptime="'+data['response']['items'][i]['date']+'">' + formatDate(new Date(data['response']['items'][i]['date'] * 1000)) + '</div></th>';
+            
+            if(data['response']['items'][i]['out'] == 0){
+            messages = messages + '<th rowspan="2"><div class="im_log_author"><div class="im_log_author_chat_thumb"><img id="id_' + ((data['response']['items'][i]['from_id'] == undefined)? data['response']['items'][i]['user_id']:data['response']['items'][i]['from_id']) + '" src="'+((s == 0)? $("#messages").find("img[id='id_"+((data['response']['items'][i]['from_id'] == undefined)? data['response']['items'][i]['user_id']:data['response']['items'][i]['from_id'] )+"']").attr('src'):"images/image_loader.gif")+'" class="im_log_author_chat_thumb" width="32" height="32"></div></div></th>';
+            }
+            messages +="</tr>"
+            messages = messages + '<tr><td><div class="im_msg_text" style="'+((data['response']['items'][i]['out'] == 0)? 'float:right':'float:left;')+'">' + emoji(escapeHtml(mess), true);        
+            messages += "<div class='lala'>";
+            //Проверяем есть ли прикрепления
+            if (data['response']['items'][i]['attachments'] != null) {
+              for (var q = 0; q < data['response']['items'][i]['attachments'].length; q++) {
+               // console.log(obj(data['response']['items'][i]['attachments'][q]));
+                if (data['response']['items'][i]['attachments'][q]['type'] == 'photo') {
+                 //console.log(obj(data['response']['items'][i]['attachments'][q]['photo']));
+                  messages = messages + "<div style='height:75px;padding-left: 2px;' id='mes_photo_href' data-lightbox='photo_messages' kl='p" + data['response']['items'][i]['attachments'][q]['photo']['id'] + "' href=''><img height='75px' src='images/image_loader.gif' id='mes_photo_img' t='" + data['response']['items'][i]['attachments'][q]['photo']['id'] + "'></div>";
+                  loa(data['response']['items'][i]['attachments'][q]['photo']['photo_604'], "p"+data['response']['items'][i]['attachments'][q]['photo']['id'], function(id, d) {
+                    $("#mes_photo_href[kl='" + id + "']").attr("href", d);
+                  })
+                  loa(data['response']['items'][i]['attachments'][q]['photo']['photo_130'], data['response']['items'][i]['attachments'][q]['photo']['id'], function(id, d) {
+                    $("#mes_photo_img[t='" + id + "']").attr("src", d);
+                  })
+                } else if (data['response']['items'][i]['attachments'][q]['type'] == 'audio') {
+                  //console.log(obj(data['response']['items'][i]['attachments'][q]['audio']));
+                  // messages += '<div id="track" class="audio_messages" duration="'+data['response']['items'][i]['attachments'][q]['audio']['duration']+'" uid="'+data['response']['items'][i]['attachments'][q]['audio']['aid']+'" url="'+data['response']['items'][i]['attachments'][q]['audio']['url']+'"><div class="track_play"></div><div class="track_title">'+data['response']['items'][i]['attachments'][q]['audio']['artist']+' - '+data['response']['items'][i]['attachments'][q]['audio']['title']+'</div></div>';
+                  messages += '<div id="track" mus="messages" class="audio_messages" duration="' + data['response']['items'][i]['attachments'][q]['audio']['duration'] + '" uid="' + data['response']['items'][i]['attachments'][q]['audio']['aid'] + '" url="' + data['response']['items'][i]['attachments'][q]['audio']['url'] + '"><div class="track_play"></div><div class="track_title">' + data['response']['items'][i]['attachments'][q]['audio']['artist'] + ' - ' + data['response']['items'][i]['attachments'][q]['audio']['title'] + '</div></div>';
+
+                } else if (data['response']['items'][i]['attachments'][q]['type'] == 'video') {
+                  //console.log(obj(data['response']['items'][i]['attachments'][0]['video'])); 
+                  messages = messages + '<webview t="' + data['response']['items'][i]['attachments'][q]['video']['id'] + '" style="width: 100%;" src=""></webview>';
+                  sender('video.get', 'videos=' + data['response']['items'][i]['attachments'][q]['video']['owner_id'] + '_' + data['response']['items'][i]['attachments'][q]['video']['id'] + '_' + data['response']['items'][i]['attachments'][q]['video']['access_key'], function(data) {
+                    $("webview[t='" + data['response'][1]['vid'] + "']").attr("src", data['response'][1]['player']);
+                  })
+                } else if (data['response']['items'][i]['attachments'][q]['type'] == 'sticker') {
+                  messages = messages + "<img height='64px' src='' id='sticker' t='" + data['response']['items'][i]['attachments'][q]['sticker']['id'] + "'>";
+                  loa(data['response']['items'][i]['attachments'][q]['sticker']['photo_64'], data['response']['items'][i]['attachments'][q]['sticker']['id'], function(id, d) {
+                    $("#sticker[t='" + id + "']").attr("src", d);
+                  })
+                } else if (data['response']['items'][i]['attachments'][q]['type'] == 'doc') {
+                  messages = messages + "<a target='_blank' href='" + data['response']['items'][i]['attachments'][q]['doc']['url'] + "'>Документ " + data['response']['items'][i]['attachments'][q]['doc']['title'] + "</a>";
+                } else if (data['response']['items'][i]['attachments'][q]['type'] == 'wall') {
+                  messages += '<span style="color: #174CAA;font-size: 11px;">Прикреплена запись:</span>';                  
+                  messages += '<div id="repost_wall_mess">';
+                  //console.info(data['response']['items'][i]['attachments'][q]['wall'])
+                  messages += repost_wall_mess(data['response']['items'][i]['attachments'][q]['wall']);
+                  messages += '</div>';
+                }
+              }
+            }
+                  if(data['response']['items'][i]['fwd_messages'] != undefined){
+                    for(var r = 0;r<data['response']['items'][i]['fwd_messages'].length;r++){
+                    //  if(uid_user.indexOf(data['response']['items'][i]['fwd_messages'][r]['user_id']) == -1){ uid_user.push(data['response']['items'][i]['fwd_messages'][r]['user_id']); }
+                    }
+                  messages = messages + '<span style="color: rgb(97, 97, 231);font-size: 10px;">Пересланные сообщения</span><br>';
+                  messages = messages + '<div id="messages_attr">';
+                  messages = messages + messages_attr(data['response']['items'][i]['fwd_messages']);
+                  messages = messages + '</div>';
+                  }
+            messages += "</div>";
+            messages = messages + "</div></td></tr></table>";
+            $("#messages > #table").append(messages);
+            if(s != 0){
+            $("#messages > #table").append(news);
+            }
+
+            if(offs == 0){
+            $("#messages").scrollTop($("#messages").prop('scrollHeight'));
+            }
+          }
+        }
 }
 //------------------//
+var messages2 = function(datas) {
+  sender('messages.getById', 'v=5.30&message_ids='+datas[0][1], function(data) {
+     dd_messages(data,0,0);
+  })
+}
+
+
 function forLongPong(data){
 if(data != undefined){
   for(var i = 0;i < data['length']; i++){
@@ -77,17 +306,18 @@ if(data != undefined){
           }else{
             var updates_id = data[i][3];
           }
-          $(".dialogs_row[uid='"+updates_id+"']").css('background','#eef4fb'); 
+          $(".dialogs_row[uid='"+updates_id+"']").css('background','#eef2f6'); 
             mess_new(updates_id,data[i][4],data[i][6]);
           $(".dialogs_row img[id^='id'][src='images/image_loader.gif']").parent().parent().parent().parent().parent().remove();
           if($(".dialogs_row[uid='"+updates_id+"']")[0]){
             $("#messages_form").prepend($(".dialogs_row[uid='"+updates_id+"']"));
           }else{
-            $("#get_mess").click();
+            //$("#get_mess").click();
           }
            var song=document.getElementById('beep');song.play();
         if($("#messages").css("display")=="block" && updates_id == $("#uid_user").val()){ 
-          $("#update_messages").click();
+          //$("#update_messages").click();
+          messages2(data);
            var song=document.getElementById('beep');song.play()
         }
         break
@@ -96,14 +326,16 @@ if(data != undefined){
         if(data[i][3] == $("#uid_user").val()){ $("*[id_messages]").css("background","");}
         break
       case 61:
-        $(".dialogs_row[uid='"+data[i][1]+"']").find("#nabor").show();
+        $("#messages_form").find(".dialogs_row[uid='"+data[i][1]+"']").find(".dialogs_online").hide();
+        $(".dialogs_row[uid='"+data[i][1]+"']").find("#nabor").css("display","block");
         if(data[i][1] == $("#uid_user").val()){  $(".riso2").show(); }
         break
       default:
        // console.log(obj(data[i]));
     }
   }
- }else{ console.info('11111'); }
+ }else{ //console.info('11111');
+  }
 }
 
 

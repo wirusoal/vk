@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html>
+<html ng-app="vkinviz" ng-csp>
 <head>
   <link rel="chrome-webstore-item" href="https://chrome.google.com/webstore/detail/vk-inviz/ffniakoflaobbkjjcnlnmepodehaflkd">
 
@@ -11,36 +11,79 @@
   <link rel="stylesheet" href="css/notification.css" type="text/css" />
   
   <script src="script/jquery-1.11.0.min.js"></script>
+  <script src="script/angular.min.js"></script>
   <script src="script/aja.min.js"></script>
-  <script src="script/auth.js"></script>
+  <script src="script/script_angular.js"></script>
   <script src="script/script.js"></script>
   <script src="script/cache_file.js"></script>
   <script src="script/alertify.js"></script>
   <script src="script/blob.js"></script>
   <script src="script/longpong.js"></script>
   <script src="script/notification.js"></script>
-   <script src="script/google-analytics-bundle.js"></script>
+  <script src="script/google-analytics-bundle.js"></script>
 </head>
 
 <body>
+<div id="ls"></div>
+<div id="find_all"><img src="images/find.png"><input type="text" placeholder="Поисковое слово"></div>
+<div id="close_pril" class="header_exit">x</div>
+<div id="resize_pril">_</div>
 <div id="panel"></div>
-<div id="header">
-<div class="header_logo"><img src=""></div>
-<div class="header_menu header_audio" title="Аудиозаписи"></div>
-<div class="header_menu header_exit" title="Закрыть приложение"></div>
-<div class="header_menu header_setting" title="Настройки"></div>
-<div class="header_menu header_help"></div>
-</div>
 <div id="menu">
+<div class="header_logo"><img src="../logo.png"></div>
+<div style="position: absolute;top: 50px;">
  <div class="punkt user my_wall" title="Ваша стена"></div>
  <div class="punkt friend my_friend" title="Список друзей"></div>
  <div class="new_friend" style="display:none;"></div>
- <!--<div class="punkt photo_album"></div>-->
+ <div class="punkt photo_album"></div>
  <div class="punkt video_album button_video" title="Видеозаписи"></div>
+ <div class="punkt audio_album button_audio" title="Аудиозаписи"></div>
  <div class="punkt button_group" title="Группы"></div>
- <!--<div class="punkt audio_album button_audio"></div>-->
  <div class="punkt notification button_notification" title="Ответы(недоработано)"></div>
  <div class="punkt news button_news" title="Новости"></div>
+ <div class="punkt settings" style="display:block;" title="Настройки"></div>
+</div>
+  <div id="menu_menu">
+        <div id="roundedTwos" class="wall_m">
+          <input type="checkbox" value="None" id="roundedTwo_wall" checked="true">
+          <label for="roundedTwo_wall"></label>
+        </div>
+
+        <div id="roundedTwos" class="friend_m">
+          <input type="checkbox" value="None" id="roundedTwo_friend" checked="true">
+          <label for="roundedTwo_friend"></label>
+        </div>
+
+        <div id="roundedTwos" class="photo_m">
+          <input type="checkbox" value="None" id="roundedTwo_photo" checked="true">
+          <label for="roundedTwo_photo"></label>
+        </div>
+
+        <div id="roundedTwos" class="video_m">
+          <input type="checkbox" value="None" id="roundedTwo_video" checked="true">
+          <label for="roundedTwo_video"></label>
+        </div>
+
+        <div id="roundedTwos" class="audio_m">
+          <input type="checkbox" value="None" id="roundedTwo_audio" checked="true">
+          <label for="roundedTwo_audio"></label>
+        </div>
+
+        <div id="roundedTwos" class="group_m">
+          <input type="checkbox" value="None" id="roundedTwo_group" checked="true">
+          <label for="roundedTwo_group"></label>
+        </div>
+       
+        <div id="roundedTwos" class="notification_m">
+          <input type="checkbox" value="None" id="roundedTwo_notification" checked="true">
+          <label for="roundedTwo_notification"></label>
+        </div>
+
+        <div id="roundedTwos" class="news_m">
+          <input type="checkbox" value="None" id="roundedTwo_news" checked="true">
+          <label for="roundedTwo_news"></label>
+        </div>
+</div>
 </div>
 <div id="contente">
   <div id="search_video">
@@ -54,22 +97,34 @@
       <div id="search_video_cheked">
         <input class="video_filters" type="checkbox" />Длинные видеозаписи</div>
     </div>
+    <hr style="display: block;position: inherit;top: 77px;left: 2px;right: 2px;border: none;background-color: #dce2e9;height: 1px;z-index:1">
     <div class="search_video_list"></div>
   </div>
 
   <div id="content">
-    <div id="messages_form"></div>
+
+    <div id="messages_form" ng-controller="FriendList" scrolly="FriendScroll()">
+      <div ng-include="'template/friendList.html'"></div>
+    </div>
+
     <div id="messages">
       <div id="table"></div>
       <div class="riso"><div class="riso2">Пользователь пишет сообщение <img src="images/typing.gif"></div></div>
     </div>
+
     <div id="send_messages">
+      <div id="arrow"><img src="images/arrow.png"></div>
       <div id="text_messages" placeholder="Введите текст и нажмите enter для отправки сообщения..." contenteditable="true"></div>
+      <div id="txt_smile">
+      <div id="history_smile"></div>
       <div id="open_smile"></div>
-      <div id="send_photo"></div>
+      <!--<div id="send_photo"></div>-->
+      <div id="send_doc"></div>
+      </div>
       <div id="smiles_fon"></div>
       <div id="smile"><div class="smiles"></div><div class="smile_tools"><div class="smiless tools_smile"></div><div class="smiless tools_sticker"></div></div><div class="sprite"></div></div>
     </div>
+
   </div>
   <input type="hidden" id="uid_user" value="">
   <input type="hidden" id="uid_wall" value="">
@@ -79,7 +134,7 @@
   <input type="hidden" id="histori" value="">
   <input type="hidden" id="attachments" value="">
   <input type="hidden" id="longpong" value="">
-
+  <input type="hidden" id="my_id" value="">
   <div id="search_group">
   	      <div id="search_group_control">
         <div id="search_group_pole"><input type="text" class="search_input_group" placeholder="Введите поисковое слово...(Enter)"></div>
@@ -87,6 +142,7 @@
           <img width="40px" src="images/search-button.png">
         </div>
       </div>
+      <hr style="display: block;position: inherit;top: 46px;left: 2px;right: 2px;border: none;background-color: #dce2e9;height: 1px;">
       <div class="group_list"></div>
   </div>
 
@@ -131,9 +187,7 @@
  <audio id="player_player" style="display:none;" src="" /></audio>
  <script src="script/jquery-ui.min.js"></script>
  <script type="text/javascript" src="script/lightbox.js"></script>
-   <div id="auth_form">
-    <webview style="width: 100%;height: 100%;" id="auth_id" src="https://oauth.vk.com/authorize?client_id=3915697&scope=friends,messages,offline,photos,audio,video,docs,wall,groups,notifications&redirect_uri=http://oauth.vk.com/blank.html&display=popup&response_type=token"></webview>
-    <button id="activate" style="display:none"></button>
+   <div id="auth_form" style="display:none;">
     <button id="update_messages" style="display:none"></button>
     <button id="get_mess" style="display:none"></button>
     
@@ -142,11 +196,8 @@
 
 <!-- Настройки -->
   <div id="dialog" class="setting">
-      <div class="dialog_sprite right"></div>
     <div class="dialog_header">Настройки</div>
     <div class="dialog_content">
-       <div id="resize">Свернуть окно</div>
-      <!-- -->
        <div id="setup_key" style="font-size: 11px;">
         Отправка клавишей:<br>
         <input type="radio" name="keys" value="1" checked="checked"/> Enter<br>
@@ -169,5 +220,7 @@
     <div class="dialog_content"></div>
   </div>
   <div id="display"></div>
+  <canvas id="canvas" style="display:none;" width="640px" height="480px;"></canvas>
+  <script src="script/camera.js"></script>
 </body>
 </html>
