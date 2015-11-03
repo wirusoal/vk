@@ -338,7 +338,7 @@ function smile_history_load(){
     }
   })
 }
-
+var tt = false;
  var messages_open = function(id,offs) {
   smile_history_load();
       if (id.substr(0, 5) == 'chat_') {
@@ -378,6 +378,7 @@ dd_messages(data,1,offs);
         }
       })
 emoji_load();
+tt = false;
     }
 
     $("#content > #messages").scroll(function() {
@@ -388,7 +389,11 @@ emoji_load();
       }
       var scrolltop = $("#content > #messages").prop('scrollTop');
         if(scrolltop == 0 && $("#table").find("div[id^='id']").length > 0){
+          console.log(tt)
+          if(tt == false){
           messages_open($("#uid_user").val(), $("#table").find("div[id^='id']").length);
+          tt = true;
+                    }
           $("#messages").scrollTop(50);
         }
     })
