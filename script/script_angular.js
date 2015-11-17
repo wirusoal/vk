@@ -21,6 +21,10 @@ angular.module("api",[]).factory('api', function($q,$http) {
                 $.each(data['response'][i], function( key, value ) {
                   if(key == 'photo'){           
                     data['response'][i]['photo'] = imageBlob(value)['$$state'];
+                  }else if(key == 'photo_medium'){
+                    data['response'][i]['photo_medium'] = imageBlob(value)['$$state'];
+                  }else if(key == 'thumb'){
+                    data['response'][i]['thumb'] = imageBlob(value)['$$state'];
                   }else if(key == 'date'){
                     data['response'][i]['date'] = format_date(data['response'][i]['date'],1);
                   }
@@ -50,16 +54,30 @@ app.directive('scrolly', function () {
     };
 });
 
-app.controller('FriendList', function($scope,$http,api) {
-  $scope.offset = 0;
-  $scope.data = Array();
-  $scope.loadFriend = function(){
-    api.json_get('execute.messages_get','offset='+$scope.offset).then(function(data){
+app.directive('enter', function () {
+    return function (scope, element, attrs) {
+        element.bind("keydown keypress", function (event) {
+            if(event.which === 13) {
+                scope.$apply(function (){
+                    scope.$eval(attrs.enter);
+                });
+
+                event.preventDefault();
+            }
+        });
+    };
+});
+//Диалоги
+app.controller('DialogList', function($scope,$http,api) {
+  $scope.offsetm = 0;
+  $scope.dataq = Array();
+  $scope.loadDialog = function(){
+    api.json_get('execute.messages_get','offset='+$scope.offsetm).then(function(data){
       for(i=0;i<data['response'].length;i++){
         data['response'][i]['id'] = (data['response'][i]['chat_id'] == 0)? data['response'][i]['id']: 'chat_'+data['response'][i]['chat_id']; 
         data['response'][i]['read_state'] = (data['response'][i]['read_state'] == 0 && data['response'][i]['out'] == 0) ? 'dialogs_new_msgs' : '';
         data['response'][i]['online'] = (data['response'][i]['online'] == 1) ? ((data['response'][i]['online_mobile'] == 1)? '#cc0043':'#00cc35'):'#aeaeae'; 
-        $scope.data.push(data['response'][i]);
+        $scope.dataq.push(data['response'][i]);
       }
       $scope.rm = function(im){
         return im['value'];
@@ -67,10 +85,72 @@ app.controller('FriendList', function($scope,$http,api) {
     })
   }
 
-  $scope.FriendScroll = function(){
-    $scope.offset = $("#messages_form").find(".dialogs_row").length;
-    $scope.loadFriend();
+  $scope.DialogScroll = function(){
+    $scope.offsetm = $("#messages_form").find(".dialogs_row").length;
+    $scope.loadDialog();
   }
 
-  $scope.loadFriend();
+  $scope.loadDialog();
+
+})
+//Видеозаписи
+app.controller('VideoList', function($scope,$http,api) {
+  $scope.offsetl = 0;
+  $scope.data = Array();
+  $scope.loadVideo = function(){
+    var filters = ($(".video_filters").prop("checked")) ? 'long' : 'short';
+    api.json_get('video.search','count=20&q='+$scope.search_input_video+'&filters=' + filters + '&offset='+$scope.offsetl).then(function(data){
+      for(i=0;i<data['response'].length;i++){
+        data['response'][i]['title'] = (data['response'][i]['title'].length > 30) ? data['response'][i]['title'].slice(0, 30) + "..." : data['response'][i]['title'];
+        if (data['response'][i]['duration'] > 60) {
+            var second = ((data['response'][i]['duration'] % 60) > 9) ? data['response'][i]['duration'] % 60 : '0' + data['response'][i]['duration'] % 60;
+            data['response'][i]['duration'] = Math.floor(data['response'][i]['duration'] / 60) + ':' + second;
+          } else {
+            data['response'][i]['duration'] = '00:' + data['response'][i]['duration'];
+          }
+        $scope.data.push(data['response'][i]);
+      }
+      $scope.rm = function(im){
+        return im['value'];
+      }
+    })
+  }  
+  
+  $scope.FindVideo = function(){
+    $scope.offsetl = 0;
+    $scope.data = Array();
+    $scope.loadVideo();
+  }
+  $scope.VideoScroll = function(){
+    $scope.offsetl = $(".search_video_list").find(".video_row_cont").length;
+    $scope.loadVideo();
+  }
+})
+//Список групп
+app.controller('GroupList', function($scope,$http,api) {
+  $scope.offsetp = 0;
+  $scope.data = Array();
+  $scope.loadGroupList = function(){
+    var method = ($scope.search_input_group == undefined || $scope.search_input_group == '')? 'groups.get':'groups.search'; 
+    api.json_get(method,'count=20&v=3.0&extended=1&offset='+$scope.offsetp+'&q='+$scope.search_input_group).then(function(data){
+      for(i=1;i<data['response'].length;i++){
+        data['response'][i]['type'] = (data['response'][i]['type'] == 'page') ? 'Публичная страница' : (data['response'][i]['type'] == 'group') ? 'Группа' : 'Мероприятие';
+        $scope.data.push(data['response'][i]);
+      }
+      $scope.rm = function(im){
+        return im['value'];
+      }
+    })
+  }  
+  
+  $scope.FindGroupList = function(){
+    $scope.offsetp = 0;
+    $scope.data = Array();
+    $scope.loadGroupList();
+  }
+  $scope.GroupListScroll = function(){
+    $scope.offsetp = $(".group_list").find(".group_list_row").length;
+    $scope.loadGroupList();
+  }
+  $scope.FindGroupList();
 })

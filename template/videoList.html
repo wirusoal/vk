@@ -1,0 +1,10 @@
+﻿<div class="video_row_cont" ng-repeat="datas in data" player="{{datas.player}}">
+  <div class="video_row_inner_cont">
+    <div class="video_row_info_line">
+       <div class="video_raw_info_name">{{datas.title}}</div>
+       <div class="video_row_duration">{{datas.duration}}</div>
+    </div>
+  <div class="video_row_info_play"></div>
+  <div class="video_image_div" t_video="{{datas.vid}}" style="background-image: url({{rm(datas.thumb)}});"></div>
+  </div>
+</div>

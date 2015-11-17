@@ -12,14 +12,14 @@ body {
     overflow-y: auto;
     position: absolute;
     right: 0px;
-    top: 28px;
+    top: 16px;
     bottom: 0px;
     border-left: #dce2e9 1px solid;
     border-top: #dce2e9 1px solid;
 }
 #close_pril {
     position: absolute;
-    top: 7px;
+    top: 1px;
     width: 12px;
     height: 12px;
     cursor: pointer;
@@ -33,7 +33,7 @@ body {
 }
 #resize_pril {
     position: absolute;
-    top: 7px;
+    top: 1px;
     width: 12px;
     border: 1px #bfc8d1 solid;
     border-radius: 50px;
@@ -50,36 +50,17 @@ body {
     position: absolute;
     left: 44px;
     top: 0px;
-    height: 28px;
+    height: 16px;
     width: 1px;
     border-left: #dce2e9 1px solid;
 }
 #panel {
     position: absolute;
     top: 0px;
-    left: 32%;
+    left: 46px;
     right: 50px;
     height: 15px;
     -webkit-app-region: drag;
-}
-#find_all {
-    position: absolute;
-    top: 4px;
-    left: 50px;
-    width: 180px;
-    height: 20px;
-}
-#find_all > img {
-    width: 18px;
-    height: 18px;
-    float: left;
-}
-#find_all > input {
-    width: 157px;
-    float: left;
-    outline: none;
-    border: 0px;
-    color: #bfc8d1;
 }
 #menu .header_logo {
     width: 40px;
@@ -92,7 +73,6 @@ body {
     height: 30px;
     margin: 5px;
 }
-
 #menu {
     position: absolute;
     left: 0px;
@@ -234,7 +214,7 @@ a {
 }
 .dialogs_msg_body {
     display: block;
-    margin-top: 3px;
+    margin-top: 5px;
 }
 /* -----------------------------------------------*/
 
@@ -268,7 +248,6 @@ a {
     bottom: 61px;
     display: none;
     border-left: #f1f4f7 4px solid;
-    border-right: #CCC9C9 1px solid;
 }
 .im_log_author {
     width: 32px;
@@ -307,7 +286,6 @@ div.im_log_author_chat_thumb {
     padding: 9px;
     background: #f5f7fa;
     box-shadow: 0 10px 4px -11px #C9BBBB inset;
-    border-right: #CCC9C9 1px solid;
     border-left: #CCC9C9 1px solid;
     border-top: #5b7fa6 1px solid;
 }
@@ -497,7 +475,7 @@ a#open_new_messages {
     top: 2px;
     left: 2px;
     right: 2px;
-    height: 80px;
+    height: 71px;
     padding: 4px;
     background-color: #f1f4f7;
 }
@@ -685,8 +663,18 @@ a#open_new_messages {
     display: none;
     overflow-x: hidden;
     overflow-y: auto;
-    border-right: #CCC9C9 1px solid;
     border-left: #f1f4f7 4px solid;
+}
+#news #track{
+    width: auto;
+    padding-right: 9px;
+}
+#wall #track {
+    width: 200px;
+    padding-right: 9px;
+}
+#wall #track .track_title,#news #track .track_title  {
+    margin-top: 8px;
 }
 
 #news{
@@ -971,10 +959,11 @@ b.profile_mob_onl {
     color: #999;
 }
 #track {
-    width: 100%;
-    height: 20px;
-    margin-top: 3px;
-    display: flex;
+    width: 32%;
+    height: 30px;
+    background-color: #E0EBF5;
+    margin: 2px;
+    float: left;
 }
 #track .track_play {
     width: 17px;
@@ -984,12 +973,14 @@ b.profile_mob_onl {
     float: left;
     margin-left: 5px;
     margin-right: 5px;
+    margin-top: 6px;
     cursor: pointer;
 }
 #track .track_title {
     float: left;
     color: #1C6299;
     font-size: 11px;
+    margin-top: 3px;
 }
 #music_list #track .track_title {
     float: left;
@@ -998,24 +989,29 @@ b.profile_mob_onl {
 }
 #track .track_add,
 #track .track_delete {
-    margin-top: 2px;
-    font-size: 9px;
-    position: absolute;
-    color: #1C6299;
-    right: 6px;
+    display: block;
+    float: right;
+    margin-top: 1px;
     display: none;
-    cursor: no-drop;
+    cursor: pointer; 
+    margin-right: 5px;
+}
+
+#track .track_add img,
+#track .track_delete img,
+#track .track_download img {
+   width: 10px;
 }
 #track .track_download {
-    margin-top: 2px;
+    margin-top: 17px;
+    margin-right: -10px;
     font-size: 9px;
-    position: absolute;
-    right: 41px;
+    float: right;
     display: none;
+    cursor: pointer;
 }
 #track .track_download a {
     color: #1C6299;
-    cursor: copy;
 }
 #player {
     position: absolute;
@@ -1070,24 +1066,33 @@ b.profile_mob_onl {
     color: #b1b3b8;
     position: absolute;
     top: 6px;
-    left: 108px;
+    left: 133px;
     font-family: tahoma, arial, verdana, sans-serif, Lucida sans;
 }
 .time_music {
     color: #b1b3b8;
     position: absolute;
     top: 6px;
-    left: 393px;
+    left: 401px;
     font-family: tahoma, arial, verdana, sans-serif, Lucida sans;
 }
+.list {
+    width: 14px;
+    height: 15px;
+    background-image: url("../images/table.png");
+    background-size: 14px 15px;
+    position: absolute;
+    left: 101px;
+    top: 7px;
+}
 #scroka_time_music {
-    width: 200px;
+    width: 300px;
     height: 4px;
     background-color: #fff;
     margin-top: 0px;
     position: absolute;
     top: 26px;
-    left: 108px;
+    left: 133px;
 }
 #scroka_time_music .scroka_time_music {
     width: 0px;
@@ -1105,10 +1110,14 @@ b.profile_mob_onl {
 }
 #find_music {
     position: absolute;
-    top: -40px;
-    width: 360px;
-    left: 44px;
-    height: 25px;
+    top: 4px;
+    width: 304px;
+    left: 133px;
+    height: 18px;
+    background-color: #EBEEF2;
+    z-index: 1001;
+    padding-top: 8px;
+    display: none;
 }
 #find_music input {
     background-color: rgba(255, 255, 255, 0.94);
@@ -1116,11 +1125,9 @@ b.profile_mob_onl {
     border-radius: 4px;
     border: 0;
     font-size: 11px;
-    padding: 3px;
-    width: 360px;
-    margin: 7px auto;
+    padding: 2px;
+    width: 297px;
     display: block;
-    text-align: center;
     outline: none;
 }
 #send_photo {
@@ -1156,8 +1163,8 @@ b.profile_mob_onl {
     position: absolute;
     height: 2px;
     background-color: #fff;
-    left: 320px;
-    top: 27px;
+    left: 441px;
+    top: 20px;
 }
 .ui-slider-handle {
     position: absolute;
@@ -1516,7 +1523,7 @@ b.profile_mob_onl {
     display: table;
     -webkit-user-select: text;
 }
-#dialog {
+#dialog,#dialog_audio {
     width: 28%;
     min-height: 89px;
     background-color: #fff;
@@ -1526,7 +1533,8 @@ b.profile_mob_onl {
     display: none;
     z-index: 100;
 }
-#dialog .dialog_header {
+#dialog .dialog_header,
+#dialog_audio .dialog_header  {
     position: absolute;
     top: 0px;
     left: 0px;
@@ -1534,7 +1542,8 @@ b.profile_mob_onl {
     height: 24px;
     background: #EBEEF2;
 }
-#dialog .dialog_content {
+#dialog .dialog_content,
+#dialog_audio .dialog_content {
     position: absolute;
     top: 24px;
     left: 0px;
@@ -1560,34 +1569,63 @@ b.profile_mob_onl {
 }
 #dialog .right_bottom {
     left: -12px;
-    top: 56px;
+    top: 92px;
     -webkit-transform: rotate(90deg);
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAAJCAYAAADQHRcxAAAABmJLR0QAAAAAAAD5Q7t/AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wEGERwlhyAyawAAAXRJREFUKM+N0TtKA2EQB/CZ+R4bkvWxaxQiRomuza5Wa7BJSq/gGTySZ/AKtrYpYxUUVCxUNJC4ZL+nhUQ2EcQpZ4Yf82fw7PwCXx5HVA/X6enuNnwYDd/hn7WbZPHOfjotpmO31U4czQfEGK5GG659kCb/gdoHabIabThiDH+M6sJa3DLN1t7k8Lh79Bd0eNw9arb2Jmtxy1T7CACQZDltbncYAAhrTeCMCT+nH5u3g5vBMpTmvbwRRq/E+ZQxXgKAfn2+t6Ph4DtmJ+t6o5U3WjlCsiKozRor8Tg76Z9Woeykf9pYicciqM0IyRqtnNHKd7KuX4ipysJzIa0HrxFRcyGLehi9pXkvn19UD6M3LmSBiNqD11xIq8rCL8QEAKh+1TnLiZgEAGG0CsrZpwhqDc2FLAFAO2cVETPzL15fXfoFbBk0WjEha8xZw5AIvXOeGLdazSwX0i5Dv7AqKIM6ciHRaMXmMy6kNVp5VRZ+GQIA+AJsJrNCvFehjQAAAABJRU5ErkJggg==');
 }
-#dialog.audio {
-    top: 50px;
-    left: 61px;
-    bottom: 10px;
-    width: 450px;
+#dialog_audio.audio {
+    left: 40px;
+    width: 100%;
+    height: 40px;
+    min-height: 40px;
+    bottom: 0px;
 }
-#dialog.audio .dialog_header {
+#canvas_mus {
+    position: absolute;
+    width: 100%;
+    height: 40px;
+    z-index: 100;
+}
+#dialog_audio.audio .dialog_header {
     height: 40px;
     padding-left: 5px;
 }
-#dialog.audio .dialog_content {
-    top: 40px;
+#dialog_audio.audio .dialog_content {
+    top: -167px;
+    position: absolute;
+    height: 167px;
+    background-color: #F7F5F5;
+    right: 41px;
+    padding-left: 16px;
+    display: none;
 }
 #dialog.setting {
-    top: 15px;
-    height: 100%;
+    top: 0px;
+    height: 40px;
+    right: 0px;
     left: 40px;
-}
-#dialog.setting .dialog_header {
-    height: 15px;
-    padding: 5px;
+    width: auto;
+    background-color: #5b7fa6;
+    color: #fff;
+    min-height: auto;
+    height: 100px;
 }
 #dialog.setting .dialog_content {
-    padding: 5px;
+    top: 3px;
+    padding: 4px;
+}
+div#setup_key, div#startStena, div#smenUser, div#info_prog {
+    width: 111px;
+    padding: 6px;
+    height: 64px;
+    float: left;
+    margin: 4px;
+    border: 1px #4D749E solid;
+    background: #6682A0;
+}
+div#info_prog{ 
+    width: 232px;
+    font-family: serif;
 }
 .new_friend {
     background: #cc0043;
@@ -1595,9 +1633,8 @@ b.profile_mob_onl {
     height: 8px;
     border-radius: 4px;
     position: relative;
-    top: -37px;
-    left: 34px;
-    margin-bottom: -14px;
+    top: -29px;
+    left: 22px;
 }
 #dialog.friend {
     top: 0px;

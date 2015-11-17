@@ -9,7 +9,6 @@
   <link rel="stylesheet" href="css/lightbox.css" type="text/css" />
   <link rel="stylesheet" href="css/dialog.css" type="text/css" />
   <link rel="stylesheet" href="css/notification.css" type="text/css" />
-  
   <script src="script/jquery-1.11.0.min.js"></script>
   <script src="script/angular.min.js"></script>
   <script src="script/aja.min.js"></script>
@@ -25,7 +24,6 @@
 
 <body>
 <div id="ls"></div>
-<div id="find_all"><img src="images/find.png"><input type="text" placeholder="Поисковое слово"></div>
 <div id="close_pril" class="header_exit">x</div>
 <div id="resize_pril">_</div>
 <div id="panel"></div>
@@ -86,25 +84,25 @@
 </div>
 </div>
 <div id="contente">
-  <div id="search_video">
+  <div id="search_video" ng-controller="VideoList">
     <div class="search_video">
       <div id="search_video_control">
-        <input type="text" class="search_input_video" placeholder="Введите поисковое слово...(Enter)">
-        <div class="search_button_video">
+        <input type="text" ng-model="search_input_video" class="search_input_video" placeholder="Введите поисковое слово...(Enter)" enter="FindVideo()">
+        <div class="search_button_video" ng-click="FindVideo()">
           <img width="40px" src="images/search-button.png">
         </div>
       </div>
       <div id="search_video_cheked">
-        <input class="video_filters" type="checkbox" />Длинные видеозаписи</div>
+        <input class="video_filters" type="checkbox" style="visibility: visible;"/>Длинные видеозаписи</div>
     </div>
     <hr style="display: block;position: inherit;top: 77px;left: 2px;right: 2px;border: none;background-color: #dce2e9;height: 1px;z-index:1">
-    <div class="search_video_list"></div>
+    <div class="search_video_list" ng-include="'template/videoList.html'" scrolly="VideoScroll()"></div>
   </div>
 
   <div id="content">
 
-    <div id="messages_form" ng-controller="FriendList" scrolly="FriendScroll()">
-      <div ng-include="'template/friendList.html'"></div>
+    <div id="messages_form" ng-controller="DialogList" scrolly="DialogScroll()" ng-include="'template/dialogList.html'">
+
     </div>
 
     <div id="messages">
@@ -126,57 +124,48 @@
     </div>
 
   </div>
-  <input type="hidden" id="uid_user" value="">
-  <input type="hidden" id="uid_wall" value="">
-  <input type="hidden" id="next_from" value="">
-  <input type="hidden" id="post_id" value="">
-  <input type="hidden" id="comment_wall_on" value="">
-  <input type="hidden" id="histori" value="">
-  <input type="hidden" id="attachments" value="">
-  <input type="hidden" id="longpong" value="">
-  <input type="hidden" id="my_id" value="">
-  <div id="search_group">
-  	      <div id="search_group_control">
-        <div id="search_group_pole"><input type="text" class="search_input_group" placeholder="Введите поисковое слово...(Enter)"></div>
-        <div class="search_button_group">
+  <div id="search_group" ng-controller="GroupList">
+  	  <div id="search_group_control">
+        <div id="search_group_pole"><input type="text" ng-model="search_input_group" class="search_input_group" placeholder="Введите поисковое слово...(Enter)" enter="FindGroupList()">
+        </div>
+        <div class="search_button_group" ng-click="FindGroupList()">
           <img width="40px" src="images/search-button.png">
         </div>
       </div>
       <hr style="display: block;position: inherit;top: 46px;left: 2px;right: 2px;border: none;background-color: #dce2e9;height: 1px;">
-      <div class="group_list"></div>
+      <div class="group_list" ng-include="'template/groupList.html'" scrolly="GroupListScroll()"></div>
   </div>
 
   <div id="wall"></div>
   <div id="news"></div>
-
-
 
 </div>
 </div>
 </div>
 
 <!-- Аудиозаписи -->
-  <div id="dialog" class="audio">
-      <div class="dialog_sprite left"></div>
+  <div id="dialog_audio" class="audio">
+      <div class="dialog_content"></div>
+<canvas id="canvas_mus"></canvas>
     <div class="dialog_header">
       <!-- Элементы плеера -->
-  <div id="slider"></div>
-    <div id="button_player">
+  <div id="slider" style="z-index:1000"></div>
+    <div id="button_player" style="position:absolute;z-index:1000">
       <div class="track_n"></div>
       <div class="track_plays"></div>
       <div class="track_w"></div>
       <div class="repeat"></div>
+      <div class="list"></div>
     </div>
      <div id="find_music"><input type="text" class="search_input_music" placeholder="ПОИСК МУЗЫКИ"></div>
-       <span class="name_music"></span>
-       <span class="time_music"></span>
-     <div id="scroka_time_music">
+       <span class="name_music" style="z-index:1000"></span>
+       <span class="time_music" style="z-index:1000"></span>
+     <div id="scroka_time_music" style="z-index:1000">
        <div class="scroka_buffer_music"></div>
        <div class="scroka_time_music"></div>
     </div>
       <!-- Элементы плеера -->
     </div>
-    <div class="dialog_content"></div>
   </div>
 
  <audio id="beep">
@@ -184,7 +173,6 @@
             Your browser does not support HTML5 audio.
         </audio>
 
- <audio id="player_player" style="display:none;" src="" /></audio>
  <script src="script/jquery-ui.min.js"></script>
  <script type="text/javascript" src="script/lightbox.js"></script>
    <div id="auth_form" style="display:none;">
@@ -196,16 +184,20 @@
 
 <!-- Настройки -->
   <div id="dialog" class="setting">
-    <div class="dialog_header">Настройки</div>
     <div class="dialog_content">
        <div id="setup_key" style="font-size: 11px;">
         Отправка клавишей:<br>
-        <input type="radio" name="keys" value="1" checked="checked"/> Enter<br>
-        <input type="radio" name="keys" value="2" /> Ctrl+Enter
+        <input type="radio" name="keys" value="1" checked="checked"/>Enter
+        <br> 
+        <input type="radio" name="keys" value="2" />Ctrl+Enter
         </div>
-        <div><input type="checkbox" id="cache"/> Кеширование</div>
-        <div><input type="checkbox" id="start_stena"/> Стена при старте</div>
-        <div id="new_user">Сменить пользователя</div>
+        <div style="display:none;"><input type="checkbox" id="cache"/> Кеширование</div>
+        <div id="startStena"><input type="checkbox" id="start_stena" style="visibility: visible;" /> Стена при старте приложения</div>
+        <div id="smenUser">
+        <div id="new_user">Сменить пользователя</div></div>
+        <div id="info_prog">Обновление версии 0.26 от 16.11.2015<br>
+        Поддержать проект: Yandex.money 41001708821143
+        </div>
     </div>
   </div>
 <!-- Список друзей -->
@@ -221,6 +213,16 @@
   </div>
   <div id="display"></div>
   <canvas id="canvas" style="display:none;" width="640px" height="480px;"></canvas>
+
   <script src="script/camera.js"></script>
+  <input type="hidden" id="uid_user" value="">
+  <input type="hidden" id="uid_wall" value="">
+  <input type="hidden" id="next_from" value="">
+  <input type="hidden" id="post_id" value="">
+  <input type="hidden" id="comment_wall_on" value="">
+  <input type="hidden" id="histori" value="">
+  <input type="hidden" id="attachments" value="">
+  <input type="hidden" id="longpong" value="">
+  <input type="hidden" id="my_id" value="">
 </body>
 </html>

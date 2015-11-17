@@ -1,0 +1,9 @@
+  <div ng-repeat="datas in data" uid="-{{datas.gid}}" class="group_list_row">
+    <div class="group_row_photo">
+      <img src="{{rm(datas.photo_medium)}}">
+    </div>
+  <div class="group_row_info">
+    <div class="group_row_labeled">{{datas.name}}</div>
+    <div class="group_row_labeled">{{datas.type}}</div>
+  </div>
+  </div>

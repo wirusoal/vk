@@ -156,13 +156,13 @@ emoji_load();
     }
 
   //наведение на сообщение
-  $('#messages_form').on('mouseover', 'div.dialogs_row', function(e) {
+  $('body').on('mouseover', '.dialogs_row', function(e) {
     $(this).addClass("dialogs_row_over");
     $(this).find(".delete_dialog").show();
     $(this).find(".open_dialog_window").show();
   });
   //Убираем мышку с сообщения
-  $('#messages_form').on('mouseout', 'div.dialogs_row', function(e) {
+  $('body').on('mouseout', '.dialogs_row', function(e) {
     $(this).removeClass("dialogs_row_over");
     $(this).find(".delete_dialog").hide();
     $(this).find(".open_dialog_window").hide();
@@ -399,11 +399,11 @@ emoji_load();
       $("#messages").animate({"scrollTop":height},scrollTime);
     })
     //нажатие на сообщение
-  $('#messages_form').on('click', 'div.dialogs_row', function(e) {
-   iddd($(this).attr('uid'));
+  $('body').on('click', 'div[class^="im_msg_text"]', function(e) {
+    iddd($(this).parents(".dialogs_row").find(".delete_dialog").attr('uid'));
   });
 
-  function iddd(id){
+  var iddd = function(id){
     $("#news").hide();
     $("#wall").hide();
     if (open_video == 1) { $(".button_video").click(); }
@@ -492,15 +492,15 @@ emoji_load();
       //console.info(data);
       for (var i = 0; i < data['response']['items'].length; i++) {
         var text = '';
-        var title = (data['response']['items'][i]['title'].length > 20) ? data['response']['items'][i]['title'].slice(0, 20) : data['response']['items'][i]['title'];
-        var artist = (data['response']['items'][i]['artist'].length > 40) ? data['response']['items'][i]['artist'].slice(0, 20) : data['response']['items'][i]['artist'];
-        text += '<div id="track" mus="player" duration="' + data['response']['items'][i]['duration'] + '" uid="' + data['response']['items'][i]['id'] + '" url="' + data['response']['items'][i]['url'] + '"><div class="track_play"></div><div class="track_title">' + artist + ' - ' + title + '</div>'
+        var title = (data['response']['items'][i]['title'].length > 25) ? data['response']['items'][i]['title'].slice(0, 25) : data['response']['items'][i]['title'];
+        var artist = (data['response']['items'][i]['artist'].length > 15) ? data['response']['items'][i]['artist'].slice(0, 15) : data['response']['items'][i]['artist'];
+        text += '<div id="track" mus="player" duration="' + data['response']['items'][i]['duration'] + '" uid="' + data['response']['items'][i]['id'] + '" url="' + data['response']['items'][i]['url'] + '"><div class="track_play"></div><div class="track_title">' + artist + ' <br><span>' + title + '</span></div>'
         if ($('.search_input_music').val().length < 2) {
-          text += '<div id="' + data['response']['items'][i]['id'] + '" owner_id="' + data['response']['items'][i]['owner_id'] + '" class="track_delete">удалить</div>';
-          text += '<div class="track_download"><a href="' + data['response']['items'][i]['url'] + '" download>скачать\/</a></div>';
+          text += '<div id="' + data['response']['items'][i]['id'] + '" owner_id="' + data['response']['items'][i]['owner_id'] + '" class="track_delete"><img src="images/delete_audio.png"></div>';
+          text += '<div class="track_download"><a href="' + data['response']['items'][i]['url'] + '" download><img src="images/download_audio.png"></a></div>';
         } else if ($('.search_input_music').val().length > 2) {
-          text += '<div id="' + data['response']['items'][i]['id'] + '" owner_id="' + data['response']['items'][i]['owner_id'] + '" class="track_add" style="cursor: copy;right: 2px;">добавить</div>';
-          text += '<div class="track_download"><a href="' + data['response']['items'][i]['url'] + '" download>скачать\/</a></div>';
+          text += '<div id="' + data['response']['items'][i]['id'] + '" owner_id="' + data['response']['items'][i]['owner_id'] + '" class="track_add"><img src="images/add_audio.png"></div>';
+          text += '<div class="track_download"><a href="' + data['response']['items'][i]['url'] + '" download><img src="images/download_audio.png"></a></div>';
         }
         text += '</div>';
         $(".audio .dialog_content").append(text);
@@ -509,12 +509,23 @@ emoji_load();
   }
 
   var open_video = 0;
+  var start_analiz = false;
+  window.audio = new Audio();
+  var context_audio = new AudioContext();
+  var analyser_audio = context_audio.createAnalyser();
+  analyser_audio.smoothingTimeConstant = 0.3;
+  analyser_audio.fftSize = 512;
   $('#menu').on('click', '.button_audio', function() {
-      $(".audio").toggle();
+      if($("#contente").css("bottom") == "42px"){
+        $("#contente").animate({"bottom":"0px"});
+        $(".audio").effect('drop',{'mode':'hide','direction':'down'})
+      }else{ 
+        $(".audio").effect('drop',{'mode':'show','direction':'down'})
+        $("#contente").animate({"bottom": "42px"}); 
+      }
       if($(".audio > .dialog_content > #track").index() == -1){
         player_load(0);
       }
-      $("#display").show();
   })
 
   $('.audio > .dialog_content').on('mouseover', '#track', function(e) {
@@ -528,6 +539,14 @@ emoji_load();
     $(this).find(".track_download").hide();
     $(this).find(".track_delete").hide();
   });
+
+  $('#button_player').on('click', '.list', function() {
+    $("#find_music").toggle();
+    $(".audio > .dialog_content").effect('drop',{'mode':'show','direction':'down'})
+    if($(".audio > .dialog_content").is(':visible')){
+      $(".audio > .dialog_content").effect('drop',{'mode':'hide','direction':'down'})
+    }
+  })
 
   $('.audio > .dialog_content').on('click', '.track_add', function() {
     sender('audio.add', 'audio_id=' + $(this).attr('id') + '&owner_id=' + $(this).attr('owner_id'), function(data) {
@@ -552,10 +571,15 @@ emoji_load();
   })
 
   function play_music(id, url, duration) {
-    $("#player_player").attr("src", url);
-    $("#player_player")[0].play();
+    audio.src=url;
+    audio.play();
+    var source = context_audio.createMediaElementSource(audio);
+    source.connect(analyser_audio);
+    analyser_audio.connect(context_audio.destination);
+    start_analiz = true;
+    update_graf();
     $(".track_plays").css('background-image', 'url("images/track_stop.png")');
-    $(".name_music").html($("#track[uid='" + id + "'] > .track_title").html().slice(0, 50).toLowerCase());
+    $(".name_music").html($("#track[uid='" + id + "'] > .track_title").text().slice(0, 50).toLowerCase());
     $(".time_music").html(time(duration));
   }
 
@@ -566,7 +590,8 @@ emoji_load();
       $(".track_play:eq(" + index + ")").css('background-image', 'url("images/play_mini.png")');
       //$("#music_list > #track:eq("+$(this).index()+")").removeAttr('play');
       $(".track_plays").css('background-image', 'url("images/track_play.png")');
-      $("#player_player")[0].pause();
+      audio.pause();
+      start_analiz = false;
     } else {
       $(".audio > .dialog_content").find(".track_play").css('background-image', 'url("images/play_mini.png")');
       $(".track_play:eq(" + index + ")").css('background-image', 'url("images/pausa_mini.png")');
@@ -606,11 +631,14 @@ emoji_load();
 
   $('#button_player').on('click', '.track_plays', function() {
     if ($(".track_plays").css('background-image').indexOf("images/track_play.png") > 0) {
-      $("#player_player")[0].play();
+      start_analiz = true;
+      update_graf();
+      audio.play();
       $(".audio > .dialog_content > #track:eq('" + $(".audio > .dialog_content > #track[play='on']").index() + "') .track_play").css('background-image', 'url("images/pausa_mini.png")');;
       $(".track_plays").css('background-image', 'url("images/track_stop.png")');
     } else {
-      $("#player_player")[0].pause();
+      audio.pause();
+      start_analiz = false;
       $(".audio > .dialog_content > #track:eq('" + $(".audio > .dialog_content > #track[play='on']").index() + "') .track_play").css('background-image', 'url("images/play_mini.png")');;
       $(".track_plays").css('background-image', 'url("images/track_play.png")');
     }
@@ -620,39 +648,49 @@ var repeat = false;
   $('#button_player').on('click', '.repeat', function() {
    if(repeat){
     $(".repeat").css('background-image','url("images/repeat.png")');
-    $("#player_player").removeAttr('loop');
-   	repeat = false;
+   	audio.loop = false;
    }else{
     $(".repeat").css('background-image','url("images/repeat_on.png")');
-    $("#player_player").attr('loop');
+    audio.loop = true;
    	repeat = true;
    }
   })
 
-  $("#player_player").bind('ended', function() {
+  audio.addEventListener('ended', function() {
   	if(repeat){
-  	 this.currentTime = 0;
-  	 this.play();
+  	 audio.currentTime = 0;
+  	 audio.play();
     }else{
      $(".track_w").click();
     }
   });
  
-  $("#player_player").bind('timeupdate', function() {
+  audio.addEventListener('timeupdate', function() {
     var time_track = $(".audio > .dialog_content > #track[play='on']").attr("duration");
-    var times = this.currentTime;
+    var times = audio.currentTime;
     var new_time = (time_track / times) * 100;
 
     var polosa = ($("#scroka_time_music").width() / new_time) * 100;
     $(".scroka_time_music").width(polosa + "px");
+
   });
 
+ function update_graf(){
+        var array_audio =  new Uint8Array(analyser_audio.frequencyBinCount);
+        analyser_audio.getByteFrequencyData(array_audio);
+        ctx.clearRect(0, 0, 1000, 325);
+        ctx.fillStyle=gradient;
+        drawSpectrum(array_audio);
+        if(start_analiz == true){
+          setTimeout(update_graf, 70);
+        }
+ }
   $('.audio').on('click', '#scroka_time_music', function(e) {
     var time_track = $(".audio > .dialog_content > #track[play='on']").attr("duration");
     var s = e.pageX - 170;
     var click = ($("#scroka_time_music").width() / s) * 100;
     var new_time = (time_track / click) * 100;
-    $("#player_player")[0].currentTime = Math.ceil(new_time);
+    audio.currentTime = Math.ceil(new_time);
   })
 
   $(".search_input_music").keydown(function(event) {
@@ -693,18 +731,35 @@ var repeat = false;
     //Событие слайдреа
     slide: function(event, ui) { //При пермещении слайдера
       var value = slider.slider('value');
-      $("#player_player")[0].volume = value / 100;
+      audio.volume = value / 100;
 
     },
 
     stop: function(event, ui) {},
   });
+
+    var ctx = $("#canvas_mus").get()[0].getContext("2d");
+
+    var gradient = ctx.createLinearGradient(0,0,0,300);
+    gradient.addColorStop(1,'#000000');
+    gradient.addColorStop(0.75,'#5b7fa6');//#EBEEF2
+    gradient.addColorStop(0.25,'#D6D9DC');
+    gradient.addColorStop(0,'#ffffff');
+
+      function drawSpectrum(array) {
+        for ( var i = 0; i < (array.length); i++ ){
+            var value = array[i];
+
+            ctx.fillRect(i*5,325-value,3,325);
+            //  console.log([i,value])
+        }
+    };
     //video
   $('#menu').on('click', '.button_video', function() {
     $("#news").hide();
     if (open_video == 0) {
       $('.search_input_video').val("");
-      $(".search_video_list").html("");
+      //$(".search_video_list").html("");
       $("#search_video").show();
       if (button_group == 1) {
         $('.button_group').click();
@@ -716,54 +771,7 @@ var repeat = false;
       open_video = open_video - 1;
     }
   })
-  var video_offset = 0;
 
-  function search_video() {
-    if ($('.search_input_video').val().length > 1) {
-      var filters = ($(".video_filters").prop("checked")) ? 'long' : 'short';
-      sender('video.search', 'count=20&filters=' + filters + '&q=' + $('.search_input_video').val() + '&offset=' + video_offset, function(data) {
-        var text = '';
-        for (var i = 0; i < data['response'].length; i++) {
-          var title = (data['response'][i]['title'].length > 30) ? data['response'][i]['title'].slice(0, 30) + "..." : data['response'][i]['title'];
-          text = text + '<div class="video_row_cont" player="' + data['response'][i]['player'] + '"><div class="video_row_inner_cont">';
-          if (data['response'][i]['duration'] > 60) {
-            var second = ((data['response'][i]['duration'] % 60) > 9) ? data['response'][i]['duration'] % 60 : '0' + data['response'][i]['duration'] % 60;
-            var duration = Math.floor(data['response'][i]['duration'] / 60) + ':' + second;
-          } else {
-            var duration = '00:' + data['response'][i]['duration'];
-          }
-          text = text + '<div class="video_row_info_line"><div class="video_raw_info_name">' + title + '</div><div class="video_row_duration">' + duration + '</div></div>';
-          text = text + '<div class="video_row_info_play"></div>';
-          text = text + '<div class="video_image_div" t_video="' + data['response'][i]['id'] + '" style="background-image: url();"></div>';
-          loa(data['response'][i]['image_medium'], data['response'][i]['id'], function(id, d) {
-            $(".video_image_div[t_video='" + id + "']").css('background-image', 'url(' + d + ')');
-          })
-          text = text + '</div></div>';
-        }
-        $(".search_video_list").append(text);
-      })
-    }
-  }
-  $('#search_video').on('click', '.search_button_video', function() {
-    $(".search_video_list").html("");
-    search_video();
-  });
-  $('.search_input_video').keyup(function(eventObject) {
-    if (eventObject.which == 13) {
-      $(".search_video_list").html("");
-      search_video();
-    }
-  });
-  $(".search_video_list").scroll(function() {
-    var scrolltopi = $('.search_video_list').prop('scrollTop');
-    var scrollheighti = $('.search_video_list').prop('scrollHeight');
-    var windowheighti = $('.search_video_list').prop('clientHeight');
-    var scrolloffseti = 20;
-    if (scrolltopi >= (scrollheighti - (windowheighti + scrolloffseti))) {
-      video_offset = video_offset + 20;
-      search_video();
-    }
-  })
   $('#search_video, #wall').on('click', '.video_row_cont', function() {
     $("#player_player")[0].pause();
     $("#dialog_video").dialog({ minHeight: 200, minWidth: 300 });
@@ -776,73 +784,16 @@ var repeat = false;
   });
   //!!video/end
 
-  //group
-  var offset_group = 0;
 
-  function open_group() {
-    if ($('.search_input_group').val().length < 2) {
-      var method = 'groups.get';
-      offset_group = offset_group;
-    } else if ($('.search_input_group').val().length > 2) {
-      var method = 'groups.search';
-      offset_group = offset_group + '&q=' + $('.search_input_group').val();
-    }
-    sender(method, 'count=20&v=5.21&extended=1&offset=' + offset_group, function(data) {
-      //console.log(obj(data['response']));
-      var text = '';
-      for (var i = 0; i < data['response']['items'].length; i++) {
-        text = text + '<div uid="-' + data['response']['items'][i]['id'] + '" class="group_list_row">';
-        text = text + '<div class="group_row_photo">';
-        text = text + '<img id_group="' + data['response']['items'][i]['id'] + '" src="images/image_loader.gif">';
-        text = text + '</div>';
-        text = text + '<div class="group_row_info">';
-        text = text + '<div class="group_row_labeled">' + data['response']['items'][i]['name'] + '</div>';
-        var type = (data['response']['items'][i]['type'] == 'page') ? 'Публичная страница' : (data['response']['items'][i]['type'] == 'group') ? 'Группа' : 'Мероприятие';
-        text = text + '<div class="group_row_labeled">' + type + '</div>';
-        text = text + '</div>';
-        text = text + '</div>';
-        loa(data['response']['items'][i]['photo_100'], data['response']['items'][i]['id'], function(id, d) {
-          $("img[id_group='" + id + "']").attr("src", d);
-        })
-      }
-      $(".group_list").append(text);
-    })
-  }
-
-  $('#search_group').on('click', '.search_button_group', function() {
-    offset_group = 0;
-    $(".group_list").html("");
-    open_group();
-  })
-  $('.search_input_group').keyup(function(eventObject) {
-    if (eventObject.which == 13) {
-      offset_group = 0;
-      $(".group_list").html("");
-      open_group();
-    }
-  });
-
-  $(".group_list").scroll(function() {
-    var scrolltopi = $('.group_list').prop('scrollTop');
-    var scrollheighti = $('.group_list').prop('scrollHeight');
-    var windowheighti = $('.group_list').prop('clientHeight');
-    var scrolloffseti = 20;
-    if (scrolltopi >= (scrollheighti - (windowheighti + scrolloffseti))) {
-      offset_group = offset_group + 20;
-      open_group();
-    }
-  })
   var button_group = 0;
   $('#menu').on('click', '.button_group', function() {
       $("#news").hide();
       if (button_group == 0) {
-        $(".group_list").html("");
         $(".search_input_group").val("");
         if (open_video == 1) {
           $(".button_video").click();
         };
         $("#wall").hide();
-        open_group();
         $("#search_group").show();
         button_group = button_group + 1;
       } else {
@@ -1786,6 +1737,7 @@ if(timers){
 
   function start() {
       chrome.storage.local.get('vkAccessToken', function(result) {
+        console.log(result.vkAccessToken)
         if (result.vkAccessToken != '') {
           chrome.storage.local.get('start_stena', function (result) {
            if (result.start_stena == '' || result.start_stena == undefined || result.start_stena == '0') {
@@ -2371,6 +2323,7 @@ $('#menu').on('click', '.settings', function() {
   if($("#display").css("display") == 'block'){
     menu_hide(1);
   }
+  $("#dialog.setting").toggle();
   $("#display").toggle(); 
   $("#menu_menu").toggle();
 })
@@ -2386,7 +2339,6 @@ $('body').on('click', '#get_mess', function() {
 $('body').on('click', '#display', function() {
   $("#dialog.friend").hide();
   $("#dialog.setting").hide();
-  $(".audio").hide();
   $("#display").hide();
   $("#menu_menu").hide();
   menu_hide(1);
@@ -2429,4 +2381,6 @@ function menu_hide(q){
  })
 }
 menu_hide(0);
+
+
 });
