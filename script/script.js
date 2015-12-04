@@ -1,4 +1,9 @@
 $(document).ready(function() {
+  //chrome.storage.local.set({ 'active': 1 })
+  //chrome.storage.local.set({ 'vkAccessToken': '' })
+chrome.storage.local.get('vkAccessToken', function(result) {
+console.info(results['vkAccessToken'])
+  })
 //google-analytics from_group 
 var service, tracker, out;
 var service = analytics.getService('vkinviz');
@@ -10,17 +15,30 @@ tracker.sendAppView('MainView');
 
 $('body').on('click', "#cache", function(){
   if($("#cache").prop("checked") == true){
-     chrome.storage.local.set({ 'cache': '1' }, function () {});
+     chrome.storage.local.set({ 'cache': '1' });
   }else if($("#cache").prop("checked") == false){
-     chrome.storage.local.set({ 'cache': '0' }, function () {});
+     chrome.storage.local.set({ 'cache': '0' });
   }
+})
+
+$('body').on('click', "#sound_m", function(){
+
+  if($("#sound_m").prop("checked") == true){
+     chrome.storage.local.set({ 'sound': '1' });
+  }else if($("#sound_m").prop("checked") == false){
+     chrome.storage.local.set({ 'sound': '0' });
+  }
+})
+
+chrome.storage.local.get('sound', function (result) {
+   if(result.sound == '1'){ $("#sound_m").prop("checked", true); }
 })
 
 $('body').on('click', "#start_stena", function(){
   if($("#start_stena").prop("checked") == true){
-     chrome.storage.local.set({ 'start_stena': '1' }, function () {});
+     chrome.storage.local.set({ 'start_stena': '1' });
   }else if($("#start_stena").prop("checked") == false){
-     chrome.storage.local.set({ 'start_stena': '0' }, function () {});
+     chrome.storage.local.set({ 'start_stena': '0' });
   }
 })
   function pasteHtmlAtCaret(html) {
@@ -128,15 +146,17 @@ $('body').on('click', "#start_stena", function(){
   }
 
   var sender = function(METHOD, PARAMETERS, callback) {
+  chrome.storage.local.get('active', function(resultq) {
     chrome.storage.local.get('vkAccessToken', function(result) {
       aja()
-      .url('https://api.vk.com/method/' + METHOD + '?' + PARAMETERS + '&access_token=' + result.vkAccessToken)
+      .url('https://api.vk.com/method/' + METHOD + '?' + PARAMETERS + '&access_token=' + result.vkAccessToken[resultq['active']-1])
       .type('json')
       .on('200', function(data){ callback(data); })
       .on('40*', function(response){ console.error("Что-то не так с запросом."); })
       .on('500', function(response){ console.error("Ошибка на стороне сервера."); })
       .go()
     })
+  })
   }
   var offsett = 0;
 
@@ -168,7 +188,7 @@ emoji_load();
     $(this).find(".open_dialog_window").hide();
   });
 
-  $('#messages_form').on('click', '.delete_dialog', function(e) {
+  $('body').on('click', '.delete_dialog', function(e) {
     alertify.set({ labels: {
     ok     : "Удалить",
     cancel : "Отменить"
@@ -400,7 +420,9 @@ emoji_load();
     })
     //нажатие на сообщение
   $('body').on('click', 'div[class^="im_msg_text"]', function(e) {
+    if($(this).parents(".dialogs_row").find(".delete_dialog").attr('uid') != undefined){
     iddd($(this).parents(".dialogs_row").find(".delete_dialog").attr('uid'));
+    }
   });
 
   var iddd = function(id){
@@ -1737,7 +1759,6 @@ if(timers){
 
   function start() {
       chrome.storage.local.get('vkAccessToken', function(result) {
-        console.log(result.vkAccessToken)
         if (result.vkAccessToken != '') {
           chrome.storage.local.get('start_stena', function (result) {
            if (result.start_stena == '' || result.start_stena == undefined || result.start_stena == '0') {
@@ -2382,5 +2403,16 @@ function menu_hide(q){
 }
 menu_hide(0);
 
+$('.setting').on('click', '#add_user', function() {
+  chrome.app.window.create('auth.html#add', {
+    frame: "chrome",
+      'bounds': {
+        'width': 800,
+        'height': 600
+       },
+    minWidth: 600,
+    minHeight: 500
+  });
+})
 
 });

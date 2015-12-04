@@ -82,6 +82,9 @@
           <label for="roundedTwo_news"></label>
         </div>
 </div>
+<div id="user_list_akk" ng-controller="user_list_akk">
+   <div class="user_list_avatar" ng-repeat="data in test" style=" background-image: url('{{data.photo_50}}')" title="{{data.first_name}} {{data.last_name}}"></div>
+</div>
 </div>
 <div id="contente">
   <div id="search_video" ng-controller="VideoList">
@@ -192,9 +195,12 @@
         <input type="radio" name="keys" value="2" />Ctrl+Enter
         </div>
         <div style="display:none;"><input type="checkbox" id="cache"/> Кеширование</div>
-        <div id="startStena"><input type="checkbox" id="start_stena" style="visibility: visible;" /> Стена при старте приложения</div>
+        <div id="startStena"><input type="checkbox" id="start_stena" style="visibility: visible;" /> Стена при старте приложения
+        <input type="checkbox" id="sound_m" style="visibility: visible;" /> Звук сообщений</div>
         <div id="smenUser">
-        <div id="new_user">Сменить пользователя</div></div>
+        <div id="new_user">Сменить пользователя</div>
+        <!--<div id="add_user">Добавить пользователя</div>-->
+        </div>
         <div id="info_prog">Обновление версии 0.26 от 16.11.2015<br>
         Поддержать проект: Yandex.money 41001708821143
         </div>

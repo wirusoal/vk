@@ -1500,7 +1500,8 @@ b.profile_mob_onl {
     font-size: 10px;
 }
 #sending_messages,
-#new_user {
+#new_user,
+#add_user {
     padding: 5px 16px 5px 16px;
     margin: 0;
     font-size: 11px;
@@ -1757,4 +1758,18 @@ input[type=checkbox] {
     text-align: -webkit-right;
     margin-top: 0px;
     display: none;
+}
+
+div#user_list_akk {
+    position: absolute;
+    width: 40px;
+    min-height: 40px;
+    bottom: 0px;
+}
+
+div#user_list_akk > div.user_list_avatar {
+    width: 40px;
+    height: 40px;
+    background-size: 40px 40px;
+    margin-bottom: 3px;
 }

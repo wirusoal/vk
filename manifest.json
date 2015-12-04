@@ -11,6 +11,6 @@
    },
    "name": "VK inviz",
    "permissions": ["videoCapture", "webview", "notifications", "fileSystem", "contextMenus", "storage", "unlimitedStorage", "<all_urls>", "http://*/*", "https://*/*", "https://www.google-analytics.com/*" ],
-   "version": "0.27",
+   "version": "0.28",
    "manifest_version": 2
 }

@@ -44,7 +44,7 @@
     }
     
 function obj(obj){var s="";for(prop in obj){if(typeof obj[prop]!="function"){s+="obj["+prop+"] = "+obj[prop]+"; "}}return s}
-var sender=function(d,e,f){chrome.storage.local.get('vkAccessToken',function(c){$.ajax({url:'https://api.vk.com/method/'+d+'?'+e+'&access_token='+c.vkAccessToken,dataType:"json",success:function(a,b){f(a)}})})}
+var sender=function(d,e,f){chrome.storage.local.get('active',function(resultq){chrome.storage.local.get('vkAccessToken',function(c){$.ajax({url:'https://api.vk.com/method/'+d+'?'+e+'&access_token='+c.vkAccessToken[resultq['active']-1],dataType:"json",success:function(a,b){f(a)}})})})}
 var loadImage=function(c,d){$.ajax({url:c,async:true,dataType:"blob",success:function(a,b){d(window.webkitURL.createObjectURL(a))}})}
 function notification_messages(id){sender('users.get','user_ids='+id+'&fields=photo_100,sex',function(data){if(!data['error']){loadImage(data['response'][0]['photo_100'],function(d){var sex=(data['response'][0]['sex']==2)?'написал':'написала';notify('Оповешение VK inviz',data['response'][0]['first_name']+' '+data['response'][0]['last_name']+" "+sex+" сообщение.",d)})}}); var song=document.getElementById('beep');song.play()}
 function notify(c,d,e){chrome.notifications.create('',{type:'basic',iconUrl:e,title:c,message:d,buttons:[{title:'Открыть диалоги',iconUrl:'images/message-xxl.png'}]},function(){});chrome.notifications.onClicked.addListener(function(a){chrome.notifications.clear(a,function(){})});chrome.notifications.onButtonClicked.addListener(function(a,b){chrome.app.window.current().restore();$(".messages_open_v2").click()})}
@@ -314,11 +314,18 @@ if(data != undefined){
           }else{
             //$("#get_mess").click();
           }
-           var song=document.getElementById('beep');song.play();
+          chrome.storage.local.get('sound', function (result) {
+            if (result.sound == undefined || result.sound == 1){
+            var song=document.getElementById('beep');song.play();
+          }})
+        
         if($("#messages").css("display")=="block" && updates_id == $("#uid_user").val()){ 
           //$("#update_messages").click();
           messages2(data);
-           var song=document.getElementById('beep');song.play()
+          chrome.storage.local.get('sound', function (result) {
+            if (result.sound == undefined || result.sound == 1){
+            var song=document.getElementById('beep');song.play();
+          }})
         }
         break
       case 3: //Прочитал сообщение

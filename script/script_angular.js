@@ -15,8 +15,9 @@ angular.module("api",[]).factory('api', function($q,$http) {
   return {
     json_get: function(method,key) {
       var deferred = $q.defer();
+      chrome.storage.local.get('active', function(resultq) {
       chrome.storage.local.get('vkAccessToken', function (value) {
-            $http.get('https://api.vk.com/method/'+method+'?'+key+'&access_token='+value['vkAccessToken']).success(function(data, status, headers, config) {
+            $http.get('https://api.vk.com/method/'+method+'?'+key+'&access_token='+value['vkAccessToken'][resultq['active']-1]).success(function(data, status, headers, config) {
               for(i=0;i<data['response'].length;i++){
                 $.each(data['response'][i], function( key, value ) {
                   if(key == 'photo'){           
@@ -32,6 +33,7 @@ angular.module("api",[]).factory('api', function($q,$http) {
               }
               deferred.resolve(data);
             });
+        })
       });
       return deferred.promise;
     }
@@ -153,4 +155,21 @@ app.controller('GroupList', function($scope,$http,api) {
     $scope.loadGroupList();
   }
   $scope.FindGroupList();
+})
+
+app.controller('user_list_akk', function($scope,$http,api) {
+  $scope.load_akk = function(){
+    $scope.test = Array();
+    chrome.storage.local.get('vkAccessToken', function (value) {
+      for (var i = 0; i < value['vkAccessToken'].length; i++) {
+        $http.get('https://api.vk.com/method/users.get?fields=photo_50&name_case=Nom&access_token='+value['vkAccessToken'][i]).success(function(data) {
+          $http.get(data.response[0].photo_50, {responseType: 'blob'}).success(function(blob) {
+            data.response[0].photo_50 = window.URL.createObjectURL(blob);   
+          })
+          $scope.test.push(data.response[0]);
+        });
+      };
+    });
+  };
+  //$scope.load_akk();
 })
