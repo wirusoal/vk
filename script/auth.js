@@ -1,4 +1,7 @@
 $(document).ready(function () {
+if(navigator.userAgent.search("YaBrowser") != -1){
+ $("#yakub").show();
+} 
 var url_token = 'https://oauth.vk.com/authorize?client_id=3915697&scope=friends,messages,offline,photos,audio,video,docs,wall,groups,notifications&redirect_uri=http://oauth.vk.com/blank.html&display=popup&response_type=token';
 var webview = document.getElementById("auth_id");
 webview.src = url_token;
@@ -33,18 +36,13 @@ function obj(obj){var s="";for(prop in obj){if(typeof obj[prop]!="function"){s+=
             var url = $("#auth_id").attr("src");
             if (url.indexOf('oauth.vk.com/blank.html#access_token=') > -1) {
                 vkAccessToken = getUrlParameterValue(url, 'access_token');
-                chrome.storage.local.get('vkAccessToken', function (result) {
-                    console.info(vkAccessToken);
-                result['vkAccessToken'][result['vkAccessToken'].length] = vkAccessToken;
-                chrome.storage.local.set({ 'active': result['vkAccessToken'].length })
                 chrome.storage.local.set({//1
-                    'vkAccessToken': result['vkAccessToken']
+                    'vkAccessToken': vkAccessToken
                 }, function () {
-                    if(window.location['hash'] != '#add'){
                       chrome.storage.local.set({'menu': [1,1,0,1,1,1,0,1] })
                       chrome.app.window.current().close();
                       chrome.app.window.create('window.html', {
-                        frame: "none",
+                        frame: "chrome",
                         'bounds': {
                           'width': 800,
                           'height': 600
@@ -52,10 +50,8 @@ function obj(obj){var s="";for(prop in obj){if(typeof obj[prop]!="function"){s+=
                         minWidth: 600,
                         minHeight: 500
                       });
-                    }
                     
                 })//1
-                                })
             }
     }
         //webview.addEventListener("loadstop", loadstop);

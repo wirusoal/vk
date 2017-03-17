@@ -7,61 +7,15 @@ body {
     src: local("ProximaNova-Bold"), url('../font/ProximaNova-Bold.ttf');
 }
 #contente {
-    left: 44px;
+    left: 40px;
     overflow-x: hidden;
     overflow-y: auto;
     position: absolute;
     right: 0px;
-    top: 16px;
+    top: 0px;
     bottom: 0px;
-    border-left: #dce2e9 1px solid;
-    border-top: #dce2e9 1px solid;
 }
-#close_pril {
-    position: absolute;
-    top: 1px;
-    width: 12px;
-    height: 12px;
-    cursor: pointer;
-    text-align: center;
-    z-index: 200;
-    right: 7px;
-    font-size: 10px;
-    color: #bfc8d1;
-    border: 1px #bfc8d1 solid;
-    border-radius: 50px;
-}
-#resize_pril {
-    position: absolute;
-    top: 1px;
-    width: 12px;
-    border: 1px #bfc8d1 solid;
-    border-radius: 50px;
-    height: 12px;
-    cursor: pointer;
-    z-index: 200;
-    color: #bfc8d1;
-    font-size: 10px;
-    font-family: monospace;
-    text-align: center;
-    right: 25px;
-}
-#ls {
-    position: absolute;
-    left: 44px;
-    top: 0px;
-    height: 16px;
-    width: 1px;
-    border-left: #dce2e9 1px solid;
-}
-#panel {
-    position: absolute;
-    top: 0px;
-    left: 46px;
-    right: 50px;
-    height: 15px;
-    -webkit-app-region: drag;
-}
+
 #menu .header_logo {
     width: 40px;
     height: 40px;
@@ -88,7 +42,7 @@ body {
     cursor: default;
     background-size: 16px 16px;
     margin-bottom: 24px;
-    display: none;
+   /* display: none;*/
 }
 #menu .user {
     background-image: url('../images/icon/home.png');
@@ -119,22 +73,20 @@ body {
 }
 ::-webkit-scrollbar {
     width: 0px;
+    background-color: #F1F4F7
 }
-/* Track */
-
+.show-scrollbar ::-webkit-scrollbar{
+    width: 5px;
+}
 ::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 2px #f1f1f1;
+    
     border-radius: 0px;
 }
-/* Handle */
-
 ::-webkit-scrollbar-thumb {
     border-radius: 0px;
-    background: #BBBBBB;
+    background-color: #DEE6EF;
 }
-::-webkit-scrollbar-thumb:window-inactive {
-    background: #BBBBBB;
-}
+
 #auth_form {
     position: absolute;
     top: 0px;
@@ -186,12 +138,14 @@ a {
     top: 4px;
 }
 .dialogs_online {
-    width: 11px;
-    height: 11px;
-    border-radius: 10px;
+    width: 9px;
+    height: 15px;
     position: relative;
-    margin-top: -15px;
-    margin-left: 37px;
+    margin-top: -21px;
+    margin-left: 45px;
+    background-position-x: 20px;
+    background-position-y: 1px;
+
 }
 
 .nabor_dialogs {
@@ -249,6 +203,7 @@ a {
     display: none;
     border-left: #f1f4f7 4px solid;
 }
+
 .im_log_author {
     width: 32px;
 }
@@ -428,17 +383,17 @@ a#open_new_messages {
 #friend_search_pole {
     display: block;
     height: 31px;
-    margin-top: -28px;
-    margin-left: 65px;
+    margin-top: -26px;
+    margin-left: 68px;
 }
 #friend_search_pole input {
     width: 145px;
     font-size: 12px;
-    border-radius: 3px;
     background: rgba(255, 255, 255, 0.94);
     padding: 2px 2px;
     outline: none;
     color: #5C5C5C;
+    border: 0px;
 }
 .search_button {
     position: absolute;
@@ -517,23 +472,23 @@ a#open_new_messages {
 }
 .video_row_cont {
     display: inline-block;
-    height: 177px;
-    width: 222px;
-    padding: 0px 5px 8px 0px;
+    height: 110px;
+    width: 140px;
+    padding: 0px 4px 8px 0px;
     cursor: pointer;
 }
 .video_row_inner_cont {
-    height: 178px;
-    width: 221px;
+    height: 110px;
+    width: 140px;
 }
 .video_row_info_line {
     position: absolute;
-    margin-top: 150px;
-    width: 205px;
-    padding: 6px 8px;
+    margin-top: 88px;
+    width: 126px;
+    padding: 5px 7px;
     background: rgba(0, 0, 0, 0.5);
     color: #FFFFFF;
-    height: 16px;
+    height: 12px;
 }
 .video_raw_info_name {
     padding-right: 34px;
@@ -554,16 +509,17 @@ a#open_new_messages {
     position: absolute;
     z-index: 10;
     background: url('../images/inline-video-play.png') no-repeat;
-    margin-left: 93px;
-    margin-top: 58px;
-    width: 46px;
-    height: 46px;
+    margin-left: 62px;
+    margin-top: 38px;
+    width: 20px;
+    height: 20px;
+    background-size: 20px 20px;
 }
 .video_image_div {
     display: block;
     background: #000000 center center no-repeat;
-    width: 221px;
-    height: 178px;
+    width: 140px;
+    height: 110px;
 }
 #search_video_cheked {
     position: absolute;
@@ -649,6 +605,7 @@ a#open_new_messages {
 .group_row_labeled {
     margin-bottom: 3px;
 }
+
 #wall,
 #news,
 #search_group,
@@ -665,28 +622,79 @@ a#open_new_messages {
     overflow-y: auto;
     border-left: #f1f4f7 4px solid;
 }
+#wall { z-index: 61; }
+#wall_zap {
+
+}
+#title_friend,#title_sub,#title_videowall{
+    background-color: #EAEAEA;
+    width: 200px;
+    height: 19px;
+    margin-top: 10px;
+    color: #A7A7A7;
+    font-size: 11px;
+}
+#imageSubscriptions0,#imageSubscriptions1 {
+    width: 40px;
+    border-radius: 50%;
+}
+#nameSubscriptions0,#nameSubscriptions1 {
+    color: #7FA0B9;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 141px;
+}
+#statusSubscriptions0,#statusSubscriptions1 {
+    color: #9A9C9B;
+    font-size: 10px;
+    top: -8px;
+    position: relative;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 141px;
+}
+#friendwall0,#friendwall1,#friendwall2,#friendwall3 {
+    width: 40px;
+    border-radius: 50%;
+    margin: 2px;
+}
+#wallvideo0,#wallvideo1 {
+    width: 90px;
+}
+#wallnamevideo0,#wallnamevideo1 {
+    color: #7FA0B9;
+    overflow: hidden;
+    max-width: 92px;
+    height: 28px;
+}
 #news #track{
     width: auto;
     padding-right: 9px;
+    display: inherit;
 }
 #wall #track {
-    width: 200px;
+    width: auto;
     padding-right: 9px;
+    display: inherit;
 }
-#wall #track .track_title,#news #track .track_title  {
+#wall #track .track_title,#news #track .track_title {
     margin-top: 8px;
+    white-space: nowrap;
+    overflow: hidden;
 }
-
+#wall #track .track_title {
+    width: auto;
+}
+#news #track .track_title{
+    width: 320px;
+}
 #news{
     background-color: #f1f4f7;
 }
 .wall_post_over {
     display: block;
-    padding: 2px 0px 1px;
     position: relative;
-    margin-bottom: 5px;
-    margin-top: 1px;
-    border-top: 1px solid #F1F1F1;
+    margin-bottom: 3px;
     background-color: #fff;
 }
 #panel_load {
@@ -814,35 +822,42 @@ a#open_new_messages {
 }
 
 #user_info {
-    position: relative;
+    position: absolute;
     top: 3px;
-    width: 100%;
-    height: 139px;
-    border-bottom: 1px solid #F1F1F1;
+    width: 200px;
+    min-height: 300px;
 }
 #user_info_all {
-    position: absolute;
-    width: 100%;
-    height: 64px;
-    top: 42px;
+    height: auto;
     color: #9A9C9B;
-    border-top-style: outset;
-    padding-top: 5px;
-    border-top-width: 1px;
-    left: 130px;
+    text-align: left;
+    margin-top: 10px;
+    margin-left: 15px;
+    margin-right: 15px;
 }
 #user_avatar {
-    width: 114px;
+    width: 135px;
     height: 135px;
-    margin-left: 8px;
+    border-radius: 50%;
     background-repeat: round;
 }
 #user_name {
-    position: absolute;
-    left: 130px;
-    font-family: ProximaNova, arial;
-    font-weight: normal;
     top: 0px;
+    margin-bottom: 11px;
+    text-align: center;
+    white-space: nowrap;
+    font-weight: bold;
+    font-size: 11px;
+    color: #7FA0B9;
+}
+.span_wall {
+    width: 200px;
+    height: 2px;
+    border-bottom: 1px solid #DCE2E9;
+    margin: 2px;
+    margin-left: -15px;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 #user_status {
     position: absolute;
@@ -852,9 +867,8 @@ a#open_new_messages {
 }
 #user_online {
     position: absolute;
-    top: 4px;
-    right: 14px;
-    color: #999898;
+    top: 3px;
+    right: 10px;
 }
 #menus {
     position: absolute;
@@ -897,7 +911,7 @@ a#open_new_messages {
     margin-left: 3px;
 }
 #photo_user_album {
-    width: 110px;
+    width: auto;
     height: 110px;
     float: left;
     margin-left: 5px;
@@ -926,11 +940,12 @@ b.profile_mob_onl {
 }
 #comment .open_comment {
     width: 100%;
-    min-height: 15px;
+    min-height: 12px;
     text-align: center;
-    background-color: rgba(173, 173, 173, 0.48);
-    color: #fff;
+    background-color: #EAEAEA;
+    color: #A7A7A7;
     cursor: pointer;
+    padding: 2px;
 }
 #comment {
     margin-top: 5px;
@@ -940,8 +955,9 @@ b.profile_mob_onl {
 .reply_table {
     width: 100%;
     display: -webkit-inline-box;
-    margin-bottom: 6px;
-    border-top: 2px solid rgba(105, 97, 97, 0.21)
+    margin-bottom: 4px;
+    padding-top: 4px;
+    border-top: 1px solid #E8E8E8;
 }
 .reply_image {
     width: 50px;
@@ -959,11 +975,9 @@ b.profile_mob_onl {
     color: #999;
 }
 #track {
-    width: 32%;
     height: 30px;
     background-color: #E0EBF5;
     margin: 2px;
-    float: left;
 }
 #track .track_play {
     width: 17px;
@@ -1172,7 +1186,7 @@ b.profile_mob_onl {
     width: 15px;
     height: 15px;
     cursor: pointer;
-    background-color: #ffffff;
+    background-color: #B9B9B9;
     border-radius: 100%;
     outline: none;
     top: -7px;
@@ -1201,6 +1215,7 @@ b.profile_mob_onl {
     border-left: 3px solid #333;
     border-radius: 0 1.5em 1.5em 0;
 }
+
 @media only screen and (max-width: 700px) {
     #find_music input {
         width: 120px
@@ -1238,21 +1253,13 @@ b.profile_mob_onl {
     }
 }
 .send_comment {
-    width: 100%;
     height: 50px;
-    background-color: rgba(173, 173, 173, 0.69);
-    text-align: center;
-    border-top-width: 1px;
-    border-top-style: groove;
 }
 .send_comment textarea {
     width: 99%;
     height: 30px;
     font-size: 11px;
     display: block;
-}
-.send_comment .button_open_send_comment {
-    color: #fff;
 }
 .delete_comment_button {
     position: absolute;
@@ -1501,8 +1508,8 @@ b.profile_mob_onl {
 }
 #sending_messages,
 #new_user,
-#add_user {
-    padding: 5px 16px 5px 16px;
+#remove_no_user, #add_user_friend, #remove_user_friend {
+    padding: 2px 16px 3px 16px;
     margin: 0;
     font-size: 11px;
     cursor: pointer;
@@ -1597,7 +1604,7 @@ b.profile_mob_onl {
     height: 167px;
     background-color: #F7F5F5;
     right: 41px;
-    padding-left: 16px;
+    padding-left: 3px;
     display: none;
 }
 #dialog.setting {
@@ -1628,6 +1635,9 @@ div#info_prog{
     width: 232px;
     font-family: serif;
 }
+div#startStena{
+    font-size: 10px;
+}
 .new_friend {
     background: #cc0043;
     width: 8px;
@@ -1648,10 +1658,8 @@ div#info_prog{
     top: 40px;
 }
 #dialog.friend .dialog_header {
-    height: 33px;
+    height: 32px;
     padding: 4px;
-    border-top-left-radius: 0px;
-    border-top-right-radius: 0px;
 }
 #display {
     position: absolute;
@@ -1750,15 +1758,6 @@ input[type=checkbox] {
 .friend_m, .photo_m, .video_m, .audio_m, .group_m, .notification_m, .news_m {
     margin-top: 28px;
 }
-#menu_menu {
-    position: absolute;
-    top: 40px;
-    width: 36px;
-    height: 317px;
-    text-align: -webkit-right;
-    margin-top: 0px;
-    display: none;
-}
 
 div#user_list_akk {
     position: absolute;
@@ -1772,4 +1771,51 @@ div#user_list_akk > div.user_list_avatar {
     height: 40px;
     background-size: 40px 40px;
     margin-bottom: 3px;
+}
+
+#status_photo {
+    position: absolute;
+    left: 200px;
+    right: 0px;
+    height: 100px;
+    z-index: 1;
+}
+
+#user_photo_wall{
+    height: 75px;
+    overflow: hidden;
+}
+
+#user_photo_wall > img {
+    width: 70px;
+    height: 70px;
+    float: right;
+    padding: 3px;
+    overflow-x: hidden;
+}
+
+#wallpost {
+    padding-left: 195px;
+}
+
+@media only screen and (max-width: 702px) {
+    #user_photo_wall > img {
+        width: 58px;
+        height: 64px;
+        padding: 4px;
+    }
+}
+
+@media only screen and (max-width: 803px) {
+    #user_photo_wall > img {
+        width: 61px;
+        height: 66px;
+        padding: 4px;
+    }
+}
+
+@media only screen and (max-width: 843px) {
+    #user_photo_wall > img {
+        width: 58px;
+    }
 }

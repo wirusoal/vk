@@ -12,78 +12,31 @@
   <script src="script/jquery-1.11.0.min.js"></script>
   <script src="script/angular.min.js"></script>
   <script src="script/aja.min.js"></script>
+  <script src="script/emoji.js"></script>
   <script src="script/script_angular.js"></script>
   <script src="script/script.js"></script>
   <script src="script/cache_file.js"></script>
   <script src="script/alertify.js"></script>
   <script src="script/blob.js"></script>
+  <script src="script/lightbox.js"></script>
   <script src="script/longpong.js"></script>
   <script src="script/notification.js"></script>
-  <script src="script/google-analytics-bundle.js"></script>
 </head>
 
 <body>
-<div id="ls"></div>
-<div id="close_pril" class="header_exit">x</div>
-<div id="resize_pril">_</div>
-<div id="panel"></div>
 <div id="menu">
 <div class="header_logo"><img src="../logo.png"></div>
 <div style="position: absolute;top: 50px;">
  <div class="punkt user my_wall" title="Ваша стена"></div>
  <div class="punkt friend my_friend" title="Список друзей"></div>
  <div class="new_friend" style="display:none;"></div>
- <div class="punkt photo_album"></div>
+<!--  <div class="punkt photo_album"></div> -->
  <div class="punkt video_album button_video" title="Видеозаписи"></div>
- <div class="punkt audio_album button_audio" title="Аудиозаписи"></div>
+ <!--<div class="punkt audio_album button_audio" title="Аудиозаписи"></div>-->
  <div class="punkt button_group" title="Группы"></div>
  <div class="punkt notification button_notification" title="Ответы(недоработано)"></div>
  <div class="punkt news button_news" title="Новости"></div>
  <div class="punkt settings" style="display:block;" title="Настройки"></div>
-</div>
-  <div id="menu_menu">
-        <div id="roundedTwos" class="wall_m">
-          <input type="checkbox" value="None" id="roundedTwo_wall" checked="true">
-          <label for="roundedTwo_wall"></label>
-        </div>
-
-        <div id="roundedTwos" class="friend_m">
-          <input type="checkbox" value="None" id="roundedTwo_friend" checked="true">
-          <label for="roundedTwo_friend"></label>
-        </div>
-
-        <div id="roundedTwos" class="photo_m">
-          <input type="checkbox" value="None" id="roundedTwo_photo" checked="true">
-          <label for="roundedTwo_photo"></label>
-        </div>
-
-        <div id="roundedTwos" class="video_m">
-          <input type="checkbox" value="None" id="roundedTwo_video" checked="true">
-          <label for="roundedTwo_video"></label>
-        </div>
-
-        <div id="roundedTwos" class="audio_m">
-          <input type="checkbox" value="None" id="roundedTwo_audio" checked="true">
-          <label for="roundedTwo_audio"></label>
-        </div>
-
-        <div id="roundedTwos" class="group_m">
-          <input type="checkbox" value="None" id="roundedTwo_group" checked="true">
-          <label for="roundedTwo_group"></label>
-        </div>
-       
-        <div id="roundedTwos" class="notification_m">
-          <input type="checkbox" value="None" id="roundedTwo_notification" checked="true">
-          <label for="roundedTwo_notification"></label>
-        </div>
-
-        <div id="roundedTwos" class="news_m">
-          <input type="checkbox" value="None" id="roundedTwo_news" checked="true">
-          <label for="roundedTwo_news"></label>
-        </div>
-</div>
-<div id="user_list_akk" ng-controller="user_list_akk">
-   <div class="user_list_avatar" ng-repeat="data in test" style=" background-image: url('{{data.photo_50}}')" title="{{data.first_name}} {{data.last_name}}"></div>
 </div>
 </div>
 <div id="contente">
@@ -149,7 +102,6 @@
 <!-- Аудиозаписи -->
   <div id="dialog_audio" class="audio">
       <div class="dialog_content"></div>
-<canvas id="canvas_mus"></canvas>
     <div class="dialog_header">
       <!-- Элементы плеера -->
   <div id="slider" style="z-index:1000"></div>
@@ -176,8 +128,6 @@
             Your browser does not support HTML5 audio.
         </audio>
 
- <script src="script/jquery-ui.min.js"></script>
- <script type="text/javascript" src="script/lightbox.js"></script>
    <div id="auth_form" style="display:none;">
     <button id="update_messages" style="display:none"></button>
     <button id="get_mess" style="display:none"></button>
@@ -195,13 +145,14 @@
         <input type="radio" name="keys" value="2" />Ctrl+Enter
         </div>
         <div style="display:none;"><input type="checkbox" id="cache"/> Кеширование</div>
-        <div id="startStena"><input type="checkbox" id="start_stena" style="visibility: visible;" /> Стена при старте приложения
-        <input type="checkbox" id="sound_m" style="visibility: visible;" /> Звук сообщений</div>
+        <div id="startStena"><input type="checkbox" id="start_stena" style="visibility: visible;" /> Стена при старте приложения<br>
+        <input type="checkbox" id="sound_m" style="visibility: visible;" /> Звук сообщений<br>
+        <input type="checkbox" id="scroll_show" style="visibility: visible;" />  Показывать скрол</div>
         <div id="smenUser">
         <div id="new_user">Сменить пользователя</div>
-        <!--<div id="add_user">Добавить пользователя</div>-->
+        <div id="remove_no_user">Удалиться из подписчиков</div>
         </div>
-        <div id="info_prog">Обновление версии 0.26 от 16.11.2015<br>
+        <div id="info_prog">Сайт приложения http://vkinviz.ru<br>
         Поддержать проект: Yandex.money 41001708821143
         </div>
     </div>
@@ -230,5 +181,7 @@
   <input type="hidden" id="attachments" value="">
   <input type="hidden" id="longpong" value="">
   <input type="hidden" id="my_id" value="">
+  <script src="script/jquery-ui.min.js"></script>
+  <script src="script/notie.js"></script>
 </body>
 </html>

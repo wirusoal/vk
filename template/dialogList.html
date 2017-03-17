@@ -7,15 +7,15 @@
     <tr>
       <td class="dialogs_photo" uid="{{datas.id}}">
         <img id="id_{{datas.id}}" src="{{rm(datas.photo)}}" width="50" height="50">
-        <div class="dialogs_online" style="background-color:{{datas.online}}"></div> 
+        <div class="dialogs_online" style="background-image:url('images/{{datas.online}}')"></div> 
         <img id="nabor" class="nabor_dialogs" src="images/typing.gif">
       </td>
       <td class="dialogs_info">
         <div class="dialogs_user wrapped" uid="{{datas.id}}">{{datas.name}}</div>
         <div class="dialogs_date">{{datas.date}}</div>
           <div class="dialogs_msg_body">
-            <div class="im_msg_text2">
-             {{datas.body}}
+            <div class="im_msg_text2" ng-bind-html="datas.body">
+
             </div>
         </div>
       </td>

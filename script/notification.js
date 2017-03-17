@@ -1,6 +1,6 @@
 function formatDatew(date){var diff=new Date()-date;if(diff<1000){return'только что'}var sec=Math.floor(diff/1000);if(sec<60){return sec+' сек. назад'}var min=Math.floor(diff/60000);if(min<60){return min+' мин. назад'}var d=date;d=['0'+d.getDate(),'0'+(d.getMonth()+1),''+d.getFullYear(),'0'+d.getHours(),'0'+d.getMinutes()];for(var i=0;i<d.length;i++){d[i]=d[i].slice(-2)}var new_date=new Date();if(new_date.getDate()==date.getDate()){return'сегодня в '+d.slice(3).join(':')}else if(new_date.getDate()-1==date.getDate()){return'вчера в '+d.slice(3).join(':')}else{return d.slice(0,3).join('.')+' '+d.slice(3).join(':')}}
 function obj(obj){var s="";for(prop in obj){if(typeof obj[prop]!="function"){s+="obj["+prop+"] = "+obj[prop]+"; "}}return s}
-var sender=function(d,e,f){chrome.storage.local.get('vkAccessToken',function(c){$.ajax({url:'https://api.vk.com/method/'+d+'?'+e+'&access_token='+c.vkAccessToken,dataType:"json",success:function(a,b){f(a)}})})}
+var sender=function(d,e,f){chrome.storage.local.get('vkAccessToken',function(c){$.ajax({url:'https://api.vk.com/method/'+d+'?'+e+'&v=5.25&access_token='+c.vkAccessToken,dataType:"json",success:function(a,b){f(a)}})})}
   var loadImagemes = function(uri, id, callback) {
       $.ajax({
         url: uri,
@@ -15,7 +15,7 @@ var sender=function(d,e,f){chrome.storage.local.get('vkAccessToken',function(c){
       })
     }
 function notification_load(){
-	sender('notifications.get','v=5.25', function(data){
+	sender('notifications.get','', function(data){
 		if(data['response']['count'] !=''){
 			$(".new_notification").html('+'+data['response']['count']).show();
 		}
@@ -102,7 +102,7 @@ function like_comment_photo(i,data,profiles,groups){
           }
 }
 function notification(){
-	sender('notifications.get','v=5.25', function(data){
+	sender('notifications.get','', function(data){
     console.info(data);
 		for(var i = 0;i<data['response']['items'].length;i++){
 			switch (data['response']['items'][i]['type']) {

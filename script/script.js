@@ -1,18 +1,4 @@
 $(document).ready(function() {
-  //chrome.storage.local.set({ 'active': 1 })
-  //chrome.storage.local.set({ 'vkAccessToken': '' })
-chrome.storage.local.get('vkAccessToken', function(result) {
-console.info(results['vkAccessToken'])
-  })
-//google-analytics from_group 
-var service, tracker, out;
-var service = analytics.getService('vkinviz');
-var tracker = service.getTracker('UA-27455921-6');
-tracker.sendAppView('MainView');
-//Событие, Действие по событию, Ярлык события
-//tracker.sendEvent('Flavor', 'Choose', 'Chocolate');
-//google-analytics
-
 $('body').on('click', "#cache", function(){
   if($("#cache").prop("checked") == true){
      chrome.storage.local.set({ 'cache': '1' });
@@ -41,6 +27,17 @@ $('body').on('click', "#start_stena", function(){
      chrome.storage.local.set({ 'start_stena': '0' });
   }
 })
+
+$('body').on('click', "#scroll_show", function(){
+  if($("#scroll_show").prop("checked") == true){
+     $("body").addClass("show-scrollbar");
+     chrome.storage.local.set({ 'scroll_show': '1' });
+  }else if($("#scroll_show").prop("checked") == false){
+     chrome.storage.local.set({ 'scroll_show': '0' });
+     $("body").removeClass("show-scrollbar");
+  }
+})
+
   function pasteHtmlAtCaret(html) {
     var sel, range;
     if (window.getSelection) {
@@ -70,7 +67,7 @@ $('body').on('click', "#start_stena", function(){
     }
   }
   var smile = [':-)', ':-D', ';-)', 'xD', ';-P', ':-p', '8-)', 'B-)', ':-(', ';-]', '3(', ':\'(', ':_(', ':((', ':o', ':|', '3-)', '>(', '>((', 'O:)', ';o', '8|', '8o', ':X', ':-*', '}:)'];
-  var smile_code = ["D83DDE0A","D83DDE03","D83DDE09","D83DDE06","D83DDE1C","D83DDE0B","D83DDE0D","D83DDE0E","D83DDE12","D83DDE0F","D83DDE14","D83DDE22","D83DDE2D","D83DDE29","D83DDE28","D83DDE10","D83DDE0C","D83DDE20","D83DDE21","D83DDE07","D83DDE30","D83DDE32","D83DDE33","D83DDE37","D83DDE1A","D83DDE08","2764","D83DDC4D","D83DDC4E","261D","270C","D83DDC4C","26BD","26C5","D83CDF1F","D83CDF4C","D83CDF7A","D83CDF7B","D83CDF39","D83CDF45","D83CDF52","D83CDF81","D83CDF82","D83CDF84","D83CDFC1","D83CDFC6","D83DDC0E","D83DDC0F","D83DDC1C","D83DDC2B","D83DDC2E","D83DDC03","D83DDC3B","D83DDC3C","D83DDC05","D83DDC13","D83DDC18","D83DDC94","D83DDCAD","D83DDC36","D83DDC31","D83DDC37","D83DDC11","23F3","26BE","26C4","2600","D83CDF3A","D83CDF3B","D83CDF3C","D83CDF3D","D83CDF4A","D83CDF4B","D83CDF4D","D83CDF4E","D83CDF4F","D83CDF6D","D83CDF37","D83CDF38","D83CDF46","D83CDF49","D83CDF50","D83CDF51","D83CDF53","D83CDF54","D83CDF55","D83CDF56","D83CDF57","D83CDF69","D83CDF83","D83CDFAA","D83CDFB1","D83CDFB2","D83CDFB7","D83CDFB8","D83CDFBE","D83CDFC0","D83CDFE6","D83DDC00","D83DDC0C","D83DDC1B","D83DDC1D","D83DDC1F","D83DDC2A","D83DDC2C","D83DDC2D","D83DDC3A","D83DDC3D","D83DDC2F","D83DDC5C","D83DDC7B","D83DDC14","D83DDC23","D83DDC24","D83DDC40","D83DDC42","D83DDC43","D83DDC46","D83DDC47","D83DDC48","D83DDC51","D83DDC60","D83DDCA1","D83DDCA3","D83DDCAA","D83DDCAC","D83DDD14","D83DDD25"];
+  var smile_code = {'D83DDC05': 128005, 'D83DDC03': 128003, 'D83DDC00': 128000, 'D83CDF53': 127827, 'D83DDE30': 128560, 'D83DDE33': 128563, 'D83CDF50': 127824, 'D83CDF57': 127831, 'D83CDF56': 127830, 'D83DDE37': 128567, 'D83CDF54': 127828, 'D83CDF52': 127826, 'D83CDF6D': 127853, 'D83CDF51': 127825, '270C': 9996, 'D83DDE32': 128562, 'D83CDF69': 127849, 'D83CDF55': 127829, 'D83DDD25': 128293, 'D83DDC0F': 128015, 'D83DDC0E': 128014, 'D83DDC0C': 128012, 'D83DDD14': 128276, '26BD': 9917, '26BE': 9918, 'D83DDC18': 128024, 'D83DDC11': 128017, 'D83DDC13': 128019, 'D83DDC14': 128020, 'D83CDFBE': 127934, 'D83CDFB8': 127928, 'D83DDC1B': 128027, '2600': 9728, 'D83CDFB2': 127922, 'D83DDC1C': 128028, 'D83CDFB1': 127921, 'D83CDFB7': 127927, '2764': 10084, 'D83DDC1F': 128031, 'D83CDFAA': 127914, 'D83CDF7A': 127866, 'D83CDF7B': 127867, 'D83DDC60': 128096, 'D83DDC4C': 128076, 'D83DDC4D': 128077, 'D83DDC4E': 128078, 'D83CDFC6': 127942, 'D83CDFC1': 127937, 'D83CDFC0': 127936, 'D83DDCAA': 128170, '26C5': 9925, '26C4': 9924, 'D83DDE0A': 128522, 'D83DDE0B': 128523, 'D83DDE0C': 128524, 'D83DDE0D': 128525, 'D83DDE0E': 128526, 'D83DDE0F': 128527, 'D83CDF84': 127876, 'D83CDF81': 127873, 'D83CDF82': 127874, 'D83CDF83': 127875, 'D83DDC7B': 128123, 'D83DDE03': 128515, 'D83DDE06': 128518, 'D83DDE07': 128519, 'D83DDE08': 128520, 'D83DDE09': 128521, 'D83DDC1D': 128029, 'D83DDC42': 128066, 'D83CDF1F': 127775, 'D83DDC40': 128064, '261D': 9757, 'D83DDC46': 128070, 'D83DDC47': 128071, 'D83DDC48': 128072, 'D83DDC23': 128035, 'D83DDC24': 128036, 'D83CDF3D': 127805, 'D83CDF3A': 127802, 'D83CDF3C': 127804, 'D83CDF3B': 127803, 'D83DDE12': 128530, 'D83DDE10': 128528, 'D83DDE14': 128532, 'D83DDC2D': 128045, 'D83CDFE6': 127974, 'D83DDE2D': 128557, 'D83DDCA1': 128161, 'D83DDCA3': 128163, 'D83DDC3C': 128060, 'D83DDC3B': 128059, 'D83DDC3A': 128058, 'D83DDC51': 128081, 'D83DDC3D': 128061, 'D83CDF4A': 127818, 'D83CDF4B': 127819, 'D83CDF4C': 127820, 'D83CDF4D': 127821, 'D83CDF4E': 127822, 'D83CDF4F': 127823, 'D83DDC2E': 128046, 'D83CDF49': 127817, 'D83DDC31': 128049, 'D83DDC37': 128055, 'D83DDC36': 128054, 'D83DDC5C': 128092, '23F3': 9203, 'D83CDF45': 127813, 'D83CDF46': 127814, 'D83DDE22': 128546, 'D83DDE20': 128544, 'D83DDE21': 128545, 'D83DDC43': 128067, 'D83DDCAC': 128172, 'D83DDCAD': 128173, 'D83DDE28': 128552, 'D83DDE29': 128553, 'D83DDE1C': 128540, 'D83DDE1A': 128538, 'D83DDC2A': 128042, 'D83DDC2B': 128043, 'D83DDC2C': 128044, 'D83CDF39': 127801, 'D83CDF38': 127800, 'D83DDC2F': 128047, 'D83CDF37': 127799, 'D83DDC94': 128148};
   var monthName = { '01':"января", '02':"февраля", '03':"марта", '04':"апреля", '05':"мая", '06':"июня", '07':"июля", '08':"августа", '09':"сентября", '10':"октября", '11':"ноября", '12':"декабря"};
   function time(time) {
     var min = (Math.ceil(time / 60) < 10) ? '0' + Math.ceil(time / 60) : Math.ceil(time / 60);
@@ -122,6 +119,7 @@ $('body').on('click', "#start_stena", function(){
     }
   }
 
+
   function obj(obj) {
       var s = "";
       for (prop in obj) {
@@ -146,19 +144,26 @@ $('body').on('click', "#start_stena", function(){
   }
 
   var sender = function(METHOD, PARAMETERS, callback) {
-  chrome.storage.local.get('active', function(resultq) {
     chrome.storage.local.get('vkAccessToken', function(result) {
+      v = ''
+      if(METHOD == 'friends.get'){
+        v = "&v=3.0"
+      }else if(METHOD == 'execute.friend_onlline'){
+        v = ""
+      }else{
+        v = "&v=5.25"
+      }
       aja()
-      .url('https://api.vk.com/method/' + METHOD + '?' + PARAMETERS + '&access_token=' + result.vkAccessToken[resultq['active']-1])
+      .url('https://api.vk.com/method/' + METHOD + '?' + PARAMETERS + v +'&access_token=' + result.vkAccessToken)
       .type('json')
       .on('200', function(data){ callback(data); })
       .on('40*', function(response){ console.error("Что-то не так с запросом."); })
       .on('500', function(response){ console.error("Ошибка на стороне сервера."); })
       .go()
     })
-  })
   }
   var offsett = 0;
+sender("stats.trackVisitor", "", function(res){});
 
   var get_messages = function(w) {
        if(w == 1){ 
@@ -189,36 +194,31 @@ emoji_load();
   });
 
   $('body').on('click', '.delete_dialog', function(e) {
-    alertify.set({ labels: {
-    ok     : "Удалить",
-    cancel : "Отменить"
-    } });
     var uid = $(this).attr("uid");
-alertify.confirm("Удалить сообщения с этим пользователем?", function (e) {
-    if (e) {
+    notie.confirm('Удалить диалог с пользователем', 'Да', 'Отмена', function(){
       $("#content > #messages_form > .dialogs_row[uid='"+uid+"']").remove();
       sender('messages.deleteDialog','user_id='+uid,function(data){
           if(data['response'] == 1){
           $(".messages_open_v2").click();
-          alertify.success('Диалог с пользователем удален. ');
+          notie.alert(1, 'Диалог с пользователем удален!', 1); 
         }
       })
-    }
-});
+    })
   });
   //--------------------------------------------------
   //--------------------------------------------------
   //наведение на друзей_меню
   var friend_get_offset = 0;
   var rara = 0;
-
-  function friend_get_all() {
+  var lsl = 0
+  function friend_get_all(e) {
+    lsl = e;
     if (rara == 0) {
       var gets = 'friends.get';
     } else if (rara == 1) {
       var gets = 'execute.friend_onlline';
     }
-    sender(gets, 'order=hints&count=20&fields=online,last_seen,photo_50,sex,has_mobile&offset=' + friend_get_offset, function(data) {
+    sender(gets, ((e == 1)?'user_id='+$("#uid_wall").val()+'&':'')+'order=hints&count=20&fields=online,last_seen,photo_50,sex,has_mobile&offset=' + friend_get_offset, function(data) {
 
       if (data['response'].length != 0) {
         for (var i = 0; i < data['response'].length; i++) {
@@ -308,15 +308,15 @@ alertify.confirm("Удалить сообщения с этим пользова
       var scrolloffseti = 20;
       if (scrolltopi >= (scrollheighti - (windowheighti + scrolloffseti))) {
         friend_get_offset = friend_get_offset + 20;
-        friend_get_all();
+        friend_get_all(lsl);
       }
     })
     //--------------------------------------------------
     //--------------------------------------------------
   function emoji_load(){
-      $("img[alte][alte!='']").each(function() {
-        loa('http://vk.com/images/emoji/' + $(this).attr('alte') + '.png', $(this).attr('alte'), function(charCode, d) {
-          $("img[alte='" + charCode + "']").attr("src", d);
+      $("img[code][code!='']").each(function() {
+        loa('https://vk.com/images/emoji/' + $(this).attr('code') + '.png', $(this).attr('code'), function(charCode, d) {
+          $("img[code='" + charCode + "']").attr("src", d);
         })
       });
   }
@@ -337,11 +337,11 @@ function smile_history_load(){
   //chrome.storage.local.set({'smile_history': null})
   chrome.storage.local.get('smile_history', function (result) {
     if(result['smile_history'] == null){
-      var smile_code = ["D83DDE0A","D83DDE03","D83DDE09"];
+      var smile_codes = ["D83DDE0A","D83DDE03","D83DDE09"];
        for (var i = 0; i <= 2; i++) {
-            $("#history_smile").append('<img style="margin-right:2px;" src="" alte="'+smile_code[i]+'">');
-              loa('http://vk.com/images/emoji/' + smile_code[i] + '.png', smile_code[i], function(charCode, d) {
-               $("img[alte='" + charCode + "']").attr("src", d)
+            $("#history_smile").append('<img style="margin-right:2px;" code="'+smile_codes[i]+'" src="">');
+              loa('http://vk.com/images/emoji/' + smile_codes[i] + '.png', smile_codes[i], function(charCode, d) {
+               $("img[code='" + charCode + "']").attr("src", d)
               })
           };
     var smile = {0:"D83DDE0A",1:"D83DDE03",2:"D83DDE09"};
@@ -349,9 +349,9 @@ function smile_history_load(){
     }else{
   chrome.storage.local.get('smile_history', function (result) {
       for (var i = 0; i <= 2; i++) {
-       $("#history_smile").append('<img style="margin-right:2px;" src="" alte="'+result['smile_history'][i]+'">');
+       $("#history_smile").append('<img style="margin-right:2px;" code="'+result['smile_history'][i]+'"  src="">');
          loa('http://vk.com/images/emoji/' + result['smile_history'][i] + '.png', result['smile_history'][i], function(charCode, d) {
-          $("img[alte='" + charCode + "']").attr("src", d)
+          $("img[code='" + charCode + "']").attr("src", d)
          })
       };
   })
@@ -359,6 +359,7 @@ function smile_history_load(){
   })
 }
  var messages_open = function(id,offs) {
+  console.log(id)
   smile_history_load();
       if (id.substr(0, 5) == 'chat_') {
         var u_id = 0;
@@ -370,7 +371,7 @@ function smile_history_load(){
       if(offs == null){
         var offs = 0;
       }
-  sender('messages.getHistory', 'v=5.25&rev=0&offset=' + offs + '&user_id=' + u_id + '&chat_id=' + c_id, function(data) {
+  sender('messages.getHistory', 'rev=0&offset=' + offs + '&user_id=' + u_id + '&chat_id=' + c_id, function(data) {
         var uid_user = [];
          for (var i = 0; i < data['response']['items'].length; i++) {
             if(uid_user.indexOf(data['response']['items'][i]['from_id']) == -1){ uid_user.push(data['response']['items'][i]['from_id']); }
@@ -378,7 +379,7 @@ function smile_history_load(){
         //---
 dd_messages(data,1,offs);
         //---
-        sender('users.get', 'v=5.25&fields=photo_50&user_ids='+uid_user.join(","), function(data) {
+        sender('users.get', 'fields=photo_50&user_ids='+uid_user.join(","), function(data) {
          for(var s=0;s<data['response'].length;s++){
           if($("#messages").find('.im_log_author_chat_thumb > #id_'+data['response'][s]['id']+'[id!=""][src^="blob:"]').length>0){
                $(".im_log_author_chat_thumb > #id_" + data['response'][s]['id']).attr("src", $("#messages").find('.im_log_author_chat_thumb > #id_'+data['response'][s]['id']+'[id!=""][src^="blob:"]').attr("src"));
@@ -443,7 +444,7 @@ emoji_load();
     } else {
       var c_id = 'user_id=' + uid;
     }
-    sender('messages.send', c_id + '&message=' + messages, function(data) {
+    sender('messages.send', c_id + '&message=' + encodeURIComponent(messages), function(data) {
       $("#text_messages").html("");
     })
   }
@@ -452,10 +453,11 @@ emoji_load();
     if ($("#text_messages").html() != '') {
       var str = $("#text_messages").html();
       var result = '';
-      result += str.replace(/<img src="blob:chrome-extension%3A\/\/[\w\/-]*" al="(.*)">/g, function(q, w) {
-        return ' ' + codeToChr(w) + ' ';
+      result += str.replace(/<img src=\"blob\:chrome-extension\:\/\/[\w\/-]*\" code=\"([A-Z0-9]+)\">/g, function(q, w) {
+        console.info(w)
+        return ' &#' + smile_code[w] + '; ';
       });
-      result = result.replace(/<div>/g,'%0a');
+      // result = result.replace(/<div>/g,'%0a');
       result = result.replace(/<\/?[^>]+>/g,'');
       result = result.replace(/&nbsp;/g,'');
       send_messages($("#uid_user").val(), result);
@@ -514,8 +516,8 @@ emoji_load();
       //console.info(data);
       for (var i = 0; i < data['response']['items'].length; i++) {
         var text = '';
-        var title = (data['response']['items'][i]['title'].length > 25) ? data['response']['items'][i]['title'].slice(0, 25) : data['response']['items'][i]['title'];
-        var artist = (data['response']['items'][i]['artist'].length > 15) ? data['response']['items'][i]['artist'].slice(0, 15) : data['response']['items'][i]['artist'];
+        var title = data['response']['items'][i]['title'].substring(0, 50);
+        var artist =  data['response']['items'][i]['artist'].substring(0, 90);
         text += '<div id="track" mus="player" duration="' + data['response']['items'][i]['duration'] + '" uid="' + data['response']['items'][i]['id'] + '" url="' + data['response']['items'][i]['url'] + '"><div class="track_play"></div><div class="track_title">' + artist + ' <br><span>' + title + '</span></div>'
         if ($('.search_input_music').val().length < 2) {
           text += '<div id="' + data['response']['items'][i]['id'] + '" owner_id="' + data['response']['items'][i]['owner_id'] + '" class="track_delete"><img src="images/delete_audio.png"></div>';
@@ -531,12 +533,7 @@ emoji_load();
   }
 
   var open_video = 0;
-  var start_analiz = false;
   window.audio = new Audio();
-  var context_audio = new AudioContext();
-  var analyser_audio = context_audio.createAnalyser();
-  analyser_audio.smoothingTimeConstant = 0.3;
-  analyser_audio.fftSize = 512;
   $('#menu').on('click', '.button_audio', function() {
       if($("#contente").css("bottom") == "42px"){
         $("#contente").animate({"bottom":"0px"});
@@ -573,9 +570,9 @@ emoji_load();
   $('.audio > .dialog_content').on('click', '.track_add', function() {
     sender('audio.add', 'audio_id=' + $(this).attr('id') + '&owner_id=' + $(this).attr('owner_id'), function(data) {
       if (data['response'] > 0) {
-        alertify.success("Трек добавлен в Ваши аудиозаписи.");
+        notie.alert(1, 'Трек добавлен в Ваши аудиозаписи.', 2);
       } else {
-        alertify.error("Произошла ошибка при добавлении трека");
+        notie.alert(3, 'Произошла ошибка при добавлении трека.', 2);
       }
     })
   })
@@ -587,7 +584,7 @@ emoji_load();
         $("#track[uid='" + $("#histori").val() + "']").remove();
         $(".track_plays").click();
       } else {
-        alertify.error("Произошла ошибка при удалении трека");
+        notie.alert(3, 'Произошла ошибка при удалении трека.', 2);
       }
     })
   })
@@ -595,72 +592,51 @@ emoji_load();
   function play_music(id, url, duration) {
     audio.src=url;
     audio.play();
-    var source = context_audio.createMediaElementSource(audio);
-    source.connect(analyser_audio);
-    analyser_audio.connect(context_audio.destination);
-    start_analiz = true;
-    update_graf();
     $(".track_plays").css('background-image', 'url("images/track_stop.png")');
     $(".name_music").html($("#track[uid='" + id + "'] > .track_title").text().slice(0, 50).toLowerCase());
     $(".time_music").html(time(duration));
   }
 
   $('body').on('click', '#track', function() {
-  	   var mus = $(this).attr("mus");
-       var index = $(this).index();
-    if ($(".track_play:eq(" + index + ")").css('background-image').indexOf("images/pausa_mini.png") > 0) {
-      $(".track_play:eq(" + index + ")").css('background-image', 'url("images/play_mini.png")');
-      //$("#music_list > #track:eq("+$(this).index()+")").removeAttr('play');
+    if ($(this).find(".track_play").css('background-image').indexOf("images/pausa_mini.png") > 0) {
+      $(this).find(".track_play").css('background-image', 'url("images/play_mini.png")');
       $(".track_plays").css('background-image', 'url("images/track_play.png")');
       audio.pause();
-      start_analiz = false;
     } else {
       $(".audio > .dialog_content").find(".track_play").css('background-image', 'url("images/play_mini.png")');
-      $(".track_play:eq(" + index + ")").css('background-image', 'url("images/pausa_mini.png")');
-      $(".audio > .dialog_content > #track").removeAttr('play');
-      $(".audio > .dialog_content > #track:eq(" + index + ")").attr('play', 'on');
+      $("body").find(".track_play").css('background-image', 'url("images/play_mini.png")');
+      $(this).find(".track_play").css('background-image', 'url("images/pausa_mini.png")');
+      $("body").find("#track[play]").removeAttr('play');
+      $(this).attr('play', 'on');
       play_music($(this).attr('uid'), $(this).attr('url'), $(this).attr('duration'));
     }
   })
 
   $('#button_player').on('click', '.track_w', function() {
-  	var mus = $('.audio > .dialog_content > #track[play="on"]').attr("mus");
-    var next = $('.audio > .dialog_content > #track[play="on"][mus="'+mus+'"]').index();
-    if ($('.audio > .dialog_content > #track[mus="'+mus+'"]').length - 1 > next) {
-      next = next * 1 + 1;
-      $(".audio > .dialog_content > #track[mus='"+mus+"']:eq('" + next + "')").click();
-    } else if ($('.audio > .dialog_content > #track[mus="'+mus+'"]').length - 1 == next) {
-      // $("#music_list > #track:eq('0')").click();
-      var all = $('.audio > .dialog_content > #track[mus="'+mus+'"]').length;
-      player_load(all);
-      next = next * 1 + 1;
-      $(".audio > .dialog_content > #track[mus='"+mus+"']:eq('" + next + "')").click();
+  	var next = $("body").find('#track[play="on"]').next().next();
+    if(next.length > 0){
+      next.click();
     }
-
   })
 
   $('#button_player').on('click', '.track_n', function() {
-  	var mus = $('.audio > .dialog_content > #track[play="on"]').attr("mus");
-    var next = $('.audio > .dialog_content > #track[play="on"][mus="'+mus+'"]').index();
-    if (next == 0) {
-      var all = $(".audio > .dialog_content > #track[mus='"+mus+"']").length * 1 - 1;
-      $(".audio > .dialog_content > #track[mus='"+mus+"']:eq('" + all + "')").click();
-    } else {
-      next = next - 1;
-      $(".audio > .dialog_content > #track[mus='"+mus+"']:eq('" + next + "')").click();
+  	var prev = $("body").find('#track[play="on"]').prev().prev();
+    if(prev.length > 0){
+      prev.click();
     }
   })
 
   $('#button_player').on('click', '.track_plays', function() {
     if ($(".track_plays").css('background-image').indexOf("images/track_play.png") > 0) {
-      start_analiz = true;
-      update_graf();
-      audio.play();
+      if(audio.src == ''){
+        $("#dialog_audio > .dialog_content").find("#track:eq(0)").click();
+      } else {
+        audio.play();
+      }
       $(".audio > .dialog_content > #track:eq('" + $(".audio > .dialog_content > #track[play='on']").index() + "') .track_play").css('background-image', 'url("images/pausa_mini.png")');;
       $(".track_plays").css('background-image', 'url("images/track_stop.png")');
     } else {
       audio.pause();
-      start_analiz = false;
       $(".audio > .dialog_content > #track:eq('" + $(".audio > .dialog_content > #track[play='on']").index() + "') .track_play").css('background-image', 'url("images/play_mini.png")');;
       $(".track_plays").css('background-image', 'url("images/track_play.png")');
     }
@@ -697,16 +673,6 @@ var repeat = false;
 
   });
 
- function update_graf(){
-        var array_audio =  new Uint8Array(analyser_audio.frequencyBinCount);
-        analyser_audio.getByteFrequencyData(array_audio);
-        ctx.clearRect(0, 0, 1000, 325);
-        ctx.fillStyle=gradient;
-        drawSpectrum(array_audio);
-        if(start_analiz == true){
-          setTimeout(update_graf, 70);
-        }
- }
   $('.audio').on('click', '#scroka_time_music', function(e) {
     var time_track = $(".audio > .dialog_content > #track[play='on']").attr("duration");
     var s = e.pageX - 170;
@@ -735,10 +701,10 @@ var repeat = false;
     }
   })
 
-  $('body').on('click', '.audio_messages', function() {
-    $("#contente").css('bottom', '50px');
-    $("#player").show();
-  })
+  // $('body').on('click', '.audio_messages', function() {
+  //   $("#contente").css('bottom', '50px');
+  //   $("#player").show();
+  // })
 
   var slider = $('#slider');
   slider.slider({
@@ -760,22 +726,6 @@ var repeat = false;
     stop: function(event, ui) {},
   });
 
-    var ctx = $("#canvas_mus").get()[0].getContext("2d");
-
-    var gradient = ctx.createLinearGradient(0,0,0,300);
-    gradient.addColorStop(1,'#000000');
-    gradient.addColorStop(0.75,'#5b7fa6');//#EBEEF2
-    gradient.addColorStop(0.25,'#D6D9DC');
-    gradient.addColorStop(0,'#ffffff');
-
-      function drawSpectrum(array) {
-        for ( var i = 0; i < (array.length); i++ ){
-            var value = array[i];
-
-            ctx.fillRect(i*5,325-value,3,325);
-            //  console.log([i,value])
-        }
-    };
     //video
   $('#menu').on('click', '.button_video', function() {
     $("#news").hide();
@@ -795,7 +745,6 @@ var repeat = false;
   })
 
   $('#search_video, #wall').on('click', '.video_row_cont', function() {
-    $("#player_player")[0].pause();
     $("#dialog_video").dialog({ minHeight: 200, minWidth: 300 });
     $("#dialog_video").dialog( "option", "title", " " );
     $("#dialog_video").html('<webview style="width: 100%;height: '+($("#dialog_video").height())+'px;" src="' + $(this).attr('player') + '"></webview>');
@@ -834,7 +783,11 @@ var repeat = false;
       var str = (/:\/\//.exec(s) === null ? "http://" + s : s);
       return "<a target=\"_blank\" href=\"" + str + "\">" + str /*s*/ + "</a>";
     });
-    text += '<div class="wall_post_text">' + mess + '</div>';
+    var re = /\[(id|club)(\d+)\|([^\]]+)\]/gim;
+    mess = mess.replace(re,function(s,nam,id,text){
+       return "<a href=\"#\" class=\""+((nam == 'club')?'href_club':'href_user')+"\" uid=\""+((nam == 'club')?'-':'')+id+"\">" + text + "</a>";
+    });
+    text += '<div class="wall_post_text">' + Emoji.emojiToHTML(mess.replace(/\n/g, "<br />")) + '</div>';
     text += '<div class="wall_attachments">';
     if (data['attachments'] != null) {
       for (var q = 0; q < data['attachments'].length; q++) {
@@ -854,11 +807,11 @@ var repeat = false;
           }
         } else if (data['attachments'][q]['type'] == 'video') {
           text += '<webview t="' + data['attachments'][q]['video']['id'] + '" style="width: 100%;" src=""></webview>';
-          sender('video.get', 'v=5.21&videos=' + data['attachments'][q]['video']['owner_id'] + '_' + data['attachments'][q]['video']['id'] + '_' + data['attachments'][q]['video']['access_key'], function(data) {
+          sender('video.get', 'videos=' + data['attachments'][q]['video']['owner_id'] + '_' + data['attachments'][q]['video']['id'] + '_' + data['attachments'][q]['video']['access_key'], function(data) {
             $("webview[t='" + data['response']['items'][0]['id'] + "']").attr("src", data['response']['items'][0]['player']);
           })
         } else if (data['attachments'][q]['type'] == 'audio') {
-          text += '<div id="track" mus="repost_wall" class="audio_messages" duration="' + data['attachments'][q]['audio']['duration'] + '" uid="' + data['attachments'][q]['audio']['aid'] + '" url="' + data['attachments'][q]['audio']['url'] + '"><div class="track_play"></div><div class="track_title">' + data['attachments'][q]['audio']['artist'] + ' - ' + data['attachments'][q]['audio']['title'] + '</div></div>';
+          text += '<br><div id="track" mus="repost_wall" class="audio_messages" duration="' + data['attachments'][q]['audio']['duration'] + '" uid="' + data['attachments'][q]['audio']['id'] + '" url="' + data['attachments'][q]['audio']['url'] + '"><div class="track_play"></div><div class="track_title">' + data['attachments'][q]['audio']['artist'] + ' - ' + data['attachments'][q]['audio']['title'] + '</div></div>';
         } else if (data['attachments'][q]['type'] == 'doc') {
           text += "<a target='_blank' href='" + data['attachments'][q]['doc']['url'] + "'>" + data['attachments'][q]['doc']['title'] + "</a> ";
         }
@@ -872,14 +825,14 @@ var repeat = false;
 
   function read_wall(c) {
     var method = 'wall.get';
-    var post = 'count=20&v=5.21&extended=1&offset=' + offset_wall + '&owner_id=' + $("#uid_wall").val()
+    var post = 'count=20&extended=1&offset=' + offset_wall + '&owner_id=' + $("#uid_wall").val()
     sender(method, post, function(data) {
       var text = '';
-      if(data['response']['count'] == 0){ text +='<center style="position: absolute;width: 100%;top: 150px;font-family: -webkit-body;font-size: 19px;">Пусто тут:(</center>'; }
+      if(data['response']['count'] == 0){ text +='<center style="font-size: 11px;color: #7FA0B9;left: 200px;right: 0px;position: inherit;'+((c == 1)?'margin-top: 82px;':'')+'">Нет записей</center>'; }
       for (var i = 0; i < data['response']['items'].length; i++) {
         $("#comment_wall_on").val(data['response']['items'][i]['comments']['can_post']);
         if (data['response']['items'][i]['post_type'] == 'post') {
-          text += '<div id="post' + data['response']['items'][i]['from_id'] + '_' + data['response']['items'][i]['id'] + '" class="wall_post_over"><div class="post_table">';
+          text += '<div id="post' + data['response']['items'][i]['from_id'] + '_' + data['response']['items'][i]['id'] + '" class="wall_post_over" style="'+((i==0 && c == 1)?'margin-top: 82px;':'')+'"><div class="post_table">';
 
           if (data['response']['items'][i]['from_id'] < 0) {
             text += '<div class="post_image" uid="' + data['response']['items'][i]['from_id'] + '"><img width="50px" height="50px" src="images/image_loader.gif"></div>';
@@ -956,9 +909,11 @@ var repeat = false;
             var str = (/:\/\//.exec(s) === null ? "http://" + s : s);
             return "<a target=\"_blank\" href=\"" + str + "\">" + str /*s*/ + "</a>";
           });
-
-          mess = mess.replace(/\n/ig, '<br>');
-          text += '<div class="wall_post_text">' + mess + '</div>';
+          var re = /\[(id|club)(\d+)\|([^\]]+)\]/gim;
+          mess = mess.replace(re,function(s,nam,id,text){
+              return "<a href=\"#\" class=\""+((nam == 'club')?'href_club':'href_user')+"\" uid=\""+((nam == 'club')?'-':'')+id+"\">" + text + "</a>";
+          });
+          text += '<div class="wall_post_text">' + mess.replace(/\n/g, "<br />") + '</div>';
           text += '<div class="wall_attachments">';
           if (data['response']['items'][i]['attachments'] != null) {
             for (var q = 0; q < data['response']['items'][i]['attachments'].length; q++) {
@@ -982,7 +937,7 @@ var repeat = false;
                   $("webview[t='" + data['response'][1]['vid'] + "']").attr("src", data['response'][1]['player']);
                 })
               } else if (data['response']['items'][i]['attachments'][q]['type'] == 'audio') {
-                text += '<div id="track" mus="wall" class="audio_messages" duration="' + data['response']['items'][i]['attachments'][q]['audio']['duration'] + '" uid="' + data['response']['items'][i]['attachments'][q]['audio']['aid'] + '" url="' + data['response']['items'][i]['attachments'][q]['audio']['url'] + '"><div class="track_play"></div><div class="track_title">' + data['response']['items'][i]['attachments'][q]['audio']['artist'] + ' - ' + data['response']['items'][i]['attachments'][q]['audio']['title'] + '</div></div>';
+                text += '<br><div id="track" mus="wall" class="audio_messages" duration="' + data['response']['items'][i]['attachments'][q]['audio']['duration'] + '" uid="' + data['response']['items'][i]['attachments'][q]['audio']['aid'] + '" url="' + data['response']['items'][i]['attachments'][q]['audio']['url'] + '"><div class="track_play"></div><div class="track_title">' + data['response']['items'][i]['attachments'][q]['audio']['artist'] + ' - ' + data['response']['items'][i]['attachments'][q]['audio']['title'] + '</div></div>';
               } else if (data['response']['items'][i]['attachments'][q]['type'] == 'doc') {
                 text += "<a target='_blank' href='" + data['response']['items'][i]['attachments'][q]['doc']['url'] + "'>" + data['response']['items'][i]['attachments'][q]['doc']['title'] + "</a> ";
               } else if (data['response']['items'][i]['attachments'][q]['type'] == 'poll') {
@@ -1007,7 +962,7 @@ var repeat = false;
           text += '<div id="comment" post_id="' + data['response']['items'][i]['id'] + '">';
           if (data['response']['items'][i]['comments']['count'] == 0) {
             if ($("#comment_wall_on").val() == 1) {
-              text += '<div class="send_comment" post_id="' + data['response']['items'][i]['id'] + '"><div class="button_open_send_comment">Оставить комментарий</div><textarea placeholder="Ваш комментарий будет первый. Введите комментарий и нажмите ctrl+enter для его размещения"></textarea></div>'
+              text += '<div class="send_comment" post_id="' + data['response']['items'][i]['id'] + '"><textarea placeholder="Введите комментарий и нажмите Ctrд + Enter"></textarea></div>'
             }
           } else {
             text += '<div class="open_comment" offset="0" all_comment="' + data['response']['items'][i]['comments']['count'] + '" wall_id="wall' + data['response']['items'][i]['from_id'] + '" post_id="' + data['response']['items'][i]['id'] + '">Посмотреть комментарии(' + data['response']['items'][i]['comments']['count'] + ')'
@@ -1021,23 +976,21 @@ var repeat = false;
       }
       $("#wall").append(text);
       if ($('#uid_wall').val() == '') { $("body").find("div[class='wall_post_over'][id^=post]:eq(0)").css("margin-top","75px"); }
-      if(c == 1){ $("#wall").find('div[id^=post]').css("margin-left","135px"); }else if(c == 0){ $("#wall").find('div[id^=post]').css("margin-left","0px"); }
+      if(c == 1){ $("#wall").find('div[id^=post]').css("left","200px"); }else if(c == 0){ $("#wall").find('div[id^=post]').css("left","0px"); }
     })
   }
 
-  //Новости
-  //новости --------------------------------------------------------
-  //новости
+//Новости --------------------------------------------------------
   var newsfeeds = 0;
 
   function read_news() {
     var method = 'newsfeed.get';
-    var post = 'v=5.21&return_banned=0&count=20&start_from=' + $('#next_from').val();
+    var post = 'return_banned=0&count=20&start_from=' + $('#next_from').val();
     sender(method, post, function(data) {
-      var text = '';
       $('#next_from').val(data['response']['next_from']);
       for (var i = 0; i < data['response']['items'].length; i++) {
-        if (data['response']['items'][i]['post_type'] == 'post') {
+        var text = '';
+        if (data['response']['items'][i]['post_type'] == 'post' && $("#news").find("#post"+data['response']['items'][i]['source_id']+'_'+data['response']['items'][i]['post_id']).length == 0) {
           text += '<div id="post' + data['response']['items'][i]['source_id'] + '_' + data['response']['items'][i]['post_id'] + '" class="wall_post_over"><div class="post_table">';
           //console.log(obj(data['response']['items'][i]));
           if (data['response']['items'][i]['source_id'] < 0) {
@@ -1118,7 +1071,11 @@ var repeat = false;
             var str = (/:\/\//.exec(s) === null ? "http://" + s : s);
             return "<a target=\"_blank\" href=\"" + str + "\">" + str /*s*/ + "</a>";
           });
-          text += '<div class="wall_post_text">' + mess + '</div>';
+          var re = /\[(id|club)(\d+)\|([^\]]+)\]/gim;
+          mess = mess.replace(re,function(s,nam,id,text){
+              return "<a href=\"#\" class=\""+((nam == 'club')?'href_club':'href_user')+"\" uid=\""+((nam == 'club')?'-':'')+id+"\">" + text + "</a>";
+          });
+          text += '<div class="wall_post_text">' + Emoji.emojiToHTML(mess.replace(/\n/g, "<br />")) + '</div>';
           text += '<div class="wall_attachments">';
           if (data['response']['items'][i]['attachments'] != null) {
             for (var q = 0; q < data['response']['items'][i]['attachments'].length; q++) {
@@ -1139,11 +1096,11 @@ var repeat = false;
               } else if (data['response']['items'][i]['attachments'][q]['type'] == 'video') {
                 text += '<webview t="' + data['response']['items'][i]['attachments'][q]['video']['id'] + '" style="width: 100%;" src=""></webview>';
                 sender('video.get', 'videos=' + data['response']['items'][i]['attachments'][q]['video']['owner_id'] + '_' + data['response']['items'][i]['attachments'][q]['video']['id'] + '_' + data['response']['items'][i]['attachments'][q]['video']['access_key'], function(data) {
-                  //   console.log(obj(data['response'][1])); 
-                  $("webview[t='" + data['response'][1]['vid'] + "']").attr("src", data['response'][1]['player']);
+                  // console.log(obj(data['response']['items'][0])); 
+                  $("webview[t='" + data['response']['items'][0]['id'] + "']").attr("src", data['response']['items'][0]['player']);
                 })
               } else if (data['response']['items'][i]['attachments'][q]['type'] == 'audio') {
-                text += '<div id="track" mus="news" class="audio_messages" duration="' + data['response']['items'][i]['attachments'][q]['audio']['duration'] + '" uid="' + data['response']['items'][i]['attachments'][q]['audio']['aid'] + '" url="' + data['response']['items'][i]['attachments'][q]['audio']['url'] + '"><div class="track_play"></div><div class="track_title">' + data['response']['items'][i]['attachments'][q]['audio']['artist'] + ' - ' + data['response']['items'][i]['attachments'][q]['audio']['title'] + '</div></div>';
+                text += '<br><div id="track" mus="news" class="audio_messages" duration="' + data['response']['items'][i]['attachments'][q]['audio']['duration'] + '" uid="' + data['response']['items'][i]['attachments'][q]['audio']['aid'] + '" url="' + data['response']['items'][i]['attachments'][q]['audio']['url'] + '"><div class="track_play"></div><div class="track_title">' + data['response']['items'][i]['attachments'][q]['audio']['artist'] + ' - ' + data['response']['items'][i]['attachments'][q]['audio']['title'] + '</div></div>';
               } else if (data['response']['items'][i]['attachments'][q]['type'] == 'doc') {
                 text += "<a target='_blank' href='" + data['response']['items'][i]['attachments'][q]['doc']['url'] + "'>" + data['response']['items'][i]['attachments'][q]['doc']['title'] + "</a> ";
               }
@@ -1159,10 +1116,10 @@ var repeat = false;
           text += '</div></div>';
           text += '</div></div>';
         }
+        $("#news").append(text);
       }
-      $("#news").append(text);
-
     })
+ emoji_load();
   }
 
   $('#menu').on('click', '.button_news', function() {
@@ -1188,77 +1145,101 @@ var repeat = false;
   })
 
   function user_info(id,op) {
-    if(id == undefined){
-      id = 0;
-    }
-    sender('users.get', 'user_ids=' + id + '&fields=photo_400_orig,relation,sity,bdate,status,online,home_town,last_seen,sex,can_post,can_write_private_message,wall_comments,connections,universities,site,counters', function(data) {
+    if(id == undefined){ var id = $("#my_id").val(); }
+    sender('users.get', ((id == undefined)?'':'user_ids='+id) + '&fields=photo_max,friend_status,photo_400_orig,relation,sity,bdate,status,online,home_town,last_seen,sex,can_post,can_write_private_message,wall_comments,connections,universities,site,counters,contacts', function(data) {
       if (!data['error']) {
+        console.info(data['response'][0])
         $("#comment_wall_on").val(data['response'][0]['wall_comments']);
         var html = '<div id="user_info">';
-        html += '<div id="user_avatar" idd="o_'+data['response'][0]['uid']+'"></div>';
-          loa(data['response'][0]['photo_400_orig'], "o_"+data['response'][0]['uid'], function(id, d) {
+        html += '<div id="user_name">' + data['response'][0]['first_name'] + ' ' + data['response'][0]['last_name'] + '</div>';
+        var time = '';
+        if (data['response'][0]['online'] == 1) {
+          if (data['response'][0]['online_mobile'] == 1) {
+            var colors = '#cc0043';
+          }else {
+            var colors = '#00cc35';
+          }
+        } else if (data['response'][0]['online'] == 0) {
+          var time = ((data['response'][0]['sex'] == 2) ? 'Был' : 'Была') + ' ' + formatDate(data['response'][0]['last_seen']['time']);
+          var colors = 'rgb(174, 174, 174)';
+        }
+        html += '<div id="user_online" style="width: 7px;height: 7px;border-radius: 10px;background-color:'+colors+';" header="'+time+'"></div>';
+        html +='<div style="position: initial;margin-top: -8px;text-align: center;margin-bottom: 4px;font-size: 10px;color: #C1C1C1;">'+time+'</div>';
+        
+        html += '<center><div id="user_avatar" idd="o_'+data['response'][0]['uid']+'"></div>';
+          loa(data['response'][0]['photo_max'], "o_"+data['response'][0]['uid'], function(id, d) {
            $("#user_avatar[idd='" + id + "']").css("background-image","url('"+d+"')");
           })
-        html +="<div>";
-        html += '<div id="user_name">' + data['response'][0]['first_name'] + ' ' + data['response'][0]['last_name'] + '</div>';
-        html += '<div id="user_status">' + data['response'][0]['status'] + '</div>';
-        var sex = (data['response'][0]['sex'] == 2) ? 'Был' : 'Была';
-        if (data['response'][0]['online'] == 1) {
-          var time = 'Онлайн';
-          if (data['response'][0]['online_mobile'] == 1) {
-            time += '<b class="mob_onl profile_mob_onl"></b>';
-          };
-        } else if (data['response'][0]['online'] == 0) {
-          var time = sex + ' ' + formatDate(data['response'][0]['last_seen']['time']);
+//        html += '<div id="user_status">' + data['response'][0]['status'] + '</div>';
+        if (data['response'][0]['can_write_private_message'] == 1 && data['response'][0]['uid'] != $('.avatar_img').attr("uid")) {
+          html +="<div id='sending_messages' style='margin: 13px;'>Написать</div>";
         }
-        html += '<div id="user_online">' + time + '</div>';
+        if (data['response'][0]['friend_status'] == 3 && data['response'][0]['uid'] != $('.avatar_img').attr("uid")) {
+          html +="<div id='remove_user_friend' style='margin: 13px;'>Удалить друга</div>";
+        }
+        if ((data['response'][0]['friend_status'] == 0 || data['response'][0]['friend_status'] == 2) && data['response'][0]['uid'] != $('.avatar_img').attr("uid")) {
+          html +="<div id='add_user_friend' style='margin: 13px;'>"+((data['response'][0]['friend_status'] == 0)? 'Отправить заявку':'Принять заявку')+"</div>";
+        }
+
         html += '<div id="user_info_all">';
         if (data['response'][0]['home_town'] != '' && data['response'][0]['home_town'] != undefined) {
-          html += 'Родной город: ' + data['response'][0]['home_town'] + '<br>';
+          html += '<div>Город: <span style="float:right;color: #7FA0B9">' + data['response'][0]['home_town'] + '</span></div>';
+          html += '<div class="span_wall"> </div>';
         }
         if (data['response'][0]['bdate'] != '' && data['response'][0]['bdate'] != undefined) {
           var mes = ['', 'Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря'];
           var bdate = data['response'][0]['bdate'].split('.');
           var god = (bdate[2] === undefined) ? '' : bdate[2];
-          html += 'День рождения: ' + bdate[0] + ' ' + mes[bdate[1]] + ' ' + god + '<br>';
+          html += '<div>'+((data['response'][0]['sex'] == 2) ? 'Родился:' : 'Родилась:') + '<span style="float:right;color: #7FA0B9;">'+bdate[0] + ' ' + mes[bdate[1]] + ' ' + god + '</span></div>';
+          html += '<div class="span_wall"> </div>';
         }
         var relation_m = ['', 'не женат', 'есть подруга', 'помолвлен', 'женат', 'всё сложно', 'в активном поиске', 'влюблен'];
         var relation_g = ['', 'не замужем', 'есть друг', 'помолвлена', 'замужем', 'всё сложно', 'в активном поиске', 'влюблена'];
         if (data['response'][0]['relation'] != '' && data['response'][0]['relation'] != undefined) {
-          html += 'Семейное положение: ';
+          html += '<div>Статус: <span style="float:right;color: #7FA0B9;">';
           if (data['response'][0]['sex'] == 2) {
             html += relation_m[data['response'][0]['relation']];
           } else {
             html += relation_g[data['response'][0]['relation']];
           }
-          html += '<br>';
+          html += '</span></div><div class="span_wall"> </div>';
+        }
+        if (data['response'][0]['home_phone'] != '' && data['response'][0]['home_phone'] != undefined) {
+          html += '<div>Домашний: <span style="float: right;color: #7FA0B9;white-space: nowrap;overflow: hidden;max-width: 105px;">' + data['response'][0]['home_phone'] + '</span></div>';
+          html += '<div class="span_wall"> </div>';
+        }
+        if (data['response'][0]['mobile_phone'] != '' && data['response'][0]['mobile_phone'] != undefined) {
+          html += '<div>Сотовый: <span style="float: right;color: #7FA0B9;white-space: nowrap;overflow: hidden;max-width: 116px;">' + data['response'][0]['mobile_phone'] + '</span></div>';
+          html += '<div class="span_wall"> </div>';
+        }
+        if (data['response'][0]['skype'] != '' && data['response'][0]['skype'] != undefined) {
+          html += '<div>Skype: <span style="float:right;color: #7FA0B9;">' + data['response'][0]['skype'] + '</span></div>';
+          html += '<div class="span_wall"> </div>';
         }
         if (data['response'][0]['site'] != '' && data['response'][0]['site'] != undefined) {
-          html +='Сайт:';
+          html +='<div>Сайт: <span style="color: #7FA0B9;float: right;white-space: nowrap;overflow: hidden;max-width: 133px;text-align: right;">';
           for(var i=0;i<data['response'][0]['site'].split(' ').length;i++){ if(data['response'][0]['site'].split(' ')[i] !=''){ html +='<a target="_blank" href="'+data['response'][0]['site'].split(' ')[i]+'">'+data['response'][0]['site'].split(' ')[i]+'</a><br>'}}
+        html += '</span></div><div class="span_wall"> </div>';
         }
-        html += '</div>';
-      html +="</div>";
-        html += '<div id="menus"><div class="users clicks">Стена</div><div class="users">Видео</div><div class="users">Фото</div>';
-        if (data['response'][0]['can_write_private_message'] == 1 && data['response'][0]['uid'] != $('.avatar_img').attr("uid")) {
-          $(".module_header:eq(0)").before("<div id='sending_messages'>Написать</div>");
+        html += '</div></center>';
+
+        if(data['response'][0]['counters']['friends'] != 0){
+          html += '<div id="title_friend"><div style="padding-top: 3px;padding-left: 13px;padding-right: 13px;"><div style="float:left;font-weight: bold;">'+data['response'][0]['counters']['friends']+'</div>&nbsp;Дру'+declOfNum(data['response'][0]['counters']['friends'], ['г', 'га', 'зей'])+' <div style="float:right;color:#C1C1C1;">'+data['response'][0]['counters']['followers']+' подписчик'+declOfNum(data['response'][0]['counters']['followers'], ['', 'а', 'ов'])+'</div></div></div>';
+          html += '<table><tr><th><img src="images/image_loader.gif" id="friendwall0"></th><th><img src="images/image_loader.gif" id="friendwall1"></th><th><img src="images/image_loader.gif" id="friendwall2"></th><th><img src="images/tri.png" id="friendwall3"></th></tr></table>';
         }
-        html += '</div>';
-        if ($('#uid_wall').val() == '') {
-          html += '<div id="post_wall">';
-          html += '<div id="post_wall_loader"><img src="images/720.gif"><br><font color="#fff">Подождите...Выполняется размещение записи...Это может занять некоторое время...</font></div>';
-          html += '<div id="text_post_wall" contenteditable="true">Введите сообщение и нажмите сочетание клавиш Ctrl+Enter,что-бы опубликовать запись на своей стене. Запись будет опубликованна в течении пары минут.</div>';
-          html += '<div class="smile_post_wall">';
-          for (var i = 0; i < 11; i++) {
-            html += '<img style="margin-right:2px;" src="" alte="'+smile_code[i]+'">';
-              loa('http://vk.com/images/emoji/' + smile_code[i] + '.png', smile_code[i], function(charCode, d) {
-               $("img[alte='" + charCode + "']").attr("src", d).attr("alte","");
-              })
-          };
-          html += '</div>';
-          html += '<div id="attachments_list"></div><div id="attachments_load"></div>';
-          html += '</div>';
+        if(data['response'][0]['counters']['pages'] != 0){
+          html += '<div id="title_sub" style="margin-top: 0px;"><div style="padding-top: 3px;padding-left: 13px;padding-right: 13px;float:left;"><div style="float:left;font-weight: bold;">'+data['response'][0]['counters']['pages']+'</div>&nbsp;интересн'+declOfNum(data['response'][0]['counters']['pages'], ['ая', 'ые', 'ых'])+' страниц'+declOfNum(data['response'][0]['counters']['pages'], ['а', 'ы', ''])+'</div></div>';
+          html += '<table style="margin: 3px;" id="table_sub_title"><tr><td rowspan="2"><img id="imageSubscriptions0" src="images/image_loader.gif"></td><td><div id="nameSubscriptions0"></div></td></tr>';
+          if(data['response'][0]['counters']['pages'] != 1){
+            html += '<tr><td><div id="statusSubscriptions0"></div></td></tr><tr><td rowspan="2"><img id="imageSubscriptions1" src="images/image_loader.gif"></td><td><div id="nameSubscriptions1"></div></td></tr><tr><td><div id="statusSubscriptions1"></div></td></tr>';
+          }
+          html += '</table>';
         }
+        if(data['response'][0]['counters']['videos'] != 0){
+          html += '<div id="title_videowall"><div style="padding-top: 3px;padding-left: 13px;padding-right: 13px;"><div style="float:left;font-weight: bold;">'+data['response'][0]['counters']['videos']+'</div>&nbsp;видеозапис'+declOfNum(data['response'][0]['counters']['videos'], ['ь', 'и', 'ей'])+'</div></div>';
+          html += '<table style="margin: 3px;"><tr><td><img src="images/image_loader.gif" id="wallvideo0"></td>'+((data['response'][0]['counters']['videos'] != 1)? '<td><img src="images/image_loader.gif" id="wallvideo1"></td>':'')+'</tr><tr><td><div id="wallnamevideo0"></div></td>'+((data['response'][0]['counters']['videos'] != 1)? '<td><div id="wallnamevideo1"></div></td>':'')+'</tr></table>';
+        }
+        html += '<div id="menus"><div class="users clicks">Стена</div><div class="users">Видео</div><div class="users">Фото</div></div>';
         $("#wall").prepend(html);
         if (data['response'][0]['uid'] == $('.avatar_img').attr("uid")) {
           $("#user_info").css("height", "200px");
@@ -1266,82 +1247,116 @@ var repeat = false;
         loa(data['response'][0]['photo_200_orig'], id, function(id, d) {
           $("img[idse='" + id + "']").attr("src", d);
         })
+        //--друзья--//
+        sender('friends.get', 'count=3&fields=photo_50&order=random&name_case=nom&user_id=' + id, function(data) {
+         for (var i = 0; i < data['response'].length; i++) {
+            $("img[id='" +('friendwall'+i)+ "']").attr("title", data['response'][i]['first_name']+" "+data['response'][i]['last_name']);
+            loa(data['response'][i]['photo_50'], 'friendwall'+i, function(id, d) {
+              $("img[id='" + id + "']").attr("src", d);
+            })
+         };
+        })
+        //--подсписки--//
+        sender('users.getSubscriptions', 'count=2&fields=status&extended=1&user_id=' + id, function(data) {
+         for (var i = 0; i < data['response']['items'].length; i++) {
+            $("#nameSubscriptions"+i).html(data['response']['items'][i]['name']);
+            $("#statusSubscriptions"+i).html((data['response']['items'][i]['status'] !='')? data['response']['items'][i]['status']: (data['response']['items'][i]['type'] == 'page')? 'страница':'');
+            loa(data['response']['items'][i]['photo_50'], 'imageSubscriptions'+i, function(id, d) {
+              $("img[id='" + id + "']").attr("src", d);
+            })
+         };
+        })
+        //---видео--//
+        if(data['response'][0]['counters']['videos'] != 0){
+        sender('video.get', 'count=2&owner_id=' + id, function(data) {
+            for (var i = 0; i < data['response']['items'].length; i++) {
+              $("#wallnamevideo"+i).html(data['response']['items'][i]['title']);
+              loa(data['response']['items'][i]['photo_130'], 'wallvideo'+i, function(id, d) {
+                $("img[id='" + id + "']").attr("src", d);
+              })
+            }
+        })
+        }
+
+        if(data['response'][0]['counters']['photos'] == 0 && data['response'][0]['status'] == ""){
+        op = 0;
+        }else{
+        var html = "<div id=\"status_photo\">"+
+        "<table><tr><td><div style=\"width: 178px;height: 22px;color: #ADAEAF;font-size: 11px;\">"+data['response'][0]['status']+"</div></td><td rowspan=\"2\"><div id=\"user_photo_wall\"></div></td></tr><tr><td><div id='allphotouser' style='float:right;color: #ADAEAF;font-size: 11px;cursor: pointer;'>Все альбомы</div></td></tr></table>"+
+        "</div>";
+        $("#user_info").after(html);
+        }
+
+        if(data['response'][0]['counters']['photos'] != 0){
+        sender('photos.get', 'album_id=wall&count=6&rew=1&extended=1&owner_id=' + id, function(data) {          
+            for (var i = 0; i < data['response']['items'].length; i++) {
+              $("#user_photo_wall").append("<img src=\"\" id=\"user_photo_wall_"+data['response']['items'][i]['id']+"\">");
+              loa(data['response']['items'][i]['photo_130'], 'user_photo_wall_'+data['response']['items'][i]['id'], function(id, d) {
+                $("img[id='" + id + "']").attr("src", d);
+              })
+            }
+        })
+        }
+
       }
-    })
     $("#uid_wall").val(id);
     read_wall(op);
+    })
   }
 
   function panel_load(){
-    $("#wall").append("<div id='panel_load'>"+
-      "<div class='module_header'><div class='header_top'>Фотоальбомы</div><div class='p_header_bottom' id='two_album_count'></div></div><div id='two_album'></div>"+
+    $("#wall").append("");
 
-      "<div class='module_header'><div class='header_top'>Видеозаписи</div><div class='p_header_bottom' id='two_video_count'></div></div><div id='two_video'></div>"+
-      "</div>");
-
-      sender('photos.getAlbums', 'v=5.21&need_covers=1&count=2&owner_id=' + $('#uid_wall').val(), function(data) {
-        if(data['response']['count'] != 0){
-      $("#two_album_count").html(data['response']['count']+' альбом'+declOfNum(data['response']['count'],['','а','ов']));
-      var text = '';
-      for (var i = 0; i < data['response']['items'].length; i++) {
-        text += '<div id="user_album" t_album="' + data['response']['items'][i]['id'] + '" style="background-image: url();">';
-        loa(data['response']['items'][i]['thumb_src'], data['response']['items'][i]['id'], function(id, d) {
-          $("#user_album[t_album='" + id + "']").css('background-image', 'url(' + d + ')');
-        })
-        text += '<div class="user_album">';
-        text += '<div class="user_album_name">' + data['response']['items'][i]['title'] + '</div>';
-        text += '</div>';
-        text += '</div>';
-      }
-      $("#two_album").append(text);
-      $("#two_album_count").parent(".module_header").show();
-        }else{
-          $("#two_album_count").parent(".module_header").remove();
-        }
-      })
-
-      sender('video.get', 'v=5.21&count=2&owner_id=' + $('#uid_wall').val(), function(data) {
-      $("#two_video_count").html(data['response']['count']+' видеозапис'+declOfNum(data['response']['count'],['ь','и','ей']));
-      if(data['response']['count'] != 0){
-      var text = '';
-      for (var i = 0; i < data['response']['items'].length; i++) {
-        var title = (data['response']['items'][i]['title'].length > 30) ? data['response']['items'][i]['title'].slice(0, 10) + "..." : data['response']['items'][i]['title'];
-        text = text + '<div class="video_row_cont" player="' + data['response']['items'][i]['player'] + '"><div class="video_row_inner_cont">';
-        if (data['response']['items'][i]['duration'] > 60) {
-          var second = ((data['response']['items'][i]['duration'] % 60) > 9) ? data['response']['items'][i]['duration'] % 60 : '0' + data['response']['items'][i]['duration'] % 60;
-          var duration = Math.floor(data['response']['items'][i]['duration'] / 60) + ':' + second;
-        } else {
-          var duration = '00:' + data['response']['items'][i]['duration'];
-        }
-        text = text + '<div class="video_row_info_line"><div class="video_raw_info_name">' + title + '</div><div class="video_row_duration">' + duration + '</div></div>';
-        text = text + '<div class="video_row_info_play"></div>';
-        text = text + '<div class="video_image_div" t_video="' + data['response']['items'][i]['id'] + '" style="background-image: url();"></div>';
-        loa(data['response']['items'][i]['photo_130'], data['response']['items'][i]['id'], function(id, d) {
-          $(".video_image_div[t_video='" + id + "']").css('background-image', 'url(' + d + ')');
-        })
-        text = text + '</div></div>';
-      }
-      $("#two_video").append(text);
-      $("#two_video_count").parent(".module_header").show();
-      }else{
-        $("#two_video_count").parent(".module_header").remove();
-      }
-      })
-    $("#panel_load").show();
+ 
+    //$("#panel_load").show();
   }
-  
-  $('body').on('click', '.header_top:eq(0)',function(){
-    $("#panel_load").remove();
+
+  $('body').on('click', '#friendwall3',function(){
+    rara = 0
+    friend_get_all(1);
+    $("#dialog.friend").find(".dialog_content").html('');
+    $("#dialog.friend").toggle();
+    $("#display").show();
+  })
+
+  $('body').on('click', '#add_user_friend',function(){
+    sender('friends.add', 'v=5.42&user_id=' + $('#uid_wall').val(), function(data) {
+      if(data['response'] == 1){
+        notie.alert(1, 'Заявка на добавление в друзья успешно отправлена.', 2); 
+      }else if(data['response'] == 2){
+        notie.alert(1, 'Вы успешно добавили пользователя в друзья.', 2); 
+        $("#add_user_friend").remove();
+      }else{
+        notie.alert(2, 'Заявку на добавление в друзья не возможно отправить.', 2); 
+      }
+    })
+  }); 
+
+  $('body').on('click', '#remove_user_friend',function(){
+    sender('friends.delete', 'user_id=' + $('#uid_wall').val(), function(data) {
+      if(data['response']['success'] == 1){
+        notie.alert(1, 'Пользователь удален из списка друзей.', 2); 
+        $("#remove_user_friend").remove();
+      }
+    })
+  });
+
+  $('body').on('click', '#allphotouser',function(){
+    $("#wall").find("div[id^='post']").remove();
+    $("#wallpost").remove();
+    $("#wall").append("<div id='wallpost' style='"+(($("#wall").is("#status_photo"))?'':'padding-top: 80px;')+"'></div>");
     $(".users:eq(2)").click();
   })
 
-  $('body').on('click', '.header_top:eq(1)',function(){
-    $("#panel_load").remove();
+  $('body').on('click', '#title_videowall',function(){
+    $("#wall").find("div[id^='post']").remove();
+    $("#wallpost").remove();
+    $("#wall").append("<div id='wallpost' style='"+(($("#wall").is("#status_photo"))?'':'padding-top: 80px;')+"'></div>");
     $(".users:eq(1)").click();
   })
 
-  $('body').on('click', '.feedback_row_group_names, .feedback_row_photo, .user_block_avatar, #user_block_name, .dialogs_user, .dialogs_photo, .avatar_img, .wall_text_name, .post_image, .my_wall', function() {
-    $("#news").hide();
+  $('body').on('click', '.feedback_row_group_names, .feedback_row_photo, .user_block_avatar, #user_block_name, .dialogs_user, .dialogs_photo, .avatar_img, .wall_text_name, .post_image, .my_wall, .href_user', function() {
+    $("#news").hide().html("");
     if (open_video == 1) { $(".button_video").click(); }
     if (button_group == 1) { $(".button_group").click(); }
     offset_wall = 0;
@@ -1349,15 +1364,31 @@ var repeat = false;
     user_info($(this).attr("uid"),1);
     panel_load();
     $("#wall").show();
+    $("#wall").animate({ left: "64px" }, 100)
+    $("#wall").find(".wall_post_over").width($(window).width() - $("#wall").position().left-260);
   });
 
-$('body').on('click', '.group_list_row, .published_by_wrap', function() {
-    $("#news").hide();
+  $('body').on('mouseover', '#messages_form', function(e) {
+    if($("#wall").css("display") == 'block'){
+      $("#wall").css("left","28%");
+      $("#wall").find(".wall_post_over").width($(window).width() - $("#wall").position().left-(($(".wall_post_over").position().left == 0 && $("#wall").position().left != 64)? 60:($(".wall_post_over").position().left != 0 && $("#wall").position().left != 64)? 260:200));
+    }
+  });
+
+  $('body').on('mouseover', '#wall', function(e) {
+      $("#wall").css("left","64px");
+      $("#wall").find(".wall_post_over").width($(window).width() - $("#wall").position().left-(($(".wall_post_over").position().left == 0)? 60:260));    
+  });
+
+$('body').on('click', '.group_list_row, .published_by_wrap, .href_club', function() {
+    $("#news").hide().html("");
     if (open_video == 1) { $(".button_video").click(); }
     if (button_group == 1) { $(".button_group").click(); }
     offset_wall = 0;
     $("#wall").html("");
-    user_info($(this).attr("uid"),0);
+    $("#uid_wall").val($(this).attr("uid"));
+    //user_info($(this).attr("uid"),0);//tempos
+    read_wall(0)
     $("#wall").show();
   });
 
@@ -1367,12 +1398,12 @@ $('body').on('click', '.group_list_row, .published_by_wrap', function() {
     var windowheighti = $('#wall').prop('clientHeight');
    // console.log("scrolltopi="+scrolltopi+" scrollheighti="+scrollheighti+" windowheighti="+windowheighti);
    if(parseInt($("#uid_wall").val()) > 0){
-   if(scrolltopi > 556){
+   if(scrolltopi > $("#user_info").height()){
     $("#panel_load").hide();
-    $("#wall").find("div[id^='post']").css("margin-left", "0px");
-   }else if(scrolltopi < 555){
+    $("#wall").find("div[id^='post']").css("left", "0px");
+   }else if(scrolltopi < $("#user_info").height()){
     $("#panel_load").show();
-    $("#wall").find("div[id^='post']").css("margin-left", "135px");
+    $("#wall").find("div[id^='post']").css("left", "200px");
    }
    }
     var scrolloffseti = 20;
@@ -1396,22 +1427,22 @@ $('body').on('click', '.group_list_row, .published_by_wrap', function() {
   })
 
   $('body').on('click', '#repost_button', function() {
-    sender('wall.repost', 'v=5.21&object=' + $(this).attr("wall_id"), function(data) {
+    sender('wall.repost', 'object=' + $(this).attr("wall_id"), function(data) {
       if (data['response']['success'] == 1) {
-        alertify.success('Запись опубликована на вашей стене.');
+        notie.alert(1, 'Запись опубликована на вашей стене.', 2); 
       } else {
-        alertify.error('Репост записи не удался.');
+        notie.alert(2, 'Репост записи не удался.', 2); 
       }
     })
   });
 
   $('body').on('click', '.delete_post', function() {
     $("#histori").val("post" + $(this).attr("owner_id") + "_" + $(this).attr("post_id"));
-    sender('wall.delete', 'v=5.21&post_id=' + $(this).attr("post_id"), function(data) {
+    sender('wall.delete', 'post_id=' + $(this).attr("post_id"), function(data) {
       if (data['response'] == 1) {
         $("#" + $("#histori").val()).remove();
       } else {
-        alertify.error('Удаление записи не удалось произвести.');
+        notie.alert(2, 'Удаление записи не удалось произвести.', 2);
       }
     })
   });
@@ -1434,12 +1465,11 @@ $('body').on('click', '.group_list_row, .published_by_wrap', function() {
       var str = (/:\/\//.exec(s) === null ? "http://" + s : s);
       return "<a target=\"_blank\" href=\"" + str + "\">" + str /*s*/ + "</a>";
     });
-
-    var reg = /\[([^\.]+)\|([^\.]+)\]/;
-    mess = mess.replace(reg, function(s, d, n) {
-      return n;
+    var re = /\[(id|club)(\d+)\|([^\]]+)\]/gim;
+    mess = mess.replace(re,function(s,nam,id,text){
+       return "<a href=\"#\" class=\""+((nam == 'club')?'href_club':'href_user')+"\" uid=\""+((nam == 'club')?'-':'')+id+"\">" + text + "</a>";
     });
-    text += '<div class="wall_post_text">' + mess + '</div>';
+    text += '<div class="wall_post_text">' + mess.replace(/\n/g, "<br />") + '</div>';
     text += '<div class="wall_attachments">';
     if (data['attachments'] != null) {
       for (var q = 0; q < data['attachments'].length; q++) {
@@ -1464,7 +1494,7 @@ $('body').on('click', '.group_list_row, .published_by_wrap', function() {
             $("webview[t='" + data['response'][1]['vid'] + "']").attr("src", data['response'][1]['player']);
           })
         } else if (data['attachments'][q]['type'] == 'audio') {
-          text += '<div id="track" mus="comment" class="audio_messages" duration="' + data['attachments'][q]['audio']['duration'] + '" uid="' + data['attachments'][q]['audio']['aid'] + '" url="' + data['attachments'][q]['audio']['url'] + '"><div class="track_play"></div><div class="track_title">' + data['attachments'][q]['audio']['artist'] + ' - ' + data['attachments'][q]['audio']['title'] + '</div></div>';
+          text += '<br><div id="track" mus="comment" class="audio_messages" duration="' + data['attachments'][q]['audio']['duration'] + '" uid="' + data['attachments'][q]['audio']['aid'] + '" url="' + data['attachments'][q]['audio']['url'] + '"><div class="track_play"></div><div class="track_title">' + data['attachments'][q]['audio']['artist'] + ' - ' + data['attachments'][q]['audio']['title'] + '</div></div>';
 
         } else if (data['attachments'][q]['type'] == 'doc') {
           text += "<a target='_blank' href='" + data['attachments'][q]['doc']['url'] + "'>" + data['attachments'][q]['doc']['title'] + "</a> ";
@@ -1531,7 +1561,7 @@ $('body').on('click', '.group_list_row, .published_by_wrap', function() {
 
       $('.open_comment[post_id="' + $("#post_id").val() + '"]').attr('offset', offset);
       if (offset >= $('.open_comment[post_id="' + $("#post_id").val() + '"]').attr('all_comment')) {
-        var lalal = '<div class="send_comment" post_id="' + $("#post_id").val() + '"><div class="button_open_send_comment">Оставить комментарий</div><textarea placeholder="Введите комментарий и нажмите ctrl+enter для его размещения"></textarea></div>'
+        var lalal = '<div class="send_comment" post_id="' + $("#post_id").val() + '"><textarea placeholder="Введите комментарий и нажмите ctrl+enter для его размещения"></textarea></div>'
 
         $('.open_comment[post_id="' + $("#post_id").val() + '"]').remove();
         if ($("#comment_wall_on").val() == 1) {
@@ -1605,12 +1635,12 @@ $('body').on('click', '.group_list_row, .published_by_wrap', function() {
         })
         text = text + '</div></div>';
       }
-      $("#wall").append(text);
+      $("#wallpost").append(text);
     })
   }
 
   function album_user() {
-    sender('photos.getAlbums', 'v=5.21&need_covers=1&offset=' + offset_wall + '&owner_id=' + $('#uid_wall').val(), function(data) {
+    sender('photos.getAlbums', 'need_covers=1&offset=' + offset_wall + '&owner_id=' + $('#uid_wall').val(), function(data) {
       var text = '';
       for (var i = 0; i < data['response']['items'].length; i++) {
         text += '<div id="user_album" t_album="' + data['response']['items'][i]['id'] + '" style="background-image: url();">';
@@ -1622,7 +1652,7 @@ $('body').on('click', '.group_list_row, .published_by_wrap', function() {
         text += '</div>';
         text += '</div>';
       }
-      $("#wall").append(text);
+      $("#wallpost").append(text);
     })
   }
 
@@ -1630,7 +1660,7 @@ $('body').on('click', '.group_list_row, .published_by_wrap', function() {
 
   function load_album_user(id) {
     load_album_users = id;
-    sender('photos.get', 'count=40&v=5.21&offset=' + offset_wall + '&owner_id=' + $('#uid_wall').val() + '&album_id=' + id + '&offset=' + offset_wall, function(data) {
+    sender('photos.get', 'count=40&offset=' + offset_wall + '&owner_id=' + $('#uid_wall').val() + '&album_id=' + id + '&offset=' + offset_wall, function(data) {
       var text = '';
       for (var i = 0; i < data['response']['items'].length; i++) {
         text += '<div id="mes_photo_href" ss="' + data['response']['items'][i]['id'] + '" data-lightbox="album_user" href="' + data['response']['items'][i]['photo_130'] + '"><img id="photo_user_album" photo_album="' + data['response']['items'][i]['id'] + '" src="images/image_loader.gif"></div>';
@@ -1642,7 +1672,7 @@ $('body').on('click', '.group_list_row, .published_by_wrap', function() {
           $("#mes_photo_href[ss='" + id + "']").attr('href', d);
         })
       }
-      $("#wall").append(text);
+      $("#wallpost").append(text);
     })
   }
 
@@ -1656,8 +1686,6 @@ $('body').on('click', '.group_list_row, .published_by_wrap', function() {
       $('.users:eq(0)').addClass('clicks');
       $('.users:eq(1)').removeClass('clicks');
       $('.users:eq(2)').removeClass('clicks');
-      $("#wall > div:not(:first)").remove();
-      $("#wall > img").remove();
       read_wall(1);
     })
     //открываем видео пользователя
@@ -1670,8 +1698,6 @@ $('body').on('click', '.group_list_row, .published_by_wrap', function() {
     $('.users:eq(0)').removeClass('clicks');
     $('.users:eq(1)').addClass('clicks');
     $('.users:eq(2)').removeClass('clicks');
-    $("#wall > div:not(:first)").remove();
-    $("#wall > img").remove();
     video_user();
   })
 
@@ -1686,8 +1712,6 @@ $('body').on('click', '.group_list_row, .published_by_wrap', function() {
       $('.users:eq(0)').removeClass('clicks');
       $('.users:eq(1)').removeClass('clicks');
       $('.users:eq(2)').addClass('clicks');
-      $("#wall > div:not(:first)").remove();
-      $("#wall > img").remove();
       album_user();
       album_users = 0;
     })
@@ -1709,10 +1733,8 @@ $('body').on('click', '.group_list_row, .published_by_wrap', function() {
     $('.users:eq(0)').removeClass('clicks');
     $('.users:eq(1)').removeClass('clicks');
     $('.users:eq(2)').addClass('clicks');
-    $("#panel_load").remove();
     offset_wall = 0;
-    $("#wall > div:not(:first)").remove();
-    $("#wall > img").remove();
+    $("#wallpost").html("");
     load_album_user($(this).attr('t_album'));
     album_users = 1;
   })
@@ -1724,7 +1746,7 @@ $('body').on('click', '.group_list_row, .published_by_wrap', function() {
 
 function new_friend() {
     //Смотрим есть ли новые друзья
-  sender('friends.getRequests', 'v=5.21&out=0', function(data) {
+  sender('friends.getRequests', 'out=0', function(data) {
     if (data['response']['count'] != '0') {
       $(".new_friend").html('+' + data['response']['count']);
       $(".new_friend").show();
@@ -1760,6 +1782,25 @@ if(timers){
   function start() {
       chrome.storage.local.get('vkAccessToken', function(result) {
         if (result.vkAccessToken != '') {
+          chrome.storage.local.get('scroll_show', function (result) {
+           if (result.scroll_show == '' || result.scroll_show == undefined || result.scroll_show == '0') {
+              document.getElementById("scroll_show").checked = false;
+              $("body").removeClass("show-scrollbar");
+            }else{
+              document.getElementById("scroll_show").checked = true;
+              $("body").addClass("show-scrollbar");
+            }
+          });
+
+          new_friend();
+          ti();
+          pis();
+          updates();
+          open_longPong();
+          send_long_pong();
+          //update_new();
+          timer = true;
+          //notification_load();
           chrome.storage.local.get('start_stena', function (result) {
            if (result.start_stena == '' || result.start_stena == undefined || result.start_stena == '0') {
               document.getElementById("start_stena").checked = false;
@@ -1772,15 +1813,6 @@ if(timers){
             //get_messages();
             }
           });
-          new_friend();
-          ti();
-          pis();
-          updates();
-          open_longPong();
-          send_long_pong();
-          //update_new();
-          timer = true;
-          //notification_load();
         }
       });
     }
@@ -1797,18 +1829,6 @@ if(timers){
         chrome.storage.local.get('vkAccessToken', function(result) {
           alertify.alert('<webview style="width: 100%;height: 248px;" id="image_load" src="http://vkinviz.ru/api/post_photo.php?uid=' + $('#uid_user').val() + '&token=' + result.vkAccessToken + '"></webview>'); // HTML
           $(".alertify-dialog").css("padding", '0px');
-          var webview = document.getElementById("image_load");
-          var loadstop = function() {
-            var url = $("#image_load").attr("src");
-            if (url.indexOf('http://vkinviz.ru/api/post_photo.php?ok=1') > -1) {
-              $("#alertify-ok").click();
-              $("#messages > #table").html('');
-              messages_open($('#uid_user').val());
-
-            }
-          }
-          webview.addEventListener("loadstop", loadstop);
-
         })
       },
       error: function(jqXHR, exception) {
@@ -1840,11 +1860,11 @@ if(timers){
 
   $('#wall').on('click', '.delete_comment_button', function() {
     $("#histori").val($(this).attr("comment_id"));
-    sender('wall.deleteComment', 'v=5.21&owner_id=' + $("#uid_wall").val() + "&comment_id=" + $(this).attr("comment_id"), function(data) {
+    sender('wall.deleteComment', 'owner_id=' + $("#uid_wall").val() + "&comment_id=" + $(this).attr("comment_id"), function(data) {
       if (data['response'] == 1) {
         $(".reply_table[comment_id='" + $("#histori").val() + "']").remove();
       } else if (data['error']['error_code'] == 211) {
-        alertify.error('Вы не можете удалить этот комментарий.');
+        notie.alert(2, 'Вы не можете удалить этот комментарий.', 2);
       }
     })
   })
@@ -1855,9 +1875,9 @@ if(timers){
         var from_group = 0;
       sender('wall.addComment', 'from_group=' + from_group + '&owner_id=' + $("#uid_wall").val() + "&post_id=" + $(this).parent().attr("post_id") + "&text=" + $(this).val(), function(data) {
         if (data['response']['cid'] > 0) {
-          alertify.success('Комментарий добавлен.Обновите страничку.');
+          notie.alert(1, 'Комментарий добавлен.Обновите страничку.', 2);
         } else if (data['error']['error_code'] == 213) {
-          alertify.error('Нет доступа к комментированию записи.');
+          notie.alert(2, 'Нет доступа к комментированию записи.', 2);
         }
       })
     }
@@ -1911,9 +1931,10 @@ if(timers){
   }
 
   function load_smile(){
-    for (var i = 0; i < smile_code.length; i++) {
-      $(".smiles").append('<img smile="" src="" alte="'+smile_code[i]+'">');
-      if(i == smile_code.length-1){ emoji_load(); }
+    var ss = Object.keys(smile_code);
+    for (var i = 0; i < ss.length; i++) {
+      $(".smiles").append('<img smile="" code="'+ss[i]+'" src="">');
+      if(i == ss.length-1){ emoji_load(); }
     };
   }
 
@@ -1929,8 +1950,8 @@ if(timers){
   })
   $('#send_messages').on('click', '.smiles img[smile]', function(e) {
     document.getElementById('text_messages').focus();
-    var ds = $(this).attr("alte");
-    pasteHtmlAtCaret(" <img src='" + $(this).attr("src") + "' al='"+$(this).attr("alte")+"'> ");
+    var ds = $(this).attr("code");
+    pasteHtmlAtCaret(" <img src='" + $(this).attr("src") + "' code='"+$(this).attr("code")+"'> ");
     chrome.storage.local.get('smile_history', function (result) {
      var smile = {0:ds,1:result['smile_history'][0],2:result['smile_history'][1]};
     chrome.storage.local.set({'smile_history':smile},function(){ smile_history_load() });
@@ -1940,12 +1961,12 @@ if(timers){
 
   $('#history_smile').on('click', 'img', function(e) {
     document.getElementById('text_messages').focus();
-    pasteHtmlAtCaret(" <img src='" + $(this).attr("src") + "' al='"+$(this).attr("alte")+"'> ");
+    pasteHtmlAtCaret(" <img src='" + $(this).attr("src") + "' code='"+$(this).attr("code")+"'> ");
   })
 
   $('#menu').on('click', '.new_friend', function(e) {
-    sender('friends.getRequests', 'v=5.21&out=0&sort=0', function(data) {
-      sender('users.get', 'v=5.21&user_ids=' + data['response']['items'].join(",") + '&fields=online,last_seen,photo_50,sex,has_mobile', function(data) {
+    sender('friends.getRequests', 'out=0&sort=0', function(data) {
+      sender('users.get', 'user_ids=' + data['response']['items'].join(",") + '&fields=online,last_seen,photo_50,sex,has_mobile', function(data) {
         $("#wall").html('');
         if (data['response'].length != 0) {
           for (var i = 0; i < data['response'].length; i++) {
@@ -1993,10 +2014,10 @@ if(timers){
     $("#histori").val($(this).attr("user_id"));
     sender('friends.add', 'v=5.24&user_id=' + $(this).attr("user_id"), function(data) {
       if (data['response'] != '') {
-        alertify.success('Пользователь добавлен в друзья');
+        notie.alert(1, 'Пользователь добавлен в друзья', 2);
         $("#user_block_new[uid='" + $("#histori").val() + "']").remove();
       } else {
-        alertify.error('Ошибка.Невозможно добавить пользователя в друзья');
+        notie.alert(3, 'Ошибка.Невозможно добавить пользователя в друзья', 2);
       }
     })
   });
@@ -2005,138 +2026,12 @@ if(timers){
     $("#histori").val($(this).attr("user_id"));
     sender('friends.delete', 'v=5.24&user_id=' + $(this).attr("user_id"), function(data) {
       if (data['response'] != '') {
-        alertify.success('Заявка в друзья отклонена');
+        notie.alert(1, 'Заявка в друзья отклонена', 2);
         $("#user_block_new[uid='" + $("#histori").val() + "']").remove();
       } else {
-        alertify.error('Неизвестная ошибка при удалении пользователя');
+        notie.alert(3, 'Неизвестная ошибка при удалении пользователя', 2);
       }
     })
-  });
-
-  //Окно обновлений
-
-
-  //Создание записей на стене
-  $('#wall').on('click', '.smile_post_wall img', function(e) {
-    if ($("#text_post_wall").html() == 'Введите сообщение и нажмите сочетание клавиш Ctrl+Enter,что-бы опубликовать запись на своей стене. Запись будет опубликованна в течении пары минут.') {
-      $("#text_post_wall").html('')
-    }
-    document.getElementById('text_post_wall').focus();
-    pasteHtmlAtCaret(" <img src='" + $(this).attr("src") + "'> ");
-  })
-
-  $('#wall').on('mouseover', '#text_post_wall', function(e) {
-    if ($("#text_post_wall").html() == 'Введите сообщение и нажмите сочетание клавиш Ctrl+Enter,что-бы опубликовать запись на своей стене. Запись будет опубликованна в течении пары минут.') {
-      $("#text_post_wall").css("color", '#000').html('');
-    }
-  });
-
-  $('#wall').on('mouseout', '#text_post_wall', function(e) {
-    if ($("#text_post_wall").html() == '') {
-      $("#text_post_wall").css("color", 'rgb(168,168,168)').html('Введите сообщение и нажмите сочетание клавиш Ctrl+Enter,что-бы опубликовать запись на своей стене. Запись будет опубликованна в течении пары минут.');
-    }
-  });
-
-  function send_post_wall() {
-    var str = $("#text_post_wall").html();
-    var result = '';
-    result += str.replace(/<img src=\"images\/smile\/(.+?).png\">/g, function(q, w) {
-      return ' ' + smile[smile_code.indexOf(w)] + ' ';
-    });
-    results = result.replace(/<div>(.+?)<\/div>/g, function(q, w) {
-      return ' ' + w + ' ';
-    });
-    var time = (parseInt(new Date().getTime() / 1000) + Math.floor(Math.random() * (180 - 40 + 1)) + 40);
-    if($('#attachments').val() != ''){
-      var attachments = '&attachments='+$('#attachments').val();
-    }else{
-      var attachments = '';
-    }
-    sender('wall.post', 'message=' + results + attachments +'&publish_date=' + time, function(data) {
-      if (obj(data['response']) != '') {
-        if (data['response']['post_id'] > 0) {
-          alertify.alert("Ваша запись будет опубликована в течении пары минут.Обычно это занимает от 1 до 5 минут.");
-          $('#attachments').val('');
-          $("#text_post_wall").html('');
-          $("#post_wall_loader").hide();
-        }
-      } else {
-        if (data['error']['error_code'] == 214) {
-          alertify.alert("Возможно Вы пару минут назад опубликовали запись, но пока она не опубликована Вы не можете опубликовать ещё одну,попробуйте ещё раз после того как Ваша запись опубликуется, обычно это занимает некоторое время, но за то Вы не окажитесь в онлайне.");
-          $("#post_wall_loader").hide();
-        } else if (data['error']['error_code'] == 100) {
-          send_post_wall();
-        } else if (data['error']['error_code'] == 6) {
-          alertify.error('Превышен интервал. Попробуйте позже. Минут через 5. Нам очень жаль,что так вышло. Правда-правда=(');
-          $("#post_wall_loader").hide();
-        } else {
-          alertify.error(obj(data['error']));
-          $("#post_wall_loader").hide();
-        }
-      }
-    })
-  }
-
-  $('#wall').on('keydown', '#text_post_wall', function(e) {
-    if (e.ctrlKey && e.keyCode == 13) {
-      $("#post_wall_loader").show();
-      send_post_wall();
-    }
-  })
-
-  //-------------//
- //wall load img//
-//-------------//
-  $('#wall').on('click', '#attachments_load', function(e) {
-    if($('#attachments').val().split(',').length > 1){ $("#attachments_load_view").show(); }
-    chrome.storage.local.get('vkAccessToken', function(result) {
-    alertify.alert('<webview style="width: 100%;height: 190px;" id="image_load" src="http://vkinviz.ru/api/attachments/post_photo.php?token=' + result.vkAccessToken + '"></webview><div id="attachments_load_view"></div>'); // HTML
-    $(".alertify-dialog").css("padding", '0px');
-    var webview = document.getElementById("image_load");
-    var loadstop = function() {
-      var url = $("#image_load").attr("src");
-      if (url.indexOf('vkinviz.ru/api/attachments/post_photo.php?ok=1&attachments=') > -1) {
-        var attachments = url.replace(/(.*)attachments=(.*);(.*)/, function(q, w, e, s) {
-          return e;
-        });
-
-        if(attachments != ''){
-          $('#attachments').val($('#attachments').val()+attachments+',')
-          var array_attachments = $('#attachments').val().split(','); 
-          if(array_attachments.length > 1){ $("#attachments_load_view").show(); }
-          $('#attachments_list').html((array_attachments.length-1)+' Приклеплени'+declOfNum(array_attachments.length-1, ['е', 'я', 'й']));
-          var src_big = url.replace(/(.*)attachments=(.*);(.*)/, function(q, w, e, s) {
-            return s;
-          });
-          $("#attachments_load_view").append("<div photos='"+attachments+"'><img src='images/delete.png' style='opacity: 0;'></div>");
-            loa(src_big,attachments, function(id, d) {
-            $("div[photos='" + id + "']").css("background-image", "url("+d+")");
-            })
-          $("#image_load").attr("src","http://vkinviz.ru/api/attachments/post_photo.php?token=" + result.vkAccessToken)
-       }
-      }
-    } 
-    webview.addEventListener("loadstop", loadstop);
-    })
-  })
-
-  $("body").on('mouseover', "div[photos^='photo']", function(e) {
-    $(this).find("img").css("opacity", 0.6);
-  });
-  $("body").on('mouseout', "div[photos^='photo']", function(e) {
-    $(this).find("img").css("opacity", 0);
-  });
-  $("body").on('click', "div[photos^='photo']", function(e) {
-    var attr = $(this).attr("photos");
-    var array_attachments = $('#attachments').val().split(','); 
-    for (var i = 0; i < array_attachments.length - 1; i++) {
-      if(array_attachments[i] == attr){
-        array_attachments.splice(i,1);
-        $('#attachments').val(array_attachments.join(","));
-        $(this).remove();
-        if(array_attachments.length-1 == 0){ $("#attachments_load_view").hide(); }
-      }
-    };
   });
 
   //---------------------//
@@ -2163,8 +2058,7 @@ function open_wall_url(type,id){
 
   $("*").keydown(function(event) {
     if (event.ctrlKey && event.keyCode == 81) {
-alertify.prompt("Вставьте ссылку на пользователя или группу.", function (e, str) {
-    if (e) {
+    notie.input('Вставьте ссылку на пользователя или группу', 'Продолжить', 'Отменить', 'ссылка', 'http://vk.com/vkinviz', function(str) {
     	var re = /http?[^\s]:\/\/vk.com\/(.*)/;
     	if(re.test(str)){
     	 str = re.exec(str);
@@ -2173,23 +2067,18 @@ alertify.prompt("Вставьте ссылку на пользователя и�
             str2 = re2.exec(str[1]);
             open_wall_url(str2[1],str2[2]);
           }else{
-          	sender('utils.resolveScreenName', 'v=5.25&screen_name='+str[1] , function(data) {
+          	sender('utils.resolveScreenName', 'screen_name='+str[1] , function(data) {
              open_wall_url(data['response']['type'],data['response']['object_id']);
            })
           }
         }else{
-         alertify.error("Проверьте правильность ссылки");
+         notie.alert(3, 'Проверьте правильность ссылки.', 2);
         }
-    }
-}, "http://vk.com/*********");
+      })
     }
 })
 
-  //---------------------//
- //----размеры окна-----//
-//---------------------//
-
-
+//----размеры окна-----//
 
   $(window).resize(function() {
     var obj = {};
@@ -2197,7 +2086,8 @@ alertify.prompt("Вставьте ссылку на пользователя и�
     obj['height'] = $(window).height();
     chrome.storage.local.set({
       'resize': obj
-    }, function() {})
+    })
+    $("#wall").find(".wall_post_over").width($(window).width() - $("#wall").position().left-260);
   })
 
   chrome.storage.local.get('resize', function(result) {
@@ -2250,14 +2140,14 @@ for (var i = 0; i < data.length; i++) {
 
  $('#friend_search_pole input').keyup(function(e) {
   if (e.keyCode == 13) {
-    sender('friends.get', 'v=5.25&order=hints&fields=online,last_seen,photo_50,sex,has_mobile', function(data) {
+    sender('friends.get', 'order=hints&fields=online,last_seen,photo_50,sex,has_mobile', function(data) {
      var finded = new Array();
      for(var i in data['response']['items']){
       if(data['response']['items'][i].first_name.toLowerCase().indexOf($('#friend_search_pole input').val().toLowerCase()) != -1 || data['response']['items'][i].last_name.toLowerCase().indexOf($('#friend_search_pole input').val().toLowerCase()) != -1) finded.push(data['response']['items'][i]);
      }
 
      if(obj(finded) == ''){
-      alertify.success("Пользователь не найден");
+      notie.alert(2, 'Пользователь не найден', 2);
      }else{
       $("#dialog.friend > .dialog_content").html('');
       friend_load(finded);
@@ -2303,7 +2193,6 @@ var timer=true;
     }
   }
 
-if (chrome.runtime.lastError) { alertify.error(chrome.runtime.lastError.message); }
 $('body').on('click', '.open_dialog_window', function(e) {
 chrome.app.window.create("new_window.html",
     {  frame: "none",
@@ -2318,38 +2207,13 @@ chrome.app.window.create("new_window.html",
 $(".messages_open_v2").click();
 });
 
-$('body').on('click', '.header_exit', function() {
-  //chrome.storage.local.remove('longPong', function() {})
- chrome.app.window.current().close();
-})
-
-function funs(){
-    chrome.storage.local.get('menu', function (result) {
-   var res = result['menu'];
-   for(var i=0;i<res.length;i++){
-     if(res[i] == 1){
-      $(".punkt:eq("+i+")").css("opacity","1");
-      $("input[id^='roundedTwo']:eq("+i+")").prop("checked",true);
-     }else{
-      $(".punkt:eq("+i+")").css("opacity","0.1");
-      $("input[id^='roundedTwo']:eq("+i+")").prop("checked",false);
-     }
-   }
-   })  
-}
 $('#menu').on('click', '.settings', function() { 
   //$("#dialog.setting").toggle();
-  $(".punkt").show();
-  funs();
-  if($("#display").css("display") == 'block'){
-    menu_hide(1);
-  }
   $("#dialog.setting").toggle();
   $("#display").toggle(); 
-  $("#menu_menu").toggle();
 })
 $('#setup_key').on('click', 'input[name="keys"]', function() {
-  chrome.storage.local.set({'key_send':  $(this).attr('value')}, function () { alertify.log('Выбор сделан.');})
+  chrome.storage.local.set({'key_send':  $(this).attr('value')}, function () { notie.alert(1, 'Выбор сделан.', 2); })
 })
 
 $('body').on('click', '#get_mess', function() {
@@ -2361,58 +2225,40 @@ $('body').on('click', '#display', function() {
   $("#dialog.friend").hide();
   $("#dialog.setting").hide();
   $("#display").hide();
-  $("#menu_menu").hide();
-  menu_hide(1);
-})
-
-$('body').on('click', '#resize_pril', function() {
- chrome.app.window.current().minimize();
+  // menu_hide(1);
 })
 
 $('body').on('click', '#send_photo', function() {
 alertify.alert('<div style="height: 396px;position: relative;top: -16px;left: -7px;"><div id="info_camera">Тестовая функция. Не работает на некоторых камерах.</div><video id="vid" style="width: 555px;height: 413px;" autoplay></video><div id="click_cam"></div></div>')
 });
 
-$('#menu_menu').on('click', '#roundedTwos', function() {
- var index = $(this).index();
- chrome.storage.local.get('menu', function (result) {
-   var res = result['menu'];
-   if($("input[id^='roundedTwo']:eq("+index+")").prop("checked") == true){
-     res[index] = 1;
-     $(".punkt:eq("+index+")").css("opacity","1");
-   }else{
-     res[index] = 0;
-     $(".punkt:eq("+index+")").css("opacity","0.1");
-
-   }
-   chrome.storage.local.set({'menu': res })
- })
-})
-
- //chrome.storage.local.set({'menu': [1,1,1,1,1,1,1] })
-function menu_hide(q){
- chrome.storage.local.get('menu', function (result) {
-  for(var i=0;i<result['menu'].length;i++){
-    if(result['menu'][i] == 1 && q == 0){
-      $(".punkt:eq("+i+")").show();
-    }else if(result['menu'][i] == 0 && q == 1){
-      $(".punkt:eq("+i+")").hide();
+function clear_friend(){
+  sender('friends.getRequests', 'out=1', function(data) {
+    if(data['response'].length > 0){
+     sender('users.get', 'user_ids=' + data['response'].join(',') + '&name_case=acc', function(data) { 
+       var text ='Удалить людей которые Вас удалили?<br>';
+        for (var i = 0; i < data['response'].length; i++) {
+          text +=data['response'][i]['first_name']+" "+data['response'][i]['last_name']+((i!=data['response'].length-1)?', ':'');
+          if(i > 5){
+            i = data['response'].length;
+            text +=" и других."
+          }
+        }
+        notie.confirm(text, 'Да', 'Нет', function() {
+          for (var i = 0; i < data['response'].length; i++) {
+            sender('friends.delete', 'user_id='+data['response'][i]['uid'], function(data) {})
+          }
+          notie.alert(1, 'Люди которые Вас удалили были удалены!', 2); 
+        });
+       })
+    }else{
+      notie.alert(4, 'Вас ни кто не удалил из друзей!', 2);
     }
-  }
- })
+  })
 }
-menu_hide(0);
 
-$('.setting').on('click', '#add_user', function() {
-  chrome.app.window.create('auth.html#add', {
-    frame: "chrome",
-      'bounds': {
-        'width': 800,
-        'height': 600
-       },
-    minWidth: 600,
-    minHeight: 500
-  });
+$('.setting').on('click', '#remove_no_user', function() {
+   clear_friend();
 })
 
 });

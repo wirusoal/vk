@@ -14,8 +14,7 @@
     
 
     LightboxOptions.prototype.albumLabel = function(curImageNum, albumSize) {
-     // return "Image " + curImageNum + " of " + albumSize;
-      return "";
+      //return "<div id='save_image'>Сохранить на компьютер</div>";
     };
 
     return LightboxOptions;
@@ -49,7 +48,7 @@
     // Attach event handlers to the new DOM elements. click click click
     Lightbox.prototype.build = function() {
       var self = this;
-      $("<div id='lightboxOverlay' class='lightboxOverlay'></div><div id='lightbox' class='lightbox'><div class='lb-outerContainer'><div class='lb-container'><img class='lb-image' src='' /><div class='lb-nav'><a class='lb-prev' href='' ></a><a class='lb-next' href='' ></a></div><div class='lb-loader'><a class='lb-cancel'></a></div></div></div><div class='lb-dataContainer'><div class='lb-data'><div class='lb-details'><span class='lb-caption'></span><span class='lb-number'></span></div><div class='lb-closeContainer'><a class='lb-close'></a></div></div></div></div>").appendTo($('body'));
+      $("<div id='lightboxOverlay' class='lightboxOverlay'></div><div id='lightbox' class='lightbox'><div class='lb-outerContainer'><div class='lb-container'><img class='lb-image' src='' /><div class='lb-nav'><a class='lb-prev' href='' ></a><a class='lb-next' href='' ></a></div><div class='lb-loader'><a class='lb-cancel'></a></div></div></div><div class='lb-dataContainer'><div class='lb-data'><div class='lb-details'><span class='lb-caption'><div class='save_image'>Открыть в браузере</div></span><span class='lb-number'></span></div><div class='lb-closeContainer'><a class='lb-close'></a></div></div></div></div>").appendTo($('body'));
       
       // Cache jQuery objects
       this.$lightbox       = $('#lightbox');
@@ -104,6 +103,11 @@
       this.$lightbox.find('.lb-loader, .lb-close').on('click', function() {
         self.end();
         return false;
+      });
+
+      this.$lightbox.find('.lb-caption').on('click', function() {
+         window.open(self.album[self.currentImageIndex].link)
+         return false;
       });
     };
 
@@ -313,15 +317,10 @@
 
       // Enable anchor clicks in the injected caption html.
       // Thanks Nate Wright for the fix. @https://github.com/NateWr
-      if (typeof this.album[this.currentImageIndex].title !== 'undefined' && this.album[this.currentImageIndex].title !== "") {
-        this.$lightbox.find('.lb-caption')
-          .html(this.album[this.currentImageIndex].title)
-          .fadeIn('fast')
-          .find('a').on('click', function(event){
-            location.href = $(this).attr('href');
-          });
+      if (true) {
+        this.$lightbox.find('.lb-caption').fadeIn('fast')
       }
-    
+
       if (this.album.length > 1 && this.options.showImageNumberLabel) {
         this.$lightbox.find('.lb-number').text(this.options.albumLabel(this.currentImageIndex + 1, this.album.length)).fadeIn('fast');
       } else {

@@ -6,11 +6,18 @@
    },
    "description": "Приложение которое позволит Вам пользоваться сайтом vk.com находясь оффлайн.",
    "icons": {
-      "128": "vk-128.png",
-      "16": "vk-16.png"
+      "128": "inviz128.png",
+      "16": "inviz32.png",
+      "256": "inviz256.png",
+      "32": "inviz32.png",
+      "64": "inviz64.png"
    },
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmNSJoFzDIFcZVZds2+s8sF8c2gHyJ3US+OMVC0N5n3pls6iXKv/ffObnRKP+6WeDqErOAlOaSTe1yNzNEoInhVgdvI9tzqa9+LWZ98lUlzzvc7TvHRwKl2avUh0bMqnoodGHraC0iEwAuzB0dTOd0t7wKxJ3FRk0ApmnQXBRFmPT/l49NRgYvzS9rhZAhNUnhz2i/OdOz3AWhMjxVnQTsWcVLRqfo7ILphLl5oRCOK5bYsaa8PnINpPmX413ltGgiVKkTV6tg5RBflVNsDQ2bmGqzkYfZwOCMJKqcG2cH4bXPFOFkSSxg1eoU3rF6E4HrCMAkSl+zo/LoKSStChcswIDAQAB",
+   "manifest_version": 2,
    "name": "VK inviz",
-   "permissions": ["videoCapture", "webview", "notifications", "fileSystem", "contextMenus", "storage", "unlimitedStorage", "<all_urls>", "http://*/*", "https://*/*", "https://www.google-analytics.com/*" ],
-   "version": "0.28",
-   "manifest_version": 2
+   "permissions": [ {
+      "fileSystem": [ "write", "retainEntries", "directory" ]
+   }, "webview", "notifications", "fileSystem", "contextMenus", "storage", "unlimitedStorage", "\u003Call_urls>", "http://*/*", "https://*/*", "https://www.google-analytics.com/*" ],
+   "update_url": "https://clients2.google.com/service/update2/crx",
+   "version": "0.35"
 }

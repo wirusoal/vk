@@ -15,9 +15,9 @@ angular.module("api",[]).factory('api', function($q,$http) {
   return {
     json_get: function(method,key) {
       var deferred = $q.defer();
-      chrome.storage.local.get('active', function(resultq) {
       chrome.storage.local.get('vkAccessToken', function (value) {
-            $http.get('https://api.vk.com/method/'+method+'?'+key+'&access_token='+value['vkAccessToken'][resultq['active']-1]).success(function(data, status, headers, config) {
+            $http.get('https://api.vk.com/method/'+method+'?'+key+((method != 'execute.messages_get')?'&v=3.0':'')+'&access_token='+value.vkAccessToken).success(function(data, status, headers, config) {
+              console.info(data)
               for(i=0;i<data['response'].length;i++){
                 $.each(data['response'][i], function( key, value ) {
                   if(key == 'photo'){           
@@ -34,7 +34,6 @@ angular.module("api",[]).factory('api', function($q,$http) {
               deferred.resolve(data);
             });
         })
-      });
       return deferred.promise;
     }
   }
@@ -70,15 +69,17 @@ app.directive('enter', function () {
     };
 });
 //Диалоги
-app.controller('DialogList', function($scope,$http,api) {
+app.controller('DialogList', function($scope,$http,$sce,api) {
   $scope.offsetm = 0;
   $scope.dataq = Array();
   $scope.loadDialog = function(){
     api.json_get('execute.messages_get','offset='+$scope.offsetm).then(function(data){
       for(i=0;i<data['response'].length;i++){
         data['response'][i]['id'] = (data['response'][i]['chat_id'] == 0)? data['response'][i]['id']: 'chat_'+data['response'][i]['chat_id']; 
+        data['response'][i]['name'] = (data['response'][i]['chat_id'] == 0)? data['response'][i]['name']: data['response'][i]['title'];
         data['response'][i]['read_state'] = (data['response'][i]['read_state'] == 0 && data['response'][i]['out'] == 0) ? 'dialogs_new_msgs' : '';
-        data['response'][i]['online'] = (data['response'][i]['online'] == 1) ? ((data['response'][i]['online_mobile'] == 1)? '#cc0043':'#00cc35'):'#aeaeae'; 
+        data['response'][i]['online'] = (data['response'][i]['online'] == 1) ? ((data['response'][i]['online_mobile'] == 1)? 'mobile-online.gif':'pc.png'):'offline.png'; 
+        data['response'][i]['body'] = $sce.trustAsHtml(Emoji.emojiToHTML(data['response'][i]['body']))
         $scope.dataq.push(data['response'][i]);
       }
       $scope.rm = function(im){
@@ -134,7 +135,7 @@ app.controller('GroupList', function($scope,$http,api) {
   $scope.data = Array();
   $scope.loadGroupList = function(){
     var method = ($scope.search_input_group == undefined || $scope.search_input_group == '')? 'groups.get':'groups.search'; 
-    api.json_get(method,'count=20&v=3.0&extended=1&offset='+$scope.offsetp+'&q='+$scope.search_input_group).then(function(data){
+    api.json_get(method,'count=20&extended=1&offset='+$scope.offsetp+'&q='+$scope.search_input_group).then(function(data){
       for(i=1;i<data['response'].length;i++){
         data['response'][i]['type'] = (data['response'][i]['type'] == 'page') ? 'Публичная страница' : (data['response'][i]['type'] == 'group') ? 'Группа' : 'Мероприятие';
         $scope.data.push(data['response'][i]);
@@ -155,21 +156,4 @@ app.controller('GroupList', function($scope,$http,api) {
     $scope.loadGroupList();
   }
   $scope.FindGroupList();
-})
-
-app.controller('user_list_akk', function($scope,$http,api) {
-  $scope.load_akk = function(){
-    $scope.test = Array();
-    chrome.storage.local.get('vkAccessToken', function (value) {
-      for (var i = 0; i < value['vkAccessToken'].length; i++) {
-        $http.get('https://api.vk.com/method/users.get?fields=photo_50&name_case=Nom&access_token='+value['vkAccessToken'][i]).success(function(data) {
-          $http.get(data.response[0].photo_50, {responseType: 'blob'}).success(function(blob) {
-            data.response[0].photo_50 = window.URL.createObjectURL(blob);   
-          })
-          $scope.test.push(data.response[0]);
-        });
-      };
-    });
-  };
-  //$scope.load_akk();
 })
