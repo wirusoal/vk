@@ -39,7 +39,6 @@ function obj(obj){var s="";for(prop in obj){if(typeof obj[prop]!="function"){s+=
                 chrome.storage.local.set({//1
                     'vkAccessToken': vkAccessToken
                 }, function () {
-                      chrome.storage.local.set({'menu': [1,1,0,1,1,1,0,1] })
                       chrome.app.window.current().close();
                       chrome.app.window.create('window.html', {
                         frame: "chrome",

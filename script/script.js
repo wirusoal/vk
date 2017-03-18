@@ -800,11 +800,7 @@ var repeat = false;
             $("#mes_photo_img[t='" + id + "']").attr("src", d);
           })
         } else if (data['attachments'][q]['type'] == 'link') {
-          if (data['attachments'][q]['link']['url'].indexOf('://vk.com/') > -1) {
-            text += '<div class="media_desc"><a target="_blank" class="lnk" href="' + data['attachments'][q]['link']['url'] + '"><b class="fl_l "></b><span class="a">Ссылка может нарушить вашу невидимость -> ' + data['attachments'][q]['link']['title'] + '</span></a></div>';
-          } else {
-            text += '<div class="media_desc"><a target="_blank" class="lnk" href="' + data['attachments'][q]['link']['url'] + '"><b class="fl_l "></b><span class="a">' + data['attachments'][q]['link']['title'] + '</span></a></div>';
-          }
+          text += '<div class="media_desc"><a target="_blank" class="lnk" href="' + data['attachments'][q]['link']['url'] + '"><b class="fl_l "></b><span class="a">'+((data['attachments'][q]['link']['url'].indexOf('://vk.com/') > -1)?'Ссылка может нарушить вашу невидимость -> ':'') + data['attachments'][q]['link']['title'] + '</span></a></div>';
         } else if (data['attachments'][q]['type'] == 'video') {
           text += '<webview t="' + data['attachments'][q]['video']['id'] + '" style="width: 100%;" src=""></webview>';
           sender('video.get', 'videos=' + data['attachments'][q]['video']['owner_id'] + '_' + data['attachments'][q]['video']['id'] + '_' + data['attachments'][q]['video']['access_key'], function(data) {
@@ -926,11 +922,7 @@ var repeat = false;
                   $("#mes_photo_img[t='" + id + "']").attr("src", d);
                 })
               } else if (data['response']['items'][i]['attachments'][q]['type'] == 'link') {
-                if (data['response']['items'][i]['attachments'][q]['link']['url'].indexOf('://vk.com/') > -1) {
-                  text += '<div class="media_desc"><a target="_blank" class="lnk" href="' + data['response']['items'][i]['attachments'][q]['link']['url'] + '"><b class="fl_l "></b><span class="a">Ссылка может нарушить вашу невидимость -> ' + data['response']['items'][i]['attachments'][q]['link']['title'] + '</span></a></div>';
-                } else {
-                  text += '<div class="media_desc"><a target="_blank" class="lnk" href="' + data['response']['items'][i]['attachments'][q]['link']['url'] + '"><b class="fl_l "></b><span class="a">' + data['response']['items'][i]['attachments'][q]['link']['title'] + '</span></a></div>';
-                }
+                text += '<div class="media_desc"><a target="_blank" class="lnk" href="' + data['response']['items'][i]['attachments'][q]['link']['url'] + '"><b class="fl_l "></b><span class="a">'+((data['response']['items'][i]['attachments'][q]['link']['url'].indexOf('://vk.com/') > -1)?'Ссылка может нарушить вашу невидимость -> ':'') + data['response']['items'][i]['attachments'][q]['link']['title'] + '</span></a></div>';
               } else if (data['response']['items'][i]['attachments'][q]['type'] == 'video') {
                 text += '<webview t="' + data['response']['items'][i]['attachments'][q]['video']['id'] + '" style="width: 100%;" src=""></webview>';
                 sender('video.get', 'videos=' + data['response']['items'][i]['attachments'][q]['video']['owner_id'] + '_' + data['response']['items'][i]['attachments'][q]['video']['id'] + '_' + data['response']['items'][i]['attachments'][q]['video']['access_key'], function(data) {
@@ -1088,12 +1080,9 @@ var repeat = false;
                   $("#mes_photo_img[t='" + id + "']").attr("src", d);
                 })
               } else if (data['response']['items'][i]['attachments'][q]['type'] == 'link') {
-                if (data['response']['items'][i]['attachments'][q]['link']['url'].indexOf('://vk.com/') > -1) {
-                  text += '<div class="media_desc"><a target="_blank" class="lnk" href="' + data['response']['items'][i]['attachments'][q]['link']['url'] + '"><b class="fl_l "></b><span class="a">Ссылка может нарушить вашу невидимость -> ' + data['response']['items'][i]['attachments'][q]['link']['title'] + '</span></a></div>';
-                } else {
-                  text += '<div class="media_desc"><a target="_blank" class="lnk" href="' + data['response']['items'][i]['attachments'][q]['link']['url'] + '"><b class="fl_l "></b><span class="a">' + data['response']['items'][i]['attachments'][q]['link']['title'] + '</span></a></div>';
-                }
+                  text += '<div class="media_desc"><a target="_blank" class="lnk" href="' + data['response']['items'][i]['attachments'][q]['link']['url'] + '"><b class="fl_l "></b><span class="a">'+((data['response']['items'][i]['attachments'][q]['link']['url'].indexOf('://vk.com/') > -1)?'Ссылка может нарушить вашу невидимость -> ':'') + data['response']['items'][i]['attachments'][q]['link']['title'] + '</span></a></div>';
               } else if (data['response']['items'][i]['attachments'][q]['type'] == 'video') {
+                console.info(data['response']['items'][i]['attachments'][q]['video'])
                 text += '<webview t="' + data['response']['items'][i]['attachments'][q]['video']['id'] + '" style="width: 100%;" src=""></webview>';
                 sender('video.get', 'videos=' + data['response']['items'][i]['attachments'][q]['video']['owner_id'] + '_' + data['response']['items'][i]['attachments'][q]['video']['id'] + '_' + data['response']['items'][i]['attachments'][q]['video']['access_key'], function(data) {
                   // console.log(obj(data['response']['items'][0])); 
@@ -1482,11 +1471,7 @@ $('body').on('click', '.group_list_row, .published_by_wrap, .href_club', functio
             $("#mes_photo_img[t='" + id + "']").attr("src", d);
           })
         } else if (data['attachments'][q]['type'] == 'link') {
-          if (data['attachments'][q]['link']['url'].indexOf('://vk.com/') > -1) {
-            text += '<div class="media_desc"><a target="_blank" class="lnk" href="' + data['attachments'][q]['link']['url'] + '"><b class="fl_l "></b><span class="a">Ссылка может нарушить вашу невидимость -> ' + data['attachments'][q]['link']['title'] + '</span></a></div>';
-          } else {
-            text += '<div class="media_desc"><a target="_blank" class="lnk" href="' + data['attachments'][q]['link']['url'] + '"><b class="fl_l "></b><span class="a">' + data['attachments'][q]['link']['title'] + '</span></a></div>';
-          }
+            text += '<div class="media_desc"><a target="_blank" class="lnk" href="' + data['attachments'][q]['link']['url'] + '"><b class="fl_l "></b><span class="a">'+((data['attachments'][q]['link']['url'].indexOf('://vk.com/') > -1)?'Ссылка может нарушить вашу невидимость -> ':'') + data['attachments'][q]['link']['title'] + '</span></a></div>';
         } else if (data['attachments'][q]['type'] == 'video') {
           text += '<webview t="' + data['attachments'][q]['video']['id'] + '" style="width: 100%;" src=""></webview>';
           sender('video.get', 'videos=' + data['attachments'][q]['video']['owner_id'] + '_' + data['attachments'][q]['video']['id'] + '_' + data['attachments'][q]['video']['access_key'], function(data) {
