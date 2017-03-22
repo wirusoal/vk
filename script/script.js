@@ -1,4 +1,5 @@
 $(document).ready(function() {
+notie.alert(4, 'Теперь отправка файлов пользователям осуществляется перемещением файла в поле ввода сообщения', 3);
 $('body').on('click', "#cache", function(){
   if($("#cache").prop("checked") == true){
      chrome.storage.local.set({ 'cache': '1' });
@@ -1767,6 +1768,7 @@ if(timers){
   function start() {
       chrome.storage.local.get('vkAccessToken', function(result) {
         if (result.vkAccessToken != '') {
+          $("#vkAccessToken").val(result.vkAccessToken);
           chrome.storage.local.get('scroll_show', function (result) {
            if (result.scroll_show == '' || result.scroll_show == undefined || result.scroll_show == '0') {
               document.getElementById("scroll_show").checked = false;
@@ -1803,38 +1805,6 @@ if(timers){
     }
     //start();
     start();
-
-  //images load user
-  $('#send_messages').on('click', '#send_doc', function() {
-    alertify.set({ labels: { ok : "Закрыть"} });
-    $.ajax({
-      url: 'http://vkinviz.ru/',
-      dataType: "html",
-      success: function(data, textStatus) {
-        chrome.storage.local.get('vkAccessToken', function(result) {
-          alertify.alert('<webview style="width: 100%;height: 248px;" id="image_load" src="http://vkinviz.ru/api/post_photo.php?uid=' + $('#uid_user').val() + '&token=' + result.vkAccessToken + '"></webview>'); // HTML
-          $(".alertify-dialog").css("padding", '0px');
-        })
-      },
-      error: function(jqXHR, exception) {
-        if (jqXHR.status === 0) {
-          alertify.error("Нет соединения. Сервер не доступен.");
-        } else if (jqXHR.status == 404) {
-          alertify.error("Запрашиваемая страница не найдена. [404]");
-        } else if (jqXHR.status == 500) {
-          alertify.error("Внутренняя ошибка сервера. [500]");
-        } else if (exception === 'parsererror') {
-          alertify.error("Не удалось разобрать JSON ответ.");
-        } else if (exception === 'timeout') {
-          alertify.error("Время запроса вышло.");
-        } else if (exception === 'abort') {
-          alertify.error("Аякс запрос прерывается.");
-        } else {
-          alertify.error("Ошибка запроса: " + jqXHR.responseText);
-        }
-      }
-    })
-  })
 
   $('#wall').on('mouseover', '.reply_table', function(e) {
     $(this).find(".delete_comment_button").css("opacity", 0.8);
@@ -2245,5 +2215,97 @@ function clear_friend(){
 $('.setting').on('click', '#remove_no_user', function() {
    clear_friend();
 })
+
+var dropZone = $('#text_messages')
+dropZone[0].ondragover = function() {
+    return false;
+};
+    
+dropZone[0].ondragleave = function() {
+    return false;
+};
+
+function uploadProgress(event) {
+    var percent = event.loaded / event.total;
+    NProgress.set(percent);
+}
+
+function uploadimagesendtomessage(file) {
+    var xhrurl = new XMLHttpRequest();
+    var formData = new FormData();
+    formData.append("file", file);
+    xhrurl.open('POST', 'https://api.vk.com/method/photos.getMessagesUploadServer?access_token='+$("#vkAccessToken").val());
+    xhrurl.onreadystatechange = function(){ if(xhrurl.readyState === XMLHttpRequest.DONE && xhrurl.status === 200) { 
+      var paramurl = JSON.parse(xhrurl.responseText)['response'];
+      var xhrupload = new XMLHttpRequest();
+      xhrupload.upload.addEventListener('progress', uploadProgress, false);
+      xhrupload.open('POST', paramurl['upload_url']+'&aid='+paramurl['aid']+'&mid='+paramurl['mid']+'&access_token='+$("#vkAccessToken").val());
+      xhrupload.onreadystatechange = function(){ if(xhrupload.readyState === XMLHttpRequest.DONE && xhrupload.status === 200) {
+        var load = JSON.parse(xhrupload.responseText)
+        console.info(load)
+        var xhrsave = new XMLHttpRequest();
+        xhrsave.open('POST', 'https://api.vk.com/method/photos.saveMessagesPhoto?photo='+load['photo']+'&hash='+load['hash']+'&server='+load['server']+'&access_token='+$("#vkAccessToken").val());
+        xhrsave.onreadystatechange = function(){ if(xhrsave.readyState === XMLHttpRequest.DONE && xhrsave.status === 200) { 
+          var attachment = JSON.parse(xhrsave.responseText)
+          console.info(attachment)
+          sender('messages.send', 'user_id='+$("#uid_user").val()+'&attachment='+attachment['response'][0]['id'], function(data) {
+            console.log(data)
+          })
+        }}
+        xhrsave.send();
+      }};
+      xhrupload.send(formData);
+    }};
+    xhrurl.send();
+}
+
+function uploadfilesendtomessage(file) {
+    var xhrurl = new XMLHttpRequest();
+    var formData = new FormData();
+    formData.append("file", file);
+    xhrurl.open('POST', 'https://api.vk.com/method/docs.getWallUploadServer?access_token='+$("#vkAccessToken").val());
+    xhrurl.onreadystatechange = function(){ if(xhrurl.readyState === XMLHttpRequest.DONE && xhrurl.status === 200) { 
+      var paramurl = JSON.parse(xhrurl.responseText)['response'];
+      var xhrupload = new XMLHttpRequest();
+      xhrupload.upload.addEventListener('progress', uploadProgress, false);
+      xhrupload.open('POST', paramurl['upload_url']+'?access_token='+$("#vkAccessToken").val());
+      xhrupload.onreadystatechange = function(){ if(xhrupload.readyState === XMLHttpRequest.DONE && xhrupload.status === 200) {
+        var load = JSON.parse(xhrupload.responseText)
+        console.info(load)
+        var xhrsave = new XMLHttpRequest();
+        xhrsave.open('POST', 'https://api.vk.com/method/docs.save?file='+load['file']+'&title='+file['name']+'&access_token='+$("#vkAccessToken").val());
+        xhrsave.onreadystatechange = function(){ if(xhrsave.readyState === XMLHttpRequest.DONE && xhrsave.status === 200) { 
+          var attachment = JSON.parse(xhrsave.responseText)
+          console.info(attachment)
+          sender('messages.send', 'user_id='+$("#uid_user").val()+'&attachment=doc'+attachment['response'][0]['owner_id']+'_'+attachment['response'][0]['did'], function(data) {
+            console.log(data)
+          })
+        }}
+        xhrsave.send();
+      }};
+      xhrupload.send(formData);
+    }};
+    xhrurl.send();
+}
+
+var fileType = Array("doc", "docx", "xls", "xlsx", "ppt", "pptx", "rtf", "pdf", "psd", "mp3", "djvu", "fb2", "ps", "txt", "zip", "rar");
+dropZone[0].ondrop = function(event) {
+    event.preventDefault();
+    var file = event.dataTransfer.files;
+    for(var i = 0; i<file.length;i++){
+      var files = file[i];
+      console.log(files)
+      if(files.type.indexOf('image') != -1){
+        uploadimagesendtomessage(files);
+      }else{
+        for(var x=0;x<fileType.length;x++){
+          var type = files['name'].split('.');
+          if(fileType[x] == type[type.length-1]){
+            uploadfilesendtomessage(files)
+          }
+        }
+      }
+    }
+};
 
 });

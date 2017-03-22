@@ -321,6 +321,7 @@ if(data != undefined){
         if(data[i][3] == $("#uid_user").val()){ $("*[id_messages]").css("background","");}
         break
       case 61:
+        if ( data[i][1] < 0) { data[i][1] = Math.abs(data[i][1])+1000000000; }
         $("#messages_form").find(".dialogs_row[uid='"+data[i][1]+"']").find(".dialogs_online").hide();
         $(".dialogs_row[uid='"+data[i][1]+"']").find("#nabor").css("display","block");
         if(data[i][1] == $("#uid_user").val()){  $(".riso2").show(); }

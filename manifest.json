@@ -19,5 +19,5 @@
       "fileSystem": [ "write", "retainEntries", "directory" ]
    }, "webview", "notifications", "fileSystem", "contextMenus", "storage", "unlimitedStorage", "\u003Call_urls>", "http://*/*", "https://*/*", "https://www.google-analytics.com/*" ],
    "update_url": "https://clients2.google.com/service/update2/crx",
-   "version": "0.35"
+   "version": "0.36"
 }

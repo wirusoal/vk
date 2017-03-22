@@ -1153,15 +1153,6 @@ b.profile_mob_onl {
     right: 8px;
     top: 39px;
 }
-#send_doc {
-    background-image: url('../images/photo_cam.png');
-    background-repeat: round;
-    width: 15px;
-    height: 15px;
-    position: absolute;
-    right: 4px;
-    top: 20px;
-}
 #open_smile {
     background-image: url('../images/smile.png');
     background-repeat: round;
@@ -1169,7 +1160,7 @@ b.profile_mob_onl {
     height: 15px;
     position: absolute;
     right: 4px;
-    top: 2px;
+    top: 9px;
 }
 #slider {
     border-radius: 25px;

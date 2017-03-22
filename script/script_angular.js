@@ -22,6 +22,8 @@ angular.module("api",[]).factory('api', function($q,$http) {
                 $.each(data['response'][i], function( key, value ) {
                   if(key == 'photo'){           
                     data['response'][i]['photo'] = imageBlob(value)['$$state'];
+                  }else if(key == 'photo_big'){           
+                    data['response'][i]['photo_big'] = imageBlob(value)['$$state'];
                   }else if(key == 'photo_medium'){
                     data['response'][i]['photo_medium'] = imageBlob(value)['$$state'];
                   }else if(key == 'thumb'){
@@ -75,11 +77,17 @@ app.controller('DialogList', function($scope,$http,$sce,api) {
   $scope.loadDialog = function(){
     api.json_get('execute.messages_get','offset='+$scope.offsetm).then(function(data){
       for(i=0;i<data['response'].length;i++){
-        data['response'][i]['id'] = (data['response'][i]['chat_id'] == 0)? data['response'][i]['id']: 'chat_'+data['response'][i]['chat_id']; 
         data['response'][i]['name'] = (data['response'][i]['chat_id'] == 0)? data['response'][i]['name']: data['response'][i]['title'];
         data['response'][i]['read_state'] = (data['response'][i]['read_state'] == 0 && data['response'][i]['out'] == 0) ? 'dialogs_new_msgs' : '';
         data['response'][i]['online'] = (data['response'][i]['online'] == 1) ? ((data['response'][i]['online_mobile'] == 1)? 'mobile-online.gif':'pc.png'):'offline.png'; 
         data['response'][i]['body'] = $sce.trustAsHtml(Emoji.emojiToHTML(data['response'][i]['body']))
+        if( data['response'][i]['id'] < 0){
+        api.json_get('groups.getById','group_ids='+Math.abs(data['response'][i]['id'])).then(function(dataGroup){
+            data['response'][i-1]['name'] = dataGroup['response'][0]['name']
+            data['response'][i-1]['photo'] = dataGroup['response'][0]['photo_big']
+          })
+        }
+        data['response'][i]['id'] = (data['response'][i]['chat_id'] == 0)? ((data['response'][i]['id'] < 0 )?(Math.abs(data['response'][i]['id'])+1000000000):data['response'][i]['id']): 'chat_'+data['response'][i]['chat_id']; 
         $scope.dataq.push(data['response'][i]);
       }
       $scope.rm = function(im){
