@@ -360,9 +360,8 @@ function smile_history_load(){
   })
 }
  var messages_open = function(id,offs) {
-  console.log(id)
   smile_history_load();
-      if (id.substr(0, 5) == 'chat_') {
+      if (id.indexOf('chat_') != -1) {
         var u_id = 0;
         var c_id = id.substring(5);
       } else {
@@ -440,7 +439,7 @@ emoji_load();
   }
   //Отправка сообщений
   function send_messages(uid, messages) {
-    if (uid.substr(0, 5) == 'chat_') {
+    if (uid.indexOf('chat_') != -1) {
       var c_id = 'chat_id=' + uid.substring(5);
     } else {
       var c_id = 'user_id=' + uid;
@@ -1894,7 +1893,7 @@ if(timers){
   }
 
   $('body').on('click', 'img[sticker_code]', function(e) {
-    if ($("#uid_user").val().substr(0, 5) == 'chat_') {
+    if ($("#uid_user").val().indexOf('chat_') != -1) {
       var c_id = 'chat_id=' + $("#uid_user").val().substring(5);
     } else {
       var c_id = 'user_id=' + $("#uid_user").val();
